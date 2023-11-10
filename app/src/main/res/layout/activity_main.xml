@@ -5,86 +5,36 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@color/blue"
+    android:background="?attr/colorPrimaryVariant"
     android:padding="@dimen/padding_main">
-    <FrameLayout
+
+    <androidx.appcompat.widget.Toolbar
+
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        app:title="@string/app_name"
+        app:titleTextAppearance="@style/TextHeader"
+        app:titleTextColor="@color/white" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:paddingStart="12dp"
-            android:paddingTop="10dp"
-            android:paddingBottom="12dp"
-            android:text="@string/app_name"
-            android:textColor="@color/white"
-            android:textSize="@dimen/title_text_size"
-            tools:ignore="RtlSymmetry" />
-    </FrameLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:paddingHorizontal="12dp"
-        android:paddingVertical="24dp"
-        android:orientation="vertical" >
+    <Button
+        android:id="@+id/search_button"
+        style="@style/BigButtonStyle"
+        android:layout_marginTop="24dp"
+        android:text="@string/search"
+        app:icon="@drawable/search_inactive_light_mode" />
 
-        <Button
-            android:id="@+id/search_button"
-            android:foreground="?attr/selectableItemBackground"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:backgroundTint="@color/white"
-            android:text="@string/search"
-            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-            android:textColor="@color/black"
-            android:textSize="@dimen/title_text_size"
-            android:typeface="normal"
-            app:cornerRadius="@dimen/big_button_corner_radius"
-            app:icon="@drawable/search_inactive_light_mode"
-            app:iconGravity="textStart"
-            app:iconPadding="@dimen/icon_padding"
-            app:iconTint="@color/black" />
+    <Button
+        android:id="@+id/library_button"
+        style="@style/BigButtonStyle"
+        android:layout_marginVertical="16dp"
+        android:text="@string/library"
+        app:icon="@drawable/library_inactive_light_mode"/>
 
-        <Button
-            android:id="@+id/library_button"
-            android:foreground="?attr/selectableItemBackground"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_marginVertical="16dp"
-            android:layout_weight="1"
-            android:backgroundTint="@color/white"
-            android:text="@string/library"
-            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-            android:textColor="@color/black"
-            android:textSize="@dimen/title_text_size"
-            app:cornerRadius="@dimen/big_button_corner_radius"
-            app:icon="@drawable/library_inactive_light_mode"
-            app:iconGravity="textStart"
-            app:iconPadding="@dimen/icon_padding"
-            app:iconTint="@color/black" />
-
-        <Button
-            android:id="@+id/settings_button"
-            android:foreground="?attr/selectableItemBackground"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:backgroundTint="@color/white"
-            android:text="@string/settings"
-            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-            android:textColor="@color/black"
-            android:textSize="@dimen/title_text_size"
-            app:cornerRadius="@dimen/big_button_corner_radius"
-            app:icon="@drawable/settings_inactive_light_mode"
-            app:iconGravity="textStart"
-            app:iconPadding="@dimen/icon_padding"
-            app:iconTint="@color/black" />
-
-
-
-    </LinearLayout>
+    <Button
+        android:id="@+id/settings_button"
+        style="@style/BigButtonStyle"
+        android:layout_marginBottom="24dp"
+        android:text="@string/settings"
+        app:icon="@drawable/settings_inactive_light_mode" />
 
     </LinearLayout>
