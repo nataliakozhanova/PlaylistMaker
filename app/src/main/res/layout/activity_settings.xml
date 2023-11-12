@@ -4,10 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="?attr/colorPrimary"
     android:orientation="vertical"
-    android:padding="@dimen/padding_main"
-    android:background="?attr/colorPrimary">
-
+    android:padding="@dimen/padding_main">
 
 
     <androidx.appcompat.widget.Toolbar
@@ -25,10 +24,16 @@
         android:layout_marginTop="24dp">
 
         <TextView
-            style="@style/TextViewList"
-            android:text="@string/settings_list_element_0" />
+            style="@style/TextViewListSettings"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start"
+            android:layout_marginVertical="@dimen/list_margin_vertical"
+            android:layout_marginStart="@dimen/list_margin_start"
+            android:text="@string/settings_list_dark_theme" />
 
         <Switch
+            android:id="@+id/settings_switch_theme"
             android:layout_width="56dp"
             android:layout_height="48dp"
             android:layout_gravity="end"
@@ -41,44 +46,77 @@
             tools:checked="false"
             tools:ignore="UseSwitchCompatOrMaterialXml" />
     </FrameLayout>
+
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
         <TextView
-            style="@style/TextViewList"
-            android:text="@string/settings_list_element_1" />
+            style="@style/TextViewListSettings"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start"
+            android:layout_marginVertical="@dimen/list_margin_vertical"
+            android:layout_marginStart="@dimen/list_margin_start"
+            android:text="@string/settings_list_share_app" />
 
         <ImageView
             android:id="@+id/share_app_button"
-            style="@style/ImageViewList"
+            style="@style/ImageViewListSettings"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_gravity="end"
+            android:layout_marginVertical="@dimen/list_margin_vertical"
+            android:layout_marginEnd="@dimen/list_margin_end"
             android:src="@drawable/share_light_mode"/>
     </FrameLayout>
+
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
         <TextView
-            style="@style/TextViewList"
-            android:text="@string/settings_list_element_2" />
+            style="@style/TextViewListSettings"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start"
+            android:layout_marginVertical="@dimen/list_margin_vertical"
+            android:layout_marginStart="@dimen/list_margin_start"
+            android:text="@string/settings_list_write_to_support" />
 
         <ImageView
             android:id="@+id/write_to_support_button"
-            style="@style/ImageViewList"
-            android:src="@drawable/support_light_mode"/>
+            style="@style/ImageViewListSettings"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_gravity="end"
+            android:layout_marginVertical="@dimen/list_margin_vertical"
+            android:layout_marginEnd="@dimen/list_margin_end"
+            android:src="@drawable/support_light_mode" />
     </FrameLayout>
+
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
         <TextView
-            style="@style/TextViewList"
-            android:text="@string/settings_list_element_3"/>
+            style="@style/TextViewListSettings"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start"
+            android:layout_marginVertical="@dimen/list_margin_vertical"
+            android:layout_marginStart="@dimen/list_margin_start"
+            android:text="@string/settings_list_terms_of_usage" />
 
         <ImageView
             android:id="@+id/terms_of_use_button"
-            style="@style/ImageViewList"
-            android:src="@drawable/arrow_forward_light_mode"/>
+            style="@style/ImageViewListSettings"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_gravity="end"
+            android:layout_marginVertical="@dimen/list_margin_vertical"
+            android:layout_marginEnd="@dimen/list_margin_end"
+            android:src="@drawable/arrow_forward_light_mode" />
     </FrameLayout>
 
 </LinearLayout>

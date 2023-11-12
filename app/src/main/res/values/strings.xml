@@ -3,10 +3,10 @@
     <string name="search">Поиск</string>
     <string name="library">Медиатека</string>
     <string name="settings">Настройки</string>
-    <string name="settings_list_element_0">Темная тема</string>
-    <string name="settings_list_element_1">Поделиться приложением</string>
-    <string name="settings_list_element_2">Написать в поддержку</string>
-    <string name="settings_list_element_3">Пользовательское соглашение</string>
+    <string name="settings_list_dark_theme">Темная тема</string>
+    <string name="settings_list_share_app">Поделиться приложением</string>
+    <string name="settings_list_write_to_support">Написать в поддержку</string>
+    <string name="settings_list_terms_of_usage">Пользовательское соглашение</string>
     <string name="link_terms_of_usage">https://yandex.ru/legal/practicum_offer</string>
     <string name="link_share_app">https://practicum.yandex.ru/android-developer</string>
     <string name="message">Спасибо разработчикам и разработчицам за крутое приложение!</string>

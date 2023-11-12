@@ -2,11 +2,15 @@ package com.practicum.playlistmaker
 
 import android.annotation.SuppressLint
 import android.content.Intent
+import android.content.res.Configuration
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.widget.Button
 import android.widget.ImageView
+import android.widget.Switch
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.appcompat.widget.Toolbar
 
 
@@ -17,9 +21,14 @@ class SettingsActivity : AppCompatActivity() {
         setContentView(R.layout.activity_settings)
         val settingsArrowBackButton = findViewById<Toolbar>(R.id.settings_toolbar)
         settingsArrowBackButton.setNavigationOnClickListener {
-            val displayIntent = Intent(this, MainActivity::class.java)
-            startActivity(displayIntent)
+            finish()
         }
+        val settingsSwitchTheme = findViewById<Switch>(R.id.settings_switch_theme)
+
+        settingsSwitchTheme.setOnClickListener {
+            changeTheme()
+        }
+
         val shareAppButton = findViewById<ImageView>(R.id.share_app_button)
         shareAppButton.setOnClickListener {
             val shareIntent = Intent(Intent.ACTION_SEND)
@@ -43,6 +52,19 @@ class SettingsActivity : AppCompatActivity() {
             startActivity(browseIntent)
         }
 
+    }
+
+    private fun changeTheme() {
+        val currentNightMode = resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
+        when (currentNightMode) {
+            Configuration.UI_MODE_NIGHT_YES -> {
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+            }
+
+            Configuration.UI_MODE_NIGHT_NO -> {
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+            }
+        }
     }
 
 }

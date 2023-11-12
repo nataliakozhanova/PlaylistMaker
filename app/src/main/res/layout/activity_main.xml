@@ -4,8 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:background="?attr/colorPrimaryVariant"
+    android:orientation="vertical"
     android:padding="@dimen/padding_main">
 
     <androidx.appcompat.widget.Toolbar
@@ -19,22 +19,49 @@
     <Button
         android:id="@+id/search_button"
         style="@style/BigButtonStyle"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dim_null"
+        android:layout_marginHorizontal="@dimen/margin_horizontal"
         android:layout_marginTop="24dp"
+        android:layout_weight="1"
+        android:insetTop="@dimen/dim_null"
+        android:insetBottom="@dimen/dim_null"
         android:text="@string/search"
-        app:icon="@drawable/search_inactive_light_mode" />
+        app:cornerRadius="@dimen/big_button_corner_radius"
+        app:icon="@drawable/search_inactive_light_mode"
+        app:iconGravity="textStart"
+        app:iconPadding="@dimen/icon_padding" />
 
     <Button
         android:id="@+id/library_button"
         style="@style/BigButtonStyle"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dim_null"
+        android:layout_marginHorizontal="@dimen/margin_horizontal"
         android:layout_marginVertical="16dp"
+        android:layout_weight="1"
+        android:insetTop="@dimen/dim_null"
+        android:insetBottom="@dimen/dim_null"
         android:text="@string/library"
-        app:icon="@drawable/library_inactive_light_mode"/>
+        app:cornerRadius="@dimen/big_button_corner_radius"
+        app:icon="@drawable/library_inactive_light_mode"
+        app:iconGravity="textStart"
+        app:iconPadding="@dimen/icon_padding" />
 
     <Button
         android:id="@+id/settings_button"
         style="@style/BigButtonStyle"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dim_null"
+        android:layout_marginHorizontal="@dimen/margin_horizontal"
         android:layout_marginBottom="24dp"
+        android:layout_weight="1"
+        android:insetTop="@dimen/dim_null"
+        android:insetBottom="@dimen/dim_null"
         android:text="@string/settings"
-        app:icon="@drawable/settings_inactive_light_mode" />
+        app:cornerRadius="@dimen/big_button_corner_radius"
+        app:icon="@drawable/settings_inactive_light_mode"
+        app:iconGravity="textStart"
+        app:iconPadding="@dimen/icon_padding" />
 
-    </LinearLayout>
+</LinearLayout>

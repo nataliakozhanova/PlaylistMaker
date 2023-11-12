@@ -17,24 +17,21 @@ import androidx.appcompat.widget.Toolbar
 class SearchActivity : AppCompatActivity() {
 
     companion object {
-        const val TEXT_TO_SAVE = "TEXT_TO_SAVE"
-        const val TEXT_TO_SAVE_DEF = ""
+        private const val TEXT_TO_SAVE = "TEXT_TO_SAVE"
     }
 
-    private var textToSave: String = TEXT_TO_SAVE_DEF
+    private var textToSave: String = ""
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         outState.putString(TEXT_TO_SAVE, textToSave)
-        //Log.d("search","saved")
     }
 
     override fun onRestoreInstanceState(savedInstanceState: Bundle) {
         super.onRestoreInstanceState(savedInstanceState)
-        textToSave = savedInstanceState.getString(TEXT_TO_SAVE, TEXT_TO_SAVE_DEF)
+        textToSave = savedInstanceState.getString(TEXT_TO_SAVE, "")
         val inputEditText = findViewById<EditText>(R.id.input_edit_text)
         inputEditText.setText(textToSave)
-        //Log.d("search","restored")
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -43,8 +40,7 @@ class SearchActivity : AppCompatActivity() {
         val searchArrowBackButton = findViewById<Toolbar>(R.id.toolbar)
 
         searchArrowBackButton.setNavigationOnClickListener {
-            val displayIntent = Intent(this, MainActivity::class.java)
-            startActivity(displayIntent)
+            finish()
         }
 
 
@@ -59,8 +55,6 @@ class SearchActivity : AppCompatActivity() {
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 clearButton.visibility = clearButtonVisibility(inputEditText.editableText)
                 textToSave = s.toString()
-
-                //Log.d("search","ping")
             }
 
             override fun afterTextChanged(s: Editable?) {
