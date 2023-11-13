@@ -1,9 +1,61 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="?attr/colorPrimary"
+    android:orientation="vertical"
+    android:padding="@dimen/padding_main"
     tools:context=".SearchActivity">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/ToolbarTheme"
+        app:navigationIcon="@drawable/arrow_back_light_mode"
+        app:title="@string/search"
+        app:titleTextAppearance="@style/TextHeader" />
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/list_margin_start"
+        android:layout_marginVertical="@dimen/list_margin_end"
+
+        tools:context=".SearchActivity">
+
+        <EditText
+            android:id="@+id/input_edit_text"
+            android:layout_width="match_parent"
+            android:layout_height="36dp"
+            android:background="@drawable/round_outline"
+            android:drawableStart="@drawable/search_icon"
+            android:drawablePadding="@dimen/padding"
+            android:drawableTint="?attr/colorSecondaryVariant"
+            android:fontFamily="@font/ys_display_regular"
+            android:hint="@string/search"
+            android:inputType="text"
+            android:letterSpacing="0"
+            android:maxLength="30"
+            android:maxLines="1"
+            android:paddingHorizontal="10dp"
+            android:textColor="@color/black"
+            android:textColorHint="?attr/colorSecondaryVariant"
+            android:textCursorDrawable="@drawable/color_cursor"
+            android:textFontWeight="400"
+            android:textSize="16sp" />
+
+        <ImageView
+            android:id="@+id/clear_button"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="end"
+            android:paddingHorizontal="10dp"
+            android:src="@drawable/clear_dark"
+            android:visibility="gone"
+            app:tint="?attr/colorSecondaryVariant" />
+    </FrameLayout>
+
+</LinearLayout>

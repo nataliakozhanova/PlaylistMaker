@@ -1,9 +1,29 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="Base.Theme.PlaylistMaker" parent="Theme.Material3.DayNight.NoActionBar">
+    <style name="Base.Theme.PlaylistMaker" parent="@style/Theme.MaterialComponents.DayNight.NoActionBar">
         <!-- Customize your light theme here. -->
         <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+        <item name="colorPrimary">@color/white</item>
+        <item name="colorPrimaryVariant">@color/blue</item>
+        <item name="colorOnPrimary">@color/black</item>
+        <item name="colorSecondary">@color/gray_light</item>
+        <item name="colorSecondaryVariant">@color/gray_text</item>
+        <item name="colorOnSecondary">@color/gray_text</item>
+        <item name="colorControlHighlight">@color/blue_light</item>
+
     </style>
 
-    <style name="Theme.PlaylistMaker" parent="Base.Theme.PlaylistMaker" />
+    <style name="Theme.PlaylistMaker" parent="Base.Theme.PlaylistMaker">
+
+    </style>
+
+    <style name="ToolbarTheme" parent="@style/ThemeOverlay.AppCompat.DayNight">
+        <item name="toolbarNavigationButtonStyle">@style/Toolbar.Button.Navigation.Tinted</item>
+    </style>
+    <style name="Toolbar.Button.Navigation.Tinted" parent="Widget.AppCompat.Toolbar.Button.Navigation">
+        <item name="tint">@color/black</item>
+        <item name="android:tint">@color/black</item>
+    </style>
+
+
 </resources>

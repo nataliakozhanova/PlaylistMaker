@@ -4,139 +4,119 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="?attr/colorPrimary"
     android:orientation="vertical"
-    android:padding="@dimen/padding_main"
-    android:background="@color/white">
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
+    android:padding="@dimen/padding_main">
 
-            <ImageView
-                android:id="@+id/settings_arrow_back_button"
-                android:foreground="?attr/selectableItemBackground"
-                android:layout_width="@dimen/icon_size"
-                android:layout_height="@dimen/icon_size"
-                android:layout_margin="12dp"
-                android:src="@drawable/arrow_back_light_mode"
-                app:tint="@color/black" />
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:layout_marginStart="12dp"
-            android:text="@string/settings"
-            android:textColor="@color/black"
-            android:textSize="@dimen/title_text_size" />
-        </LinearLayout>
-    </FrameLayout>
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/settings_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/ToolbarTheme"
+        app:navigationIcon="@drawable/arrow_back_light_mode"
+        app:title="@string/settings"
+        app:titleTextAppearance="@style/TextHeader" />
+
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp">
 
         <TextView
+            style="@style/TextViewListSettings"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="start"
+            android:layout_marginVertical="@dimen/list_margin_vertical"
             android:layout_marginStart="@dimen/list_margin_start"
-            android:layout_marginTop="@dimen/list_margin_top"
-            android:layout_marginBottom="@dimen/list_margin_bottom"
-            android:text="@string/settings_list_element_0"
-            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-            android:textColor="@color/black_list"
-            android:textSize="@dimen/list_text_size" />
+            android:text="@string/settings_list_dark_theme" />
 
         <Switch
+            android:id="@+id/settings_switch_theme"
             android:layout_width="56dp"
             android:layout_height="48dp"
             android:layout_gravity="end"
             android:layout_marginTop="2dp"
             android:layout_marginEnd="2dp"
             android:layout_marginBottom="3dp"
+            android:checked="false"
+            android:thumbTint="@color/selector_switch_thumb"
+            android:trackTint="@color/selector_switch_track"
+            tools:checked="false"
             tools:ignore="UseSwitchCompatOrMaterialXml" />
     </FrameLayout>
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        >
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="start"
-            android:layout_marginStart="@dimen/list_margin_start"
-            android:layout_marginTop="@dimen/list_margin_top"
-            android:layout_marginBottom="@dimen/list_margin_bottom"
-            android:text="@string/settings_list_element_1"
-            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-            android:textColor="@color/black_list"
-            android:textSize="@dimen/list_text_size" />
-
-        <ImageView
-            android:layout_width="@dimen/icon_size"
-            android:layout_height="@dimen/icon_size"
-            android:layout_marginTop="@dimen/list_margin_top"
-            android:layout_marginBottom="@dimen/list_margin_bottom"
-            android:layout_marginEnd="@dimen/list_margin_end"
-            android:layout_gravity="end"
-            android:src="@drawable/share_light_mode"
-            app:tint="@color/gray" />
-    </FrameLayout>
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
         <TextView
+            style="@style/TextViewListSettings"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="start"
+            android:layout_marginVertical="@dimen/list_margin_vertical"
             android:layout_marginStart="@dimen/list_margin_start"
-            android:layout_marginTop="@dimen/list_margin_top"
-            android:layout_marginBottom="@dimen/list_margin_bottom"
-            android:text="@string/settings_list_element_2"
-            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-            android:textColor="@color/black_list"
-            android:textSize="@dimen/list_text_size" />
+            android:text="@string/settings_list_share_app" />
 
         <ImageView
-            android:layout_width="@dimen/icon_size"
-            android:layout_height="@dimen/icon_size"
-            android:layout_marginTop="@dimen/list_margin_top"
-            android:layout_marginBottom="@dimen/list_margin_bottom"
-            android:layout_marginEnd="@dimen/list_margin_end"
+            android:id="@+id/share_app_button"
+            style="@style/ImageViewListSettings"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
             android:layout_gravity="end"
-            android:src="@drawable/support_light_mode"
-            app:tint="@color/gray" />
+            android:layout_marginVertical="@dimen/list_margin_vertical"
+            android:layout_marginEnd="@dimen/list_margin_end"
+            android:src="@drawable/share_light_mode"/>
     </FrameLayout>
+
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
         <TextView
+            style="@style/TextViewListSettings"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="start"
+            android:layout_marginVertical="@dimen/list_margin_vertical"
             android:layout_marginStart="@dimen/list_margin_start"
-            android:layout_marginTop="@dimen/list_margin_top"
-            android:layout_marginBottom="@dimen/list_margin_bottom"
-            android:text="@string/settings_list_element_3"
-            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-            android:textColor="@color/black_list"
-            android:textSize="@dimen/list_text_size" />
+            android:text="@string/settings_list_write_to_support" />
 
         <ImageView
-            android:layout_width="@dimen/icon_size"
-            android:layout_height="@dimen/icon_size"
-            android:layout_marginTop="@dimen/list_margin_top"
-            android:layout_marginBottom="@dimen/list_margin_bottom"
-            android:layout_marginEnd="@dimen/list_margin_end"
+            android:id="@+id/write_to_support_button"
+            style="@style/ImageViewListSettings"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
             android:layout_gravity="end"
-            android:src="@drawable/arrow_forward_light_mode"
-            app:tint="@color/gray" />
+            android:layout_marginVertical="@dimen/list_margin_vertical"
+            android:layout_marginEnd="@dimen/list_margin_end"
+            android:src="@drawable/support_light_mode" />
+    </FrameLayout>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            style="@style/TextViewListSettings"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start"
+            android:layout_marginVertical="@dimen/list_margin_vertical"
+            android:layout_marginStart="@dimen/list_margin_start"
+            android:text="@string/settings_list_terms_of_usage" />
+
+        <ImageView
+            android:id="@+id/terms_of_use_button"
+            style="@style/ImageViewListSettings"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_gravity="end"
+            android:layout_marginVertical="@dimen/list_margin_vertical"
+            android:layout_marginEnd="@dimen/list_margin_end"
+            android:src="@drawable/arrow_forward_light_mode" />
     </FrameLayout>
 
 </LinearLayout>

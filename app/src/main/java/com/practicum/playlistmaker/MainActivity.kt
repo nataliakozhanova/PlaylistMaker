@@ -1,6 +1,7 @@
 package com.practicum.playlistmaker
 
 import android.content.Intent
+import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
@@ -18,7 +19,6 @@ class MainActivity : AppCompatActivity() {
 
         val imageClickListener: View.OnClickListener = object : View.OnClickListener {
             override fun onClick(v: View?) {
-                //Toast.makeText(this@MainActivity, "Нажали на кнопку Поиск", Toast.LENGTH_SHORT).show()
             }
         }
         searchButton.setOnClickListener {
