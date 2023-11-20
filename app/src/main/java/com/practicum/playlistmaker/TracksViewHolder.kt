@@ -1,6 +1,5 @@
 package com.practicum.playlistmaker
 
-import android.util.TypedValue
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
@@ -13,6 +12,7 @@ class TracksViewHolder(trackView: View) : RecyclerView.ViewHolder(trackView) {
     private val tvTrackName: TextView = trackView.findViewById(R.id.track_name_text_view)
     private val tvArtistName: TextView = trackView.findViewById(R.id.artist_name_text_view)
     private val tvTrackTime: TextView = trackView.findViewById(R.id.track_time_text_view)
+    private val trackCornerRadius:Int =  itemView.context.resources.getDimensionPixelSize(R.dimen.track_corner_radius)
 
     fun bind(item: Track) {
         tvTrackName.text = item.trackName
@@ -23,7 +23,7 @@ class TracksViewHolder(trackView: View) : RecyclerView.ViewHolder(trackView) {
             .load(item.artworkUrl100)
             .placeholder(R.drawable.placeholder)
             .centerCrop()
-            .transform(RoundedCorners(2))
+            .transform(RoundedCorners(trackCornerRadius))
             .into(ivTrackImage)
     }
 }

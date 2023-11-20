@@ -5,17 +5,14 @@ import android.content.Intent
 import android.content.res.Configuration
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
-import android.widget.Button
 import android.widget.ImageView
 import android.widget.Switch
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.app.AppCompatDelegate
 import androidx.appcompat.widget.Toolbar
 
 
 class SettingsActivity : AppCompatActivity() {
-    @SuppressLint("WrongViewCast", "MissingInflatedId")
+    @SuppressLint("WrongViewCast", "MissingInflatedId", "UseSwitchCompatOrMaterialCode")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_settings)
@@ -23,11 +20,10 @@ class SettingsActivity : AppCompatActivity() {
         settingsArrowBackButton.setNavigationOnClickListener {
             finish()
         }
-        val settingsSwitchTheme = findViewById<Switch>(R.id.settings_switch_theme)
-        settingsSwitchTheme.setChecked(isSystemDarkMode())
+        configureDefaultSwitcherState()
 
         //settingsSwitchTheme.setOnClickListener {
-            //changeTheme()
+        //changeTheme()
         //}
 
         val shareAppButton = findViewById<ImageView>(R.id.share_app_button)
@@ -68,19 +64,18 @@ class SettingsActivity : AppCompatActivity() {
         }
     } */
 
-    private fun isSystemDarkMode() : Boolean{
+    private fun isSystemDarkMode(): Boolean {
         val currentNightMode = resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
-        when (currentNightMode) {
-            Configuration.UI_MODE_NIGHT_YES -> {
-                return true
-            }
-
-            Configuration.UI_MODE_NIGHT_NO -> {
-                return false
-            }
+        return when (currentNightMode) {
+            Configuration.UI_MODE_NIGHT_YES -> true
+            Configuration.UI_MODE_NIGHT_NO -> false
+            else -> false
         }
+    }
 
-        return false
+    private fun configureDefaultSwitcherState() {
+        val settingsSwitchTheme = findViewById<Switch>(R.id.settings_switch_theme)
+        settingsSwitchTheme.setChecked(isSystemDarkMode())
     }
 
 }
