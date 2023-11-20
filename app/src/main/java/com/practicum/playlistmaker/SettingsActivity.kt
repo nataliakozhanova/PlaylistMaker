@@ -24,10 +24,11 @@ class SettingsActivity : AppCompatActivity() {
             finish()
         }
         val settingsSwitchTheme = findViewById<Switch>(R.id.settings_switch_theme)
+        settingsSwitchTheme.setChecked(isSystemDarkMode())
 
-        settingsSwitchTheme.setOnClickListener {
-            changeTheme()
-        }
+        //settingsSwitchTheme.setOnClickListener {
+            //changeTheme()
+        //}
 
         val shareAppButton = findViewById<ImageView>(R.id.share_app_button)
         shareAppButton.setOnClickListener {
@@ -54,7 +55,7 @@ class SettingsActivity : AppCompatActivity() {
 
     }
 
-    private fun changeTheme() {
+    /* private fun changeTheme() {
         val currentNightMode = resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
         when (currentNightMode) {
             Configuration.UI_MODE_NIGHT_YES -> {
@@ -65,6 +66,21 @@ class SettingsActivity : AppCompatActivity() {
                 AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
             }
         }
+    } */
+
+    private fun isSystemDarkMode() : Boolean{
+        val currentNightMode = resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
+        when (currentNightMode) {
+            Configuration.UI_MODE_NIGHT_YES -> {
+                return true
+            }
+
+            Configuration.UI_MODE_NIGHT_NO -> {
+                return false
+            }
+        }
+
+        return false
     }
 
 }

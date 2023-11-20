@@ -45,7 +45,8 @@
             android:textColorHint="?attr/colorSecondaryVariant"
             android:textCursorDrawable="@drawable/color_cursor"
             android:textFontWeight="400"
-            android:textSize="16sp" />
+            android:textSize="16sp"
+            tools:ignore="TouchTargetSizeCheck,VisualLintTextFieldSize" />
 
         <ImageView
             android:id="@+id/clear_button"
@@ -57,5 +58,12 @@
             android:visibility="gone"
             app:tint="?attr/colorSecondaryVariant" />
     </FrameLayout>
-
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/tracks_recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/tracks_margin_top"
+        tools:listitem="@layout/tracks_view"
+        tools:itemCount="5"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
 </LinearLayout>

@@ -6,12 +6,17 @@
     <dimen name="padding_main">4dp</dimen>
     <dimen name="list_text_size">16sp</dimen>
     <dimen name="icon_size">24dp</dimen>
+    <dimen name="track_icon_size">44dp</dimen>
+    <dimen name="delimiter_size">12dp</dimen>
     <dimen name="list_margin_vertical">18dp</dimen>
     <dimen name="list_margin_start">12dp</dimen>
     <dimen name="list_margin_end">8dp</dimen>
+    <dimen name="track_margin_vertical">14dp</dimen>
     <dimen name="padding">8dp</dimen>
+    <dimen name="margin">8dp</dimen>
     <dimen name="margin_horizontal">12dp</dimen>
     <dimen name="dim_null">0dp</dimen>
-
+    <dimen name="tracks_margin_top">16dp</dimen>
+    <dimen name="track_corner_radius">2dp</dimen>
 
 </resources>
