@@ -21,7 +21,7 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp">
+        android:layout_marginTop="@dimen/frame_margin_top">
 
         <TextView
             style="@style/TextViewListSettings"
@@ -34,12 +34,12 @@
 
         <Switch
             android:id="@+id/settings_switch_theme"
-            android:layout_width="56dp"
-            android:layout_height="48dp"
+            android:layout_width="@dimen/switcher_layout_width"
+            android:layout_height="@dimen/switcher_layout_height"
             android:layout_gravity="end"
-            android:layout_marginTop="2dp"
-            android:layout_marginEnd="2dp"
-            android:layout_marginBottom="3dp"
+            android:layout_marginTop="@dimen/switcher_margin"
+            android:layout_marginEnd="@dimen/switcher_margin"
+            android:layout_marginBottom="@dimen/switcher_margin"
             android:checked="false"
             android:thumbTint="@color/selector_switch_thumb"
             android:trackTint="@color/selector_switch_track"
@@ -63,12 +63,12 @@
         <ImageView
             android:id="@+id/share_app_button"
             style="@style/ImageViewListSettings"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
+            android:layout_width="@dimen/icon_size"
+            android:layout_height="@dimen/icon_size"
             android:layout_gravity="end"
             android:layout_marginVertical="@dimen/list_margin_vertical"
             android:layout_marginEnd="@dimen/list_margin_end"
-            android:src="@drawable/share_light_mode"/>
+            android:src="@drawable/share_light_mode" />
     </FrameLayout>
 
     <FrameLayout
@@ -87,8 +87,8 @@
         <ImageView
             android:id="@+id/write_to_support_button"
             style="@style/ImageViewListSettings"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
+            android:layout_width="@dimen/icon_size"
+            android:layout_height="@dimen/icon_size"
             android:layout_gravity="end"
             android:layout_marginVertical="@dimen/list_margin_vertical"
             android:layout_marginEnd="@dimen/list_margin_end"
@@ -111,8 +111,8 @@
         <ImageView
             android:id="@+id/terms_of_use_button"
             style="@style/ImageViewListSettings"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
+            android:layout_width="@dimen/icon_size"
+            android:layout_height="@dimen/icon_size"
             android:layout_gravity="end"
             android:layout_marginVertical="@dimen/list_margin_vertical"
             android:layout_marginEnd="@dimen/list_margin_end"

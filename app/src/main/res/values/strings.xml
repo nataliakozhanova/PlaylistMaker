@@ -12,5 +12,8 @@
     <string name="message">Спасибо разработчикам и разработчицам за крутое приложение!</string>
     <string name="subject">Сообщение разработчикам и разработчицам приложения Playlist Maker</string>
     <string name="to">tasha.kozhanova@yandex.com</string>
+    <string name="track_name">Smells Like Teen Spirit</string>
+    <string name="artist_name">Nirvana</string>
+    <string name="track_time">5:01</string>
 
 </resources>

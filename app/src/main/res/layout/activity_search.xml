@@ -28,34 +28,38 @@
 
         <EditText
             android:id="@+id/input_edit_text"
+            style="@style/EditTextSearch"
             android:layout_width="match_parent"
-            android:layout_height="36dp"
+            android:layout_height="@dimen/edit_text_layout_height"
             android:background="@drawable/round_outline"
             android:drawableStart="@drawable/search_icon"
             android:drawablePadding="@dimen/padding"
             android:drawableTint="?attr/colorSecondaryVariant"
-            android:fontFamily="@font/ys_display_regular"
             android:hint="@string/search"
             android:inputType="text"
             android:letterSpacing="0"
             android:maxLength="30"
             android:maxLines="1"
-            android:paddingHorizontal="10dp"
-            android:textColor="@color/black"
-            android:textColorHint="?attr/colorSecondaryVariant"
-            android:textCursorDrawable="@drawable/color_cursor"
-            android:textFontWeight="400"
-            android:textSize="16sp" />
+            android:paddingHorizontal="@dimen/edit_text_padding_horizontal"
+            tools:ignore="TouchTargetSizeCheck,VisualLintTextFieldSize" />
 
         <ImageView
             android:id="@+id/clear_button"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_gravity="end"
-            android:paddingHorizontal="10dp"
+            android:paddingHorizontal="@dimen/edit_text_padding_horizontal"
             android:src="@drawable/clear_dark"
             android:visibility="gone"
             app:tint="?attr/colorSecondaryVariant" />
     </FrameLayout>
 
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/tracks_recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/tracks_margin_top"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        tools:itemCount="5"
+        tools:listitem="@layout/tracks_view" />
 </LinearLayout>
