@@ -15,5 +15,8 @@
     <string name="track_name">Smells Like Teen Spirit</string>
     <string name="artist_name">Nirvana</string>
     <string name="track_time">5:01</string>
+    <string name="nothing_found">Ничего не нашлось</string>
+    <string name="connection_problems">Проблемы со связью\n\nЗагрузка не удалась. Проверьте подключение к интернету</string>
+    <string name="update">Обновить</string>
 
 </resources>
