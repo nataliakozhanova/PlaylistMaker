@@ -122,11 +122,7 @@ class SearchActivity : AppCompatActivity() {
             }
             false
         }
-        updateButton.setOnClickListener{
-            errorContainerLL.visibility = View.GONE
-            errorInternetIV.visibility = View.GONE
-            errorTextPlaceholderTV.visibility = View.GONE
-            updateButton.visibility = View.GONE
+        updateButton.setOnClickListener {
             search()
         }
     }
@@ -146,24 +142,26 @@ class SearchActivity : AppCompatActivity() {
     }
 
     private fun showSearchError(text: String) {
-        if (text.isNotEmpty()) {
-            errorUnionBigIV.visibility = View.VISIBLE
-            errorSearchIV.visibility = View.VISIBLE
-            errorUnionSmallIV.visibility = View.VISIBLE
-            errorTextPlaceholderTV.visibility = View.VISIBLE
-            errorContainerLL.visibility = View.VISIBLE
-            tracks.clear()
-            tracksAdapter.notifyDataSetChanged()
-            errorTextPlaceholderTV.text = text
+        errorUnionBigIV.visibility = View.VISIBLE
+        errorSearchIV.visibility = View.VISIBLE
+        errorUnionSmallIV.visibility = View.VISIBLE
+        errorTextPlaceholderTV.visibility = View.VISIBLE
+        errorContainerLL.visibility = View.VISIBLE
+        tracks.clear()
+        tracksAdapter.notifyDataSetChanged()
+        errorTextPlaceholderTV.text = text
+    }
 
-        } else {
-            errorContainerLL.visibility = View.GONE
-            errorSearchIV.visibility = View.GONE
-            errorTextPlaceholderTV.visibility = View.GONE
-        }
+    private fun hideSearchError() {
+        errorContainerLL.visibility = View.GONE
+        errorUnionBigIV.visibility = View.GONE
+        errorSearchIV.visibility = View.GONE
+        errorUnionSmallIV.visibility = View.GONE
+        errorTextPlaceholderTV.visibility = View.GONE
     }
 
     private fun showInternetError() {
+        errorContainerLL.visibility = View.VISIBLE
         errorUnionBigIV.visibility = View.VISIBLE
         errorInternetIV.visibility = View.VISIBLE
         errorUnionSmallIV.visibility = View.VISIBLE
@@ -174,7 +172,18 @@ class SearchActivity : AppCompatActivity() {
         errorTextPlaceholderTV.text = getString(R.string.connection_problems)
     }
 
+    private fun hideInternetError() {
+        errorContainerLL.visibility = View.GONE
+        errorUnionBigIV.visibility = View.GONE
+        errorInternetIV.visibility = View.GONE
+        errorUnionSmallIV.visibility = View.GONE
+        errorTextPlaceholderTV.visibility = View.GONE
+        updateButton.visibility = View.GONE
+    }
+
     private fun search() {
+        hideSearchError()
+        hideInternetError()
         iTunesService.search(inputEditText.text.toString())
             .enqueue(object : Callback<ITunesResponse> {
                 override fun onResponse(
@@ -187,19 +196,14 @@ class SearchActivity : AppCompatActivity() {
                                 tracks.clear()
                                 tracks.addAll(response.body()?.results!!)
                                 tracksAdapter.notifyDataSetChanged()
-                                showSearchError("")
                             } else {
-
                                 showSearchError(getString(R.string.nothing_found))
                             }
-
                         }
-
                         else -> {
                             showInternetError()
                         }
                     }
-
                 }
 
                 override fun onFailure(call: Call<ITunesResponse>, t: Throwable) {
