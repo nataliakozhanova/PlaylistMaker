@@ -23,7 +23,6 @@
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/list_margin_start"
         android:layout_marginVertical="@dimen/list_margin_end"
-
         tools:context=".SearchActivity">
 
         <EditText
@@ -36,11 +35,13 @@
             android:drawablePadding="@dimen/padding"
             android:drawableTint="?attr/colorSecondaryVariant"
             android:hint="@string/search"
+            android:imeOptions="actionDone"
             android:inputType="text"
             android:letterSpacing="0"
             android:maxLength="30"
             android:maxLines="1"
             android:paddingHorizontal="@dimen/edit_text_padding_horizontal"
+            android:singleLine="true"
             tools:ignore="TouchTargetSizeCheck,VisualLintTextFieldSize" />
 
         <ImageView
@@ -54,12 +55,95 @@
             app:tint="?attr/colorSecondaryVariant" />
     </FrameLayout>
 
+    <LinearLayout
+        android:id="@+id/error_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="@dimen/error_image_view_margin_top"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:visibility="gone"
+        tools:visibility="visible">
+
+        <FrameLayout
+            android:layout_width="@dimen/error_image_view_WH"
+            android:layout_height="@dimen/error_image_view_WH">
+
+            <ImageView
+                android:id="@+id/error_union_big"
+                android:layout_width="@dimen/error_icon_big_width"
+                android:layout_height="@dimen/error_icon_big_height"
+                android:layout_marginStart="@dimen/margin"
+                android:layout_marginTop="@dimen/error_icon_margin"
+                android:src="@drawable/error_union_102_x_94"
+                app:tint="?attr/colorOnPrimary"
+                tools:visibility="visible"
+                android:visibility="gone"/>
+
+            <ImageView
+                android:id="@+id/error_search"
+                android:layout_width="@dimen/error_icon_size"
+                android:layout_height="@dimen/error_icon_size"
+                android:layout_marginStart="@dimen/error_icon_margin_start"
+                android:layout_marginTop="@dimen/error_icon_margin_top"
+                android:src="@drawable/error_search_174"
+                android:visibility="gone"/>
+
+            <ImageView
+                android:id="@+id/error_internet"
+                android:layout_width="@dimen/error_icon_size"
+                android:layout_height="@dimen/error_icon_size"
+                android:layout_marginStart="@dimen/error_icon_margin_start"
+                android:layout_marginTop="@dimen/error_icon_margin_top"
+                android:src="@drawable/error_internet_175"
+                tools:visibility="visible"
+                android:visibility="gone"/>
+
+            <ImageView
+                android:id="@+id/error_union_small"
+                android:layout_width="@dimen/error_icon_small_width"
+                android:layout_height="@dimen/error_icon_small_height"
+                android:layout_gravity="end"
+                android:layout_marginVertical="@dimen/error_icon_margin"
+                android:layout_marginEnd="@dimen/error_icon_margin_end"
+                android:src="@drawable/error_union_31_x_110"
+                app:tint="?attr/colorOnPrimary"
+                tools:visibility="visible"
+                android:visibility="gone"/>
+        </FrameLayout>
+
+        <TextView
+            android:id="@+id/error_text_placeholder"
+            style="@style/ErrorTextView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="@dimen/error_text_view_top"
+            android:gravity="center"
+            android:paddingHorizontal="@dimen/error_padding_horizontal"
+            tools:text="@string/connection_problems"
+            tools:visibility="visible"
+            android:visibility="gone" />
+
+        <Button
+            android:id="@+id/update_button"
+            style="@style/AdditionalButtonStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/big_button_margin_top_bottom"
+            android:text="@string/update"
+            app:cornerRadius="@dimen/update_button_corner_radius"
+            tools:ignore="TouchTargetSizeCheck"
+            tools:visibility="visible"
+            android:visibility="gone"/>
+    </LinearLayout>
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/tracks_recycler_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/tracks_margin_top"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        tools:itemCount="5"
+        tools:itemCount="1"
         tools:listitem="@layout/tracks_view" />
 </LinearLayout>
