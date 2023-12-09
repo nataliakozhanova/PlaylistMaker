@@ -60,16 +60,11 @@ class SettingsActivity : AppCompatActivity() {
 
     private fun configureSwitcherState(sharedPrefs: SharedPreferences) {
         val themeSwitcher = findViewById<Switch>(R.id.settings_switch_theme)
-        themeSwitcher.setChecked(
-            sharedPrefs.getBoolean(
-                THEME_KEY,
-                (applicationContext as App).isSystemDarkMode()
-            )
-        )
-        if (sharedPrefs.contains(THEME_KEY)) {
-            (applicationContext as App).switchTheme(sharedPrefs.getBoolean(THEME_KEY, false))
+        if (!sharedPrefs.contains(THEME_KEY)) {
+            themeSwitcher.setChecked((applicationContext as App).isSystemDarkMode())
+        } else {
+            themeSwitcher.setChecked(sharedPrefs.getBoolean(THEME_KEY, false))
         }
-
     }
 
 

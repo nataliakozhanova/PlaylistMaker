@@ -108,7 +108,7 @@ class SearchActivity : AppCompatActivity() {
             }
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                if (inputEditText.hasFocus() && s?.isEmpty() == true && searchHistory.tracksSearchHistory.isEmpty() == false) {
+                if (inputEditText.hasFocus() && s.isNullOrEmpty() && searchHistory.tracksSearchHistory.isNotEmpty()) {
                     searchHistoryContainerLL.visibility = ViewGroup.VISIBLE
                     showSearchHistory()
                 } else {
@@ -127,7 +127,7 @@ class SearchActivity : AppCompatActivity() {
 
         inputEditText.setOnFocusChangeListener { view, hasFocus ->
 
-            if (hasFocus && inputEditText.text.isEmpty() && !searchHistory.tracksSearchHistory.isEmpty()) {
+            if (hasFocus && inputEditText.text.isEmpty() && searchHistory.tracksSearchHistory.isNotEmpty()) {
                 searchHistoryContainerLL.visibility = ViewGroup.VISIBLE
                 showSearchHistory()
             } else {
@@ -160,6 +160,7 @@ class SearchActivity : AppCompatActivity() {
             }
             false
         }
+
         updateButton.setOnClickListener {
             search()
         }
@@ -186,7 +187,7 @@ class SearchActivity : AppCompatActivity() {
         tracksRV.adapter = tracksAdapter
     }
 
-    private fun showSearchError(text: String) {
+    private fun showSearchError() {
         errorUnionBigIV.visibility = View.VISIBLE
         errorSearchIV.visibility = View.VISIBLE
         errorUnionSmallIV.visibility = View.VISIBLE
@@ -194,7 +195,7 @@ class SearchActivity : AppCompatActivity() {
         errorContainerLL.visibility = View.VISIBLE
         tracks.clear()
         tracksAdapter.notifyDataSetChanged()
-        errorTextPlaceholderTV.text = text
+        errorTextPlaceholderTV.text = getString(R.string.nothing_found)
     }
 
     private fun hideSearchError() {
@@ -242,7 +243,7 @@ class SearchActivity : AppCompatActivity() {
                                 tracks.addAll(response.body()?.results!!)
                                 tracksAdapter.notifyDataSetChanged()
                             } else {
-                                showSearchError(getString(R.string.nothing_found))
+                                showSearchError()
                             }
                         }
 
