@@ -54,6 +54,49 @@
             android:visibility="gone"
             app:tint="?attr/colorSecondaryVariant" />
     </FrameLayout>
+    
+    <LinearLayout
+        android:id="@+id/search_history_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:layout_marginTop="@dimen/frame_margin_top"
+        android:visibility="gone"
+        tools:visibility="visible">
+
+        <TextView
+            style="@style/SearchHistoryTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="0"
+            android:layout_marginHorizontal="@dimen/margin_horizontal"
+            android:layout_marginTop="@dimen/list_margin_vertical"
+            android:layout_marginBottom="@dimen/text_margin_bottom"
+            android:gravity="center"
+            android:text="@string/search_history"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/search_history_recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:layout_marginTop="@dimen/margin"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            tools:itemCount="10"
+            tools:listitem="@layout/tracks_view"/>
+        <Button
+            android:id="@+id/delete_history_button"
+            style="@style/AdditionalButtonStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0"
+            android:layout_marginTop="@dimen/big_button_margin_top_bottom"
+            android:layout_marginBottom="@dimen/additional_button_margin_bottom"
+            android:text="@string/delete_history"
+            app:cornerRadius="@dimen/update_button_corner_radius" />
+
+    </LinearLayout>
 
     <LinearLayout
         android:id="@+id/error_container"
@@ -64,7 +107,7 @@
         android:gravity="center"
         android:orientation="vertical"
         android:visibility="gone"
-        tools:visibility="visible">
+        tools:visibility="gone">
 
         <FrameLayout
             android:layout_width="@dimen/error_image_view_WH"

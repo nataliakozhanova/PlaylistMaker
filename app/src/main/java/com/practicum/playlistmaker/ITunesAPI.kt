@@ -5,7 +5,6 @@ import retrofit2.http.GET
 import retrofit2.http.Query
 
 class ITunesResponse(
-    val resultCount: Int,
     val results: List<Track>
 )
 

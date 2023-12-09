@@ -1,8 +1,7 @@
 package com.practicum.playlistmaker
 
-import android.annotation.SuppressLint
 import android.content.Intent
-import android.content.res.Configuration
+import android.content.SharedPreferences
 import android.net.Uri
 import android.os.Bundle
 import android.widget.ImageView
@@ -10,21 +9,30 @@ import android.widget.Switch
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 
+const val PLAYLIST_MAKER_PREFERENCES = "playlist_maker_preferences"
+const val THEME_KEY = "key_for_app_theme"
 
 class SettingsActivity : AppCompatActivity() {
-    @SuppressLint("WrongViewCast", "MissingInflatedId", "UseSwitchCompatOrMaterialCode")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_settings)
+
+        val sharedPrefs = getSharedPreferences(PLAYLIST_MAKER_PREFERENCES, MODE_PRIVATE)
+
         val settingsArrowBackButton = findViewById<Toolbar>(R.id.settings_toolbar)
         settingsArrowBackButton.setNavigationOnClickListener {
             finish()
         }
-        configureDefaultSwitcherState()
 
-        //settingsSwitchTheme.setOnClickListener {
-        //changeTheme()
-        //}
+        val themeSwitcher = findViewById<Switch>(R.id.settings_switch_theme)
+
+        configureSwitcherState(sharedPrefs)
+        themeSwitcher.setOnCheckedChangeListener { switcher, checked ->
+            (applicationContext as App).switchTheme(checked)
+            sharedPrefs.edit()
+                .putBoolean(THEME_KEY, checked)
+                .apply()
+        }
 
         val shareAppButton = findViewById<ImageView>(R.id.share_app_button)
         shareAppButton.setOnClickListener {
@@ -37,7 +45,6 @@ class SettingsActivity : AppCompatActivity() {
         writeToSupportButton.setOnClickListener {
             val writeIntent = Intent(Intent.ACTION_SENDTO)
             writeIntent.data = Uri.parse("mailto:" + getString(R.string.to))
-            //writeIntent.putExtra(Intent.EXTRA_EMAIL, getString(R.string.to))
             writeIntent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.subject))
             writeIntent.putExtra(Intent.EXTRA_TEXT, getString(R.string.message))
             startActivity(writeIntent)
@@ -51,31 +58,14 @@ class SettingsActivity : AppCompatActivity() {
 
     }
 
-    /* private fun changeTheme() {
-        val currentNightMode = resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
-        when (currentNightMode) {
-            Configuration.UI_MODE_NIGHT_YES -> {
-                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
-            }
-
-            Configuration.UI_MODE_NIGHT_NO -> {
-                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
-            }
-        }
-    } */
-
-    private fun isSystemDarkMode(): Boolean {
-        val currentNightMode = resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
-        return when (currentNightMode) {
-            Configuration.UI_MODE_NIGHT_YES -> true
-            Configuration.UI_MODE_NIGHT_NO -> false
-            else -> false
+    private fun configureSwitcherState(sharedPrefs: SharedPreferences) {
+        val themeSwitcher = findViewById<Switch>(R.id.settings_switch_theme)
+        if (!sharedPrefs.contains(THEME_KEY)) {
+            themeSwitcher.setChecked((applicationContext as App).isSystemDarkMode())
+        } else {
+            themeSwitcher.setChecked(sharedPrefs.getBoolean(THEME_KEY, false))
         }
     }
 
-    private fun configureDefaultSwitcherState() {
-        val settingsSwitchTheme = findViewById<Switch>(R.id.settings_switch_theme)
-        settingsSwitchTheme.setChecked(isSystemDarkMode())
-    }
 
 }

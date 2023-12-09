@@ -5,7 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="?attr/colorPrimary"
-    android:orientation="horizontal">
+    android:orientation="horizontal"
+    android:foreground="?attr/selectableItemBackground">
 
     <ImageView
         android:id="@+id/track_image_view"
