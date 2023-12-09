@@ -2,7 +2,6 @@ package com.practicum.playlistmaker
 
 import android.content.Intent
 import android.content.SharedPreferences
-import android.content.res.Configuration
 import android.net.Uri
 import android.os.Bundle
 import android.widget.ImageView
@@ -58,18 +57,15 @@ class SettingsActivity : AppCompatActivity() {
         }
 
     }
-    private fun isSystemDarkMode(): Boolean {
-        val currentNightMode = resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
-        return when (currentNightMode) {
-            Configuration.UI_MODE_NIGHT_YES -> true
-            Configuration.UI_MODE_NIGHT_NO -> false
-            else -> false
-        }
-    }
 
     private fun configureSwitcherState(sharedPrefs: SharedPreferences) {
         val themeSwitcher = findViewById<Switch>(R.id.settings_switch_theme)
-        themeSwitcher.setChecked(sharedPrefs.getBoolean(THEME_KEY, isSystemDarkMode()))
+        themeSwitcher.setChecked(
+            sharedPrefs.getBoolean(
+                THEME_KEY,
+                (applicationContext as App).isSystemDarkMode()
+            )
+        )
         if (sharedPrefs.contains(THEME_KEY)) {
             (applicationContext as App).switchTheme(sharedPrefs.getBoolean(THEME_KEY, false))
         }

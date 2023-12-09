@@ -30,7 +30,8 @@
         app:cornerRadius="@dimen/big_button_corner_radius"
         app:icon="@drawable/search_inactive_light_mode"
         app:iconGravity="textStart"
-        app:iconPadding="@dimen/icon_padding" />
+        app:iconPadding="@dimen/icon_padding"
+        tools:ignore="VisualLintButtonSize" />
 
     <Button
         android:id="@+id/library_button"
@@ -46,7 +47,8 @@
         app:cornerRadius="@dimen/big_button_corner_radius"
         app:icon="@drawable/library_inactive_light_mode"
         app:iconGravity="textStart"
-        app:iconPadding="@dimen/icon_padding" />
+        app:iconPadding="@dimen/icon_padding"
+        tools:ignore="VisualLintButtonSize" />
 
     <Button
         android:id="@+id/settings_button"
@@ -62,6 +64,7 @@
         app:cornerRadius="@dimen/big_button_corner_radius"
         app:icon="@drawable/settings_inactive_light_mode"
         app:iconGravity="textStart"
-        app:iconPadding="@dimen/icon_padding" />
+        app:iconPadding="@dimen/icon_padding"
+        tools:ignore="VisualLintButtonSize" />
 
 </LinearLayout>

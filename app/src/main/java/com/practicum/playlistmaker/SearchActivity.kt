@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
+import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.Button
@@ -22,6 +23,8 @@ import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
+const val SEARCH_HISTORY_PREFERENCES = "search_history_preferences"
+
 class SearchActivity : AppCompatActivity() {
 
     private val iTunesBaseUrl = "https://itunes.apple.com"
@@ -29,7 +32,6 @@ class SearchActivity : AppCompatActivity() {
         .baseUrl(iTunesBaseUrl)
         .addConverterFactory(GsonConverterFactory.create())
         .build()
-
     private val iTunesService = retrofit.create(ITunesApi::class.java)
     val tracks = ArrayList<Track>()
 
@@ -39,7 +41,10 @@ class SearchActivity : AppCompatActivity() {
 
     private var textToSave: String = ""
 
-    var tracksAdapter = TracksAdapter(tracks)
+    lateinit var searchHistory: SearchHistory
+    lateinit var searchHistoryAdapter: TracksAdapter
+    lateinit var tracksAdapter: TracksAdapter
+
     lateinit var inputEditText: EditText
     lateinit var searchArrowBackButton: Toolbar
     lateinit var clearButton: ImageView
@@ -52,9 +57,10 @@ class SearchActivity : AppCompatActivity() {
     lateinit var updateButton: Button
     lateinit var errorContainerLL: LinearLayout
 
-    override
+    lateinit var searchHistoryContainerLL: LinearLayout
+    lateinit var deleteHistoryButton: Button
 
-    fun onSaveInstanceState(outState: Bundle) {
+    override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         outState.putString(TEXT_TO_SAVE, textToSave)
     }
@@ -69,22 +75,32 @@ class SearchActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search)
 
+        searchHistory =
+            SearchHistory(getSharedPreferences(SEARCH_HISTORY_PREFERENCES, MODE_PRIVATE))
+        searchHistoryAdapter = TracksAdapter(searchHistory.tracksSearchHistory, false) {}
+        tracksAdapter = TracksAdapter(tracks, true) {
+            searchHistory.addToSearchHistory(it)
+        }
+
+
         searchArrowBackButton = findViewById(R.id.toolbar)
         inputEditText = findViewById(R.id.input_edit_text)
         clearButton = findViewById(R.id.clear_button)
 
-        errorUnionBigIV = findViewById<ImageView>(R.id.error_union_big)
-        errorSearchIV = findViewById<ImageView>(R.id.error_search)
-        errorInternetIV = findViewById<ImageView>(R.id.error_internet)
-        errorUnionSmallIV = findViewById<ImageView>(R.id.error_union_small)
-        errorTextPlaceholderTV = findViewById<TextView>(R.id.error_text_placeholder)
-        updateButton = findViewById<Button>(R.id.update_button)
+        errorUnionBigIV = findViewById(R.id.error_union_big)
+        errorSearchIV = findViewById(R.id.error_search)
+        errorInternetIV = findViewById(R.id.error_internet)
+        errorUnionSmallIV = findViewById(R.id.error_union_small)
+        errorTextPlaceholderTV = findViewById(R.id.error_text_placeholder)
+        updateButton = findViewById(R.id.update_button)
         errorContainerLL = findViewById(R.id.error_container)
 
         searchArrowBackButton.setNavigationOnClickListener {
             finish()
         }
 
+        searchHistoryContainerLL = findViewById(R.id.search_history_container)
+        deleteHistoryButton = findViewById(R.id.delete_history_button)
 
         val simpleTextWatcher = object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
@@ -92,6 +108,12 @@ class SearchActivity : AppCompatActivity() {
             }
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                if (inputEditText.hasFocus() && s?.isEmpty() == true && searchHistory.tracksSearchHistory.isEmpty() == false) {
+                    searchHistoryContainerLL.visibility = ViewGroup.VISIBLE
+                    showSearchHistory()
+                } else {
+                    searchHistoryContainerLL.visibility = ViewGroup.GONE
+                }
                 clearButton.visibility = clearButtonVisibility(inputEditText.editableText)
                 textToSave = s.toString()
             }
@@ -102,6 +124,22 @@ class SearchActivity : AppCompatActivity() {
 
         }
         inputEditText.addTextChangedListener(simpleTextWatcher)
+
+        inputEditText.setOnFocusChangeListener { view, hasFocus ->
+
+            if (hasFocus && inputEditText.text.isEmpty() && !searchHistory.tracksSearchHistory.isEmpty()) {
+                searchHistoryContainerLL.visibility = ViewGroup.VISIBLE
+                showSearchHistory()
+            } else {
+                searchHistoryContainerLL.visibility = ViewGroup.GONE
+            }
+        }
+
+        deleteHistoryButton.setOnClickListener {
+            searchHistory.deleteSearchHistory()
+            searchHistoryAdapter.notifyDataSetChanged()
+            searchHistoryContainerLL.visibility = ViewGroup.GONE
+        }
 
         clearButton.setOnClickListener {
             val inputMethodManager =
@@ -125,6 +163,13 @@ class SearchActivity : AppCompatActivity() {
         updateButton.setOnClickListener {
             search()
         }
+
+
+    }
+
+    override fun onStop() {
+        super.onStop()
+        searchHistory.writeSearchHistory()
     }
 
 
@@ -137,8 +182,8 @@ class SearchActivity : AppCompatActivity() {
     }
 
     private fun setupTracks() {
-        val rvTracks = findViewById<RecyclerView>(R.id.tracks_recycler_view)
-        rvTracks.adapter = tracksAdapter
+        val tracksRV = findViewById<RecyclerView>(R.id.tracks_recycler_view)
+        tracksRV.adapter = tracksAdapter
     }
 
     private fun showSearchError(text: String) {
@@ -200,6 +245,7 @@ class SearchActivity : AppCompatActivity() {
                                 showSearchError(getString(R.string.nothing_found))
                             }
                         }
+
                         else -> {
                             showInternetError()
                         }
@@ -211,6 +257,11 @@ class SearchActivity : AppCompatActivity() {
                 }
 
             })
+    }
+
+    private fun showSearchHistory() {
+        val searchHistoryRV = findViewById<RecyclerView>(R.id.search_history_recycler_view)
+        searchHistoryRV.adapter = searchHistoryAdapter
     }
 
 }
