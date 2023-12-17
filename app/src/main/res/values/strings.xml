@@ -20,5 +20,16 @@
     <string name="update">Обновить</string>
     <string name="search_history">История поиска</string>
     <string name="delete_history">Очистить историю</string>
+    <string name="track_time_title">Длительность</string>
+    <string name="collection_title">Альбом</string>
+    <string name="release_year_title">Год</string>
+    <string name="genre_title">Жанр</string>
+    <string name="country_title">Страна</string>
+    <string name="timeline_mock">00:00</string>
+    <string name="collection_mock">Nevermind</string>
+    <string name="release_year_mock">1991</string>
+    <string name="genre_mock">Rock</string>
+    <string name="country_mock">USA</string>
+
 
 </resources>

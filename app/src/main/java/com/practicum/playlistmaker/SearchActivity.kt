@@ -1,6 +1,7 @@
 package com.practicum.playlistmaker
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -17,11 +18,14 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.recyclerview.widget.RecyclerView
+import com.google.gson.Gson
+import com.google.gson.GsonBuilder
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import java.util.Date
 
 const val SEARCH_HISTORY_PREFERENCES = "search_history_preferences"
 
@@ -30,7 +34,13 @@ class SearchActivity : AppCompatActivity() {
     private val iTunesBaseUrl = "https://itunes.apple.com"
     private val retrofit = Retrofit.Builder()
         .baseUrl(iTunesBaseUrl)
-        .addConverterFactory(GsonConverterFactory.create())
+        .addConverterFactory(
+            GsonConverterFactory.create(
+                GsonBuilder()
+                    .registerTypeAdapter(Date::class.java, CustomDateTypeAdapter())
+                    .create()
+            )
+        )
         .build()
     private val iTunesService = retrofit.create(ITunesApi::class.java)
     val tracks = ArrayList<Track>()
@@ -77,9 +87,12 @@ class SearchActivity : AppCompatActivity() {
 
         searchHistory =
             SearchHistory(getSharedPreferences(SEARCH_HISTORY_PREFERENCES, MODE_PRIVATE))
-        searchHistoryAdapter = TracksAdapter(searchHistory.tracksSearchHistory, false) {}
-        tracksAdapter = TracksAdapter(tracks, true) {
+        searchHistoryAdapter = TracksAdapter(searchHistory.tracksSearchHistory) {
+            openPlayer(it)
+        }
+        tracksAdapter = TracksAdapter(tracks) {
             searchHistory.addToSearchHistory(it)
+            openPlayer(it)
         }
 
 
@@ -149,6 +162,8 @@ class SearchActivity : AppCompatActivity() {
             tracks.clear()
             tracksAdapter.notifyDataSetChanged()
             clearButton.visibility = View.GONE
+            hideSearchError()
+            hideInternetError()
         }
 
         setupTracks()
@@ -263,6 +278,15 @@ class SearchActivity : AppCompatActivity() {
     private fun showSearchHistory() {
         val searchHistoryRV = findViewById<RecyclerView>(R.id.search_history_recycler_view)
         searchHistoryRV.adapter = searchHistoryAdapter
+    }
+
+    private fun openPlayer(track: Track) {
+        val intent = Intent(this, PlayerActivity::class.java)
+        intent.putExtra(
+            "track",
+            track
+        )
+        startActivity(intent)
     }
 
 }

@@ -8,7 +8,7 @@ class App : Application() {
     var darkTheme = false
     override fun onCreate() {
         super.onCreate()
-        val sharedPrefs = (getSharedPreferences(PLAYLIST_MAKER_PREFERENCES, MODE_PRIVATE))
+        val sharedPrefs = (getSharedPreferences(THEME_PREFERENCES, MODE_PRIVATE))
         if(!sharedPrefs.contains(THEME_KEY)) {
             darkTheme = isSystemDarkMode()
         } else {

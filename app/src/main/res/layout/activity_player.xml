@@ -1,0 +1,278 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/player_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/ToolbarTheme"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:navigationIcon="@drawable/arrow_back_light_mode" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/left_border"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_begin="@dimen/dp16" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/right_border"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_end="@dimen/dp16" />
+
+    <ImageView
+        android:id="@+id/track_cover_image_view"
+        android:layout_width="@dimen/dim_null"
+        android:layout_height="@dimen/dim_null"
+        android:layout_marginHorizontal="@dimen/dp8"
+        android:layout_marginTop="@dimen/dp26"
+        app:layout_constraintBottom_toTopOf="@+id/player_track_name_tv"
+        app:layout_constraintDimensionRatio="h,1:1"
+        app:layout_constraintEnd_toStartOf="@id/right_border"
+        app:layout_constraintStart_toStartOf="@+id/left_border"
+        app:layout_constraintTop_toBottomOf="@+id/player_toolbar"
+        app:layout_constraintVertical_chainStyle="spread_inside"
+        tools:src="@drawable/placeholder_player" />
+
+    <TextView
+        android:id="@+id/player_track_name_tv"
+        style="@style/TextViewTrackNamePlayer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/dp8"
+        android:layout_marginTop="@dimen/dp24"
+        android:ellipsize="end"
+        android:maxLines="1"
+        app:layout_constrainedWidth="true"
+        app:layout_constraintBottom_toTopOf="@+id/player_artist_name_tv"
+        app:layout_constraintEnd_toEndOf="@+id/right_border"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/left_border"
+        app:layout_constraintTop_toBottomOf="@+id/track_cover_image_view"
+        tools:text="@string/track_name" />
+
+    <TextView
+        android:id="@+id/player_artist_name_tv"
+        style="@style/TextViewArtistNamePlayer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/dp8"
+        android:layout_marginTop="@dimen/dp12"
+        android:ellipsize="end"
+        android:maxLines="1"
+        app:layout_constrainedWidth="true"
+        app:layout_constraintBottom_toTopOf="@+id/player_barrier"
+        app:layout_constraintEnd_toEndOf="@id/right_border"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@id/left_border"
+        app:layout_constraintTop_toBottomOf="@id/player_track_name_tv"
+        tools:text="@string/artist_name" />
+
+    <androidx.constraintlayout.widget.Barrier
+        android:id="@+id/player_barrier"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:barrierDirection="bottom"
+        app:constraint_referenced_tags="playerArtistNameTag" />
+
+    <ImageButton
+        android:id="@+id/add_button"
+        android:layout_width="@dimen/dp52"
+        android:layout_height="@dimen/dp52"
+        android:layout_marginStart="@dimen/dp8"
+        android:layout_marginTop="@dimen/dp54"
+        android:background="@drawable/round_button"
+        android:backgroundTint="@color/white25"
+        android:src="@drawable/add_button_light"
+        app:layout_constraintEnd_toStartOf="@+id/play_button"
+        app:layout_constraintHorizontal_chainStyle="spread_inside"
+        app:layout_constraintStart_toStartOf="@+id/left_border"
+        app:layout_constraintTop_toBottomOf="@+id/player_barrier"
+        tools:ignore="SpeakableTextPresentCheck" />
+
+    <ImageButton
+        android:id="@+id/play_button"
+        android:layout_width="@dimen/dp100"
+        android:layout_height="@dimen/dp100"
+        android:layout_marginTop="@dimen/dp30"
+        android:background="@drawable/round_button"
+        android:backgroundTint="?attr/colorPrimary"
+        android:src="@drawable/play_button_100_100"
+        app:layout_constraintEnd_toStartOf="@+id/favorite_button"
+        app:layout_constraintStart_toEndOf="@+id/add_button"
+        app:layout_constraintTop_toBottomOf="@+id/player_barrier"
+        app:tint="?attr/colorOnPrimary"
+        tools:ignore="SpeakableTextPresentCheck" />
+
+    <ImageButton
+        android:id="@+id/favorite_button"
+        android:layout_width="@dimen/dp52"
+        android:layout_height="@dimen/dp52"
+        android:layout_marginTop="@dimen/dp54"
+        android:layout_marginEnd="@dimen/dp8"
+        android:background="@drawable/round_button"
+        android:backgroundTint="@color/white25"
+        android:src="@drawable/favorite_button"
+        app:layout_constraintEnd_toEndOf="@id/right_border"
+        app:layout_constraintStart_toEndOf="@+id/play_button"
+        app:layout_constraintTop_toBottomOf="@+id/player_barrier"
+        tools:ignore="SpeakableTextPresentCheck" />
+
+    <TextView
+        android:id="@+id/timeline_tv"
+        style="@style/TextViewTimeline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp4"
+        app:layout_constraintStart_toStartOf="@+id/left_border"
+        app:layout_constraintEnd_toEndOf="@+id/right_border"
+        app:layout_constraintTop_toBottomOf="@+id/play_button"
+        android:text="@string/timeline_mock"
+        tools:text="@string/timeline_mock"/>
+
+<TextView
+    android:id="@+id/player_track_time_tv"
+    style="@style/TitlePlayer"
+    android:text="@string/track_time_title"
+    android:textColor="@color/gray_text"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="@dimen/dp38"
+    app:layout_constraintTop_toBottomOf="@+id/timeline_tv"
+    app:layout_constraintStart_toStartOf="@+id/left_border"
+    app:layout_constraintBottom_toTopOf="@+id/player_collection_title_tv"
+    app:layout_constraintVertical_chainStyle="spread_inside"/>
+
+    <TextView
+        android:id="@+id/player_collection_title_tv"
+        style="@style/TitlePlayer"
+        android:text="@string/collection_title"
+        android:textColor="@color/gray_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp16"
+        app:layout_constraintTop_toBottomOf="@+id/player_track_time_tv"
+        app:layout_constraintStart_toStartOf="@+id/left_border"
+        app:layout_constraintBottom_toTopOf="@+id/release_year_title_tv" />
+
+    <TextView
+        android:id="@+id/release_year_title_tv"
+        style="@style/TitlePlayer"
+        android:text="@string/release_year_title"
+        android:textColor="@color/gray_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp16"
+        app:layout_constraintTop_toBottomOf="@+id/player_collection_title_tv"
+        app:layout_constraintStart_toStartOf="@+id/left_border"
+        app:layout_constraintBottom_toTopOf="@+id/genre_title_tv" />
+
+    <TextView
+        android:id="@+id/genre_title_tv"
+        style="@style/TitlePlayer"
+        android:text="@string/genre_title"
+        android:textColor="@color/gray_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp16"
+        app:layout_constraintTop_toBottomOf="@+id/release_year_title_tv"
+        app:layout_constraintStart_toStartOf="@+id/left_border"
+        app:layout_constraintBottom_toTopOf="@+id/country_title_tv" />
+
+    <TextView
+        android:id="@+id/country_title_tv"
+        style="@style/TitlePlayer"
+        android:text="@string/country_title"
+        android:textColor="@color/gray_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp16"
+        android:layout_marginBottom="@dimen/dp28"
+        app:layout_constraintTop_toBottomOf="@+id/genre_title_tv"
+        app:layout_constraintStart_toStartOf="@+id/left_border"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+
+    <TextView
+        android:id="@+id/value_track_time_tv"
+        style="@style/TitlePlayer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp38"
+        app:layout_constraintTop_toBottomOf="@+id/timeline_tv"
+        app:layout_constraintEnd_toEndOf="@+id/right_border"
+        app:layout_constraintBottom_toTopOf="@+id/value_collection_tv"
+        app:layout_constraintVertical_chainStyle="spread_inside"
+        tools:text="@string/timeline_mock"/>
+
+    <TextView
+        android:id="@+id/value_collection_tv"
+        style="@style/TitlePlayer"
+        android:ellipsize="end"
+        android:maxLines="1"
+        app:layout_constrainedWidth="true"
+        app:layout_constraintHorizontal_bias="1.0"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp16"
+        android:layout_marginStart="@dimen/dp32"
+        app:layout_constraintStart_toEndOf="@+id/player_track_time_tv"
+        app:layout_constraintTop_toBottomOf="@+id/value_track_time_tv"
+        app:layout_constraintEnd_toEndOf="@+id/right_border"
+        app:layout_constraintBottom_toTopOf="@+id/value_release_year_tv"
+        tools:text="@string/collection_mock"/>
+
+    <TextView
+        android:id="@+id/value_release_year_tv"
+        style="@style/TitlePlayer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp16"
+        app:layout_constraintTop_toBottomOf="@+id/value_collection_tv"
+        app:layout_constraintEnd_toEndOf="@+id/right_border"
+        app:layout_constraintBottom_toTopOf="@+id/value_genre_tv"
+        tools:text="@string/release_year_mock"/>
+
+    <TextView
+        android:id="@+id/value_genre_tv"
+        style="@style/TitlePlayer"
+        android:ellipsize="end"
+        android:maxLines="1"
+        app:layout_constrainedWidth="true"
+        app:layout_constraintHorizontal_bias="1.0"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp16"
+        android:layout_marginStart="@dimen/dp32"
+        app:layout_constraintStart_toEndOf="@+id/player_track_time_tv"
+        app:layout_constraintTop_toBottomOf="@+id/value_release_year_tv"
+        app:layout_constraintEnd_toEndOf="@+id/right_border"
+        app:layout_constraintBottom_toTopOf="@+id/value_country_tv"
+        tools:text="@string/genre_mock"/>
+
+    <TextView
+        android:id="@+id/value_country_tv"
+        style="@style/TitlePlayer"
+        android:ellipsize="end"
+        android:maxLines="1"
+        app:layout_constrainedWidth="true"
+        app:layout_constraintHorizontal_bias="1.0"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp16"
+        android:layout_marginBottom="@dimen/dp28"
+        android:layout_marginStart="@dimen/dp32"
+        app:layout_constraintStart_toEndOf="@+id/player_track_time_tv"
+        app:layout_constraintTop_toBottomOf="@+id/value_genre_tv"
+        app:layout_constraintEnd_toEndOf="@+id/right_border"
+        app:layout_constraintBottom_toBottomOf="parent"
+        tools:text="@string/country_mock"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

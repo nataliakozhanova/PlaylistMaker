@@ -6,7 +6,6 @@ import androidx.recyclerview.widget.RecyclerView
 
 class TracksAdapter(
     var tracks: List<Track>,
-    var trackToSearchHistory : Boolean,
     val searchClickListener: SearchClickListener
 ) : RecyclerView.Adapter<TracksViewHolder>() {
 
@@ -18,9 +17,7 @@ class TracksAdapter(
     override fun onBindViewHolder(holder: TracksViewHolder, position: Int) {
         holder.bind(tracks[position])
         holder.itemView.setOnClickListener {
-            if(trackToSearchHistory) {
-                searchClickListener.onTrackClick(tracks[position])
-            }
+            searchClickListener.onTrackClick(tracks[position])
         }
     }
 
