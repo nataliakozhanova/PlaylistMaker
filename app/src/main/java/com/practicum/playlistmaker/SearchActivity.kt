@@ -283,7 +283,7 @@ class SearchActivity : AppCompatActivity() {
     private fun openPlayer(track: Track) {
         val intent = Intent(this, PlayerActivity::class.java)
         intent.putExtra(
-            "track",
+            Track.INTENT_KEY,
             track
         )
         startActivity(intent)

@@ -13,6 +13,7 @@ import java.util.Date
 import java.util.Locale
 
 class PlayerActivity : AppCompatActivity() {
+
     lateinit var track: Track
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -22,7 +23,7 @@ class PlayerActivity : AppCompatActivity() {
         playerArrowBackButton.setNavigationOnClickListener {
             finish()
         }
-        track = intent.getSerializableExtra("track") as Track
+        track = intent.getSerializableExtra(Track.INTENT_KEY) as Track
 
         val trackCoverIV: ImageView = findViewById(R.id.track_cover_image_view)
         val playerTrackNameTV: TextView = findViewById(R.id.player_track_name_tv)
@@ -32,7 +33,7 @@ class PlayerActivity : AppCompatActivity() {
         val valueReleaseYearTV: TextView = findViewById(R.id.value_release_year_tv)
         val valueGenreTV: TextView = findViewById(R.id.value_genre_tv)
         val valueCountryTV: TextView = findViewById(R.id.value_country_tv)
-        val trackCoverUrl = track.artworkUrl100.replaceAfterLast('/', "512x512bb.jpg")
+        val trackCoverUrl = track.getArtworkUrl512()
         val trackCornerRadius: Int = applicationContext.resources.getDimensionPixelSize(R.dimen.dp8)
         val trackYear = getYear(track.releaseDate)
 
@@ -45,8 +46,7 @@ class PlayerActivity : AppCompatActivity() {
 
         playerTrackNameTV.text = track.trackName
         playerArtistNameTV.text = track.artistName
-        valueTrackTimeTV.text =
-            SimpleDateFormat("mm:ss", Locale.getDefault()).format(track.trackTime)
+        valueTrackTimeTV.text = track.getTrackTime()
         valueCollectionTV.text = track.collectionName
         valueReleaseYearTV.text = trackYear
         valueGenreTV.text = track.primaryGenreName
