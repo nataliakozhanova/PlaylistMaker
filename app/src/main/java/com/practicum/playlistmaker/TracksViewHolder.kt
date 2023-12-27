@@ -18,10 +18,9 @@ class TracksViewHolder(trackView: View) : RecyclerView.ViewHolder(trackView) {
         itemView.context.resources.getDimensionPixelSize(R.dimen.track_corner_radius)
 
     fun bind(item: Track) {
-        val trackId = item.trackId
         tvTrackName.text = item.trackName
         tvArtistName.text = item.artistName
-        tvTrackTime.text = SimpleDateFormat("mm:ss", Locale.getDefault()).format(item.trackTime)
+        tvTrackTime.text = item.getTrackTime()
 
         Glide.with(itemView)
             .load(item.artworkUrl100)

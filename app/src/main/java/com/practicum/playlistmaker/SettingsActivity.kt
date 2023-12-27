@@ -9,7 +9,7 @@ import android.widget.Switch
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 
-const val PLAYLIST_MAKER_PREFERENCES = "playlist_maker_preferences"
+const val THEME_PREFERENCES = "playlist_maker_preferences"
 const val THEME_KEY = "key_for_app_theme"
 
 class SettingsActivity : AppCompatActivity() {
@@ -17,7 +17,7 @@ class SettingsActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_settings)
 
-        val sharedPrefs = getSharedPreferences(PLAYLIST_MAKER_PREFERENCES, MODE_PRIVATE)
+        val sharedPrefs = getSharedPreferences(THEME_PREFERENCES, MODE_PRIVATE)
 
         val settingsArrowBackButton = findViewById<Toolbar>(R.id.settings_toolbar)
         settingsArrowBackButton.setNavigationOnClickListener {
