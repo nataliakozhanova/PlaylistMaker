@@ -27,8 +27,9 @@ class PlayerActivity : AppCompatActivity() {
     private var mainThreadHandler: Handler? = null
     lateinit var track: Track
     private lateinit var binding: ActivityPlayerBinding
-    private var mediaPlayer = MediaPlayer()
+    private val mediaPlayer = MediaPlayer()
     private var playerState = STATE_DEFAULT
+    private val dateFormat by lazy { SimpleDateFormat("mm:ss", Locale.getDefault()) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -138,7 +139,7 @@ class PlayerActivity : AppCompatActivity() {
             override fun run() {
                 if (playerState == STATE_PLAYING) {
                     binding.timelineTextView.text =
-                        SimpleDateFormat("mm:ss", Locale.getDefault()).format(mediaPlayer.currentPosition + TIME_OFFSET)
+                        dateFormat.format(mediaPlayer.currentPosition + TIME_OFFSET)
                     mainThreadHandler?.postDelayed(this, DELAY)
                 }
             }

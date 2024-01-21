@@ -21,9 +21,9 @@ class Track(
     companion object {
         const val INTENT_KEY = "track"
     }
-
+    private val dateFormat by lazy { SimpleDateFormat("mm:ss", Locale.getDefault()) }
     fun getTrackTime(): String {
-        return SimpleDateFormat("mm:ss", Locale.getDefault()).format(trackTime)
+        return dateFormat.format(trackTime)
     }
 
 fun getArtworkUrl512() : String{
