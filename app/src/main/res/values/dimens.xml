@@ -60,4 +60,6 @@
     <dimen name="dp38">38dp</dimen>
     <dimen name="dp28">28dp</dimen>
     <dimen name="dp32">32dp</dimen>
+    <dimen name="dp44">44dp</dimen>
+    <dimen name="dp140">140dp</dimen>
 </resources>
