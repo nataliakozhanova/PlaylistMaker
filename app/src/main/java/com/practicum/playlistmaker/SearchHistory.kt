@@ -1,7 +1,6 @@
 package com.practicum.playlistmaker
 
 import android.content.SharedPreferences
-import androidx.appcompat.app.AppCompatActivity
 import com.google.gson.Gson
 
 const val SEARCH_HISTORY_KEY = "key_for_search_history"
@@ -20,7 +19,6 @@ class SearchHistory(sharedPreferences: SharedPreferences) {
             }
         }
     }
-
 
     fun addToSearchHistory(item: Track) {
         for (track in tracksSearchHistory) {

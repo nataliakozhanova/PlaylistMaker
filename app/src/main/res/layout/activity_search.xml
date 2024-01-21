@@ -10,7 +10,7 @@
     tools:context=".SearchActivity">
 
     <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbar"
+        android:id="@+id/searchToolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:theme="@style/ToolbarTheme"
@@ -26,7 +26,7 @@
         tools:context=".SearchActivity">
 
         <EditText
-            android:id="@+id/input_edit_text"
+            android:id="@+id/searchEditText"
             style="@style/EditTextSearch"
             android:layout_width="match_parent"
             android:layout_height="@dimen/edit_text_layout_height"
@@ -45,7 +45,7 @@
             tools:ignore="TouchTargetSizeCheck,VisualLintTextFieldSize" />
 
         <ImageView
-            android:id="@+id/clear_button"
+            android:id="@+id/searchClearButton"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_gravity="end"
@@ -54,52 +54,53 @@
             android:visibility="gone"
             app:tint="?attr/colorSecondaryVariant" />
     </FrameLayout>
-    
+
     <LinearLayout
-        android:id="@+id/search_history_container"
+        android:id="@+id/searchHistoryContainer"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:gravity="center"
         android:layout_marginTop="@dimen/frame_margin_top"
+        android:gravity="center"
+        android:orientation="vertical"
         android:visibility="gone"
         tools:visibility="visible">
 
         <TextView
-            style="@style/SearchHistoryTextView"
+            style="@style/searchHistoryTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="0"
             android:layout_marginHorizontal="@dimen/margin_horizontal"
             android:layout_marginTop="@dimen/list_margin_vertical"
             android:layout_marginBottom="@dimen/text_margin_bottom"
+            android:layout_weight="0"
             android:gravity="center"
-            android:text="@string/search_history"/>
+            android:text="@string/search_history" />
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/search_history_recycler_view"
+            android:id="@+id/searchHistoryRecyclerView"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="1"
             android:layout_marginTop="@dimen/margin"
+            android:layout_weight="1"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             tools:itemCount="10"
-            tools:listitem="@layout/tracks_view"/>
+            tools:listitem="@layout/track_view" />
+
         <Button
-            android:id="@+id/delete_history_button"
+            android:id="@+id/deleteSearchHistoryButton"
             style="@style/AdditionalButtonStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="0"
             android:layout_marginTop="@dimen/big_button_margin_top_bottom"
             android:layout_marginBottom="@dimen/additional_button_margin_bottom"
+            android:layout_weight="0"
             android:text="@string/delete_history"
             app:cornerRadius="@dimen/update_button_corner_radius" />
 
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/error_container"
+        android:id="@+id/searchErrorContainer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
@@ -114,37 +115,34 @@
             android:layout_height="@dimen/error_image_view_WH">
 
             <ImageView
-                android:id="@+id/error_union_big"
+                android:id="@+id/errorUnionBigImage"
                 android:layout_width="@dimen/error_icon_big_width"
                 android:layout_height="@dimen/error_icon_big_height"
                 android:layout_marginStart="@dimen/margin"
                 android:layout_marginTop="@dimen/error_icon_margin"
                 android:src="@drawable/error_union_102_x_94"
                 app:tint="?attr/colorOnPrimary"
-                tools:visibility="visible"
-                android:visibility="gone"/>
+                tools:visibility="visible" />
 
             <ImageView
-                android:id="@+id/error_search"
+                android:id="@+id/errorSearchImage"
                 android:layout_width="@dimen/error_icon_size"
                 android:layout_height="@dimen/error_icon_size"
                 android:layout_marginStart="@dimen/error_icon_margin_start"
                 android:layout_marginTop="@dimen/error_icon_margin_top"
-                android:src="@drawable/error_search_174"
-                android:visibility="gone"/>
+                android:src="@drawable/error_search_174" />
 
             <ImageView
-                android:id="@+id/error_internet"
+                android:id="@+id/errorInternetImage"
                 android:layout_width="@dimen/error_icon_size"
                 android:layout_height="@dimen/error_icon_size"
                 android:layout_marginStart="@dimen/error_icon_margin_start"
                 android:layout_marginTop="@dimen/error_icon_margin_top"
                 android:src="@drawable/error_internet_175"
-                tools:visibility="visible"
-                android:visibility="gone"/>
+                tools:visibility="visible" />
 
             <ImageView
-                android:id="@+id/error_union_small"
+                android:id="@+id/errorUnionSmallImage"
                 android:layout_width="@dimen/error_icon_small_width"
                 android:layout_height="@dimen/error_icon_small_height"
                 android:layout_gravity="end"
@@ -152,12 +150,11 @@
                 android:layout_marginEnd="@dimen/error_icon_margin_end"
                 android:src="@drawable/error_union_31_x_110"
                 app:tint="?attr/colorOnPrimary"
-                tools:visibility="visible"
-                android:visibility="gone"/>
+                tools:visibility="visible" />
         </FrameLayout>
 
         <TextView
-            android:id="@+id/error_text_placeholder"
+            android:id="@+id/searchErrorTextView"
             style="@style/ErrorTextView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -165,11 +162,10 @@
             android:gravity="center"
             android:paddingHorizontal="@dimen/error_padding_horizontal"
             tools:text="@string/connection_problems"
-            tools:visibility="visible"
-            android:visibility="gone" />
+            tools:visibility="visible" />
 
         <Button
-            android:id="@+id/update_button"
+            android:id="@+id/updateButton"
             style="@style/AdditionalButtonStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -177,16 +173,23 @@
             android:text="@string/update"
             app:cornerRadius="@dimen/update_button_corner_radius"
             tools:ignore="TouchTargetSizeCheck"
-            tools:visibility="visible"
-            android:visibility="gone"/>
+            tools:visibility="visible" />
     </LinearLayout>
 
+    <ProgressBar android:id="@+id/progressBar"
+        android:layout_width="@dimen/dp44"
+        android:layout_height="@dimen/dp44"
+        android:layout_marginTop="@dimen/dp140"
+        android:layout_gravity="center"
+        android:indeterminateTint="@color/blue"
+        android:visibility="gone"/>
+
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/tracks_recycler_view"
+        android:id="@+id/tracksRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/tracks_margin_top"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         tools:itemCount="1"
-        tools:listitem="@layout/tracks_view" />
+        tools:listitem="@layout/track_view" />
 </LinearLayout>
