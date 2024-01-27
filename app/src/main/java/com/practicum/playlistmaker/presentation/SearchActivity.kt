@@ -42,9 +42,9 @@ class SearchActivity : AppCompatActivity() {
 
     private val trackListByNameUseCase : TracksInteractor = Creator.getTrackListByNameUseCase()
 
-    lateinit var searchHistory: SearchHistory
-    lateinit var searchHistoryAdapter: TracksAdapter
-    lateinit var tracksAdapter: TracksAdapter
+    private lateinit var searchHistory: SearchHistory
+    private lateinit var searchHistoryAdapter: TracksAdapter
+    private lateinit var tracksAdapter: TracksAdapter
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
@@ -220,7 +220,7 @@ class SearchActivity : AppCompatActivity() {
                         binding.progressBar.visibility = View.GONE
                         if (searchResult.hasErrors) {
                             showInternetError()
-                        } else if (searchResult.tracks.isNotEmpty() == true) {
+                        } else if (searchResult.tracks.isNotEmpty()) {
                             tracks.addAll(searchResult.tracks)
                             tracksAdapter.notifyDataSetChanged()
                         } else {

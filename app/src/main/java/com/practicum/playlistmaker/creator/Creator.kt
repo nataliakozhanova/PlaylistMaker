@@ -29,7 +29,7 @@ object Creator {
         return PlayerRepositoryImpl()
     }
 
-    fun getPlayerInteraktor() : PlayerInteractor {
+    fun getPlayerInteractor() : PlayerInteractor {
         return PlayerInteractorImpl(this.getPlayerRepository())
     }
 

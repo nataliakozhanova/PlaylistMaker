@@ -10,12 +10,11 @@ class TracksInteractorImpl(private val repository : TracksRepository) : TracksIn
     override fun getTrackListByName(expression: String, consumer: TracksInteractor.SearchResultConsumer) {
 
         val t = Thread {
-            var res : SearchResult
 
-            try {
-                res = SearchResult(repository.getTrackListByName(expression), false)
+            val res : SearchResult = try {
+                SearchResult(repository.getTrackListByName(expression), false)
             } catch (e: Exception){
-                res = SearchResult(emptyList(), true)
+                SearchResult(emptyList(), true)
             }
             consumer.consume(res)
         }

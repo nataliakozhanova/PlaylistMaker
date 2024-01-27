@@ -33,7 +33,7 @@ class PlayerActivity : AppCompatActivity() {
     private lateinit var binding: ActivityPlayerBinding
 
     private var playerState = STATE_DEFAULT
-    private val playerInteractor : PlayerInteractor = Creator.getPlayerInteraktor()
+    private val playerInteractor : PlayerInteractor = Creator.getPlayerInteractor()
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
