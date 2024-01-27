@@ -17,7 +17,7 @@
         app:titleTextColor="@color/white" />
 
     <Button
-        android:id="@+id/search_button"
+        android:id="@+id/searchButton"
         style="@style/BigButtonStyle"
         android:layout_width="match_parent"
         android:layout_height="@dimen/dim_null"
@@ -34,7 +34,7 @@
         tools:ignore="VisualLintButtonSize" />
 
     <Button
-        android:id="@+id/library_button"
+        android:id="@+id/libraryButton"
         style="@style/BigButtonStyle"
         android:layout_width="match_parent"
         android:layout_height="@dimen/dim_null"
@@ -51,7 +51,7 @@
         tools:ignore="VisualLintButtonSize" />
 
     <Button
-        android:id="@+id/settings_button"
+        android:id="@+id/settingsButton"
         style="@style/BigButtonStyle"
         android:layout_width="match_parent"
         android:layout_height="@dimen/dim_null"

@@ -10,7 +10,7 @@
 
 
     <androidx.appcompat.widget.Toolbar
-        android:id="@+id/settings_toolbar"
+        android:id="@+id/settingsToolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:theme="@style/ToolbarTheme"
@@ -24,7 +24,7 @@
         android:layout_marginTop="@dimen/frame_margin_top">
 
         <TextView
-            style="@style/TextViewListSettings"
+            style="@style/termsOfUseTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="start"
@@ -33,7 +33,7 @@
             android:text="@string/settings_list_dark_theme" />
 
         <Switch
-            android:id="@+id/settings_switch_theme"
+            android:id="@+id/themeSwitcherSwitch"
             android:layout_width="@dimen/switcher_layout_width"
             android:layout_height="@dimen/switcher_layout_height"
             android:layout_gravity="end"
@@ -52,7 +52,7 @@
         android:layout_height="wrap_content">
 
         <TextView
-            style="@style/TextViewListSettings"
+            style="@style/termsOfUseTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="start"
@@ -61,7 +61,7 @@
             android:text="@string/settings_list_share_app" />
 
         <ImageView
-            android:id="@+id/share_app_button"
+            android:id="@+id/shareAppButton"
             style="@style/ImageViewListSettings"
             android:layout_width="@dimen/icon_size"
             android:layout_height="@dimen/icon_size"
@@ -76,7 +76,7 @@
         android:layout_height="wrap_content">
 
         <TextView
-            style="@style/TextViewListSettings"
+            style="@style/termsOfUseTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="start"
@@ -85,7 +85,7 @@
             android:text="@string/settings_list_write_to_support" />
 
         <ImageView
-            android:id="@+id/write_to_support_button"
+            android:id="@+id/writeToSupportButton"
             style="@style/ImageViewListSettings"
             android:layout_width="@dimen/icon_size"
             android:layout_height="@dimen/icon_size"
@@ -100,7 +100,7 @@
         android:layout_height="wrap_content">
 
         <TextView
-            style="@style/TextViewListSettings"
+            style="@style/termsOfUseTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="start"
@@ -109,7 +109,7 @@
             android:text="@string/settings_list_terms_of_usage" />
 
         <ImageView
-            android:id="@+id/terms_of_use_button"
+            android:id="@+id/termsOfUseButton"
             style="@style/ImageViewListSettings"
             android:layout_width="@dimen/icon_size"
             android:layout_height="@dimen/icon_size"
