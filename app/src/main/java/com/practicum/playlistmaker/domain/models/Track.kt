@@ -1,4 +1,4 @@
-package com.practicum.playlistmaker
+package com.practicum.playlistmaker.domain.models
 
 import com.google.gson.annotations.SerializedName
 import java.io.Serializable
@@ -21,8 +21,9 @@ class Track(
     companion object {
         const val INTENT_KEY = "track"
     }
-    private val dateFormat by lazy { SimpleDateFormat("mm:ss", Locale.getDefault()) }
+
     fun getTrackTime(): String {
+        val dateFormat = SimpleDateFormat("mm:ss", Locale.getDefault())
         return dateFormat.format(trackTime)
     }
 

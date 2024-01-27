@@ -1,17 +1,20 @@
-package com.practicum.playlistmaker
+package com.practicum.playlistmaker.presentation
 
-import android.icu.text.SimpleDateFormat
-import android.media.MediaPlayer
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
+import com.practicum.playlistmaker.R
+import com.practicum.playlistmaker.creator.Creator
 import com.practicum.playlistmaker.databinding.ActivityPlayerBinding
+import com.practicum.playlistmaker.domain.api.PlayerInteractor
+import com.practicum.playlistmaker.domain.api.PlayerListener
+import com.practicum.playlistmaker.domain.models.PlayerState
+import com.practicum.playlistmaker.domain.models.Track
 import java.util.Calendar
 import java.util.Date
-import java.util.Locale
 
 class PlayerActivity : AppCompatActivity() {
 
@@ -21,15 +24,17 @@ class PlayerActivity : AppCompatActivity() {
         private const val STATE_PLAYING = 2
         private const val STATE_PAUSED = 3
         private const val DELAY = 300L
-        private const val TIME_OFFSET = 500L
     }
+
+    private lateinit var playerStateListener: PlayerListener
 
     private var mainThreadHandler: Handler? = null
     lateinit var track: Track
     private lateinit var binding: ActivityPlayerBinding
-    private val mediaPlayer = MediaPlayer()
+
     private var playerState = STATE_DEFAULT
-    private val dateFormat by lazy { SimpleDateFormat("mm:ss", Locale.getDefault()) }
+    private val playerInteractor : PlayerInteractor = Creator.getPlayerInteraktor()
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,6 +47,29 @@ class PlayerActivity : AppCompatActivity() {
         binding.playerToolbar.setNavigationOnClickListener {
             finish()
         }
+
+        playerStateListener = object : PlayerListener {
+            override fun onPlayerChange(state: PlayerState) {
+                when (state) {
+                    PlayerState.INIT -> {
+                        playerState = STATE_PREPARED
+                        binding.playButton.isEnabled = true
+                        binding.playButton.setImageResource(R.drawable.play_button_100_100)
+                        binding.timelineTextView.text = getString(R.string.timeline_mock)
+                    }
+                    PlayerState.PLAYING -> {
+                        playerState = STATE_PLAYING
+                        binding.playButton.setImageResource(R.drawable.pause_button_100_100)
+                        startTimer()
+                    }
+                    PlayerState.PAUSED -> {
+                        playerState = STATE_PAUSED
+                        binding.playButton.setImageResource(R.drawable.play_button_100_100)
+                    }
+                }
+            }
+        }
+        playerInteractor.setOnPlayerStateChange(playerStateListener)
 
         preparePlayer()
 
@@ -79,7 +107,7 @@ class PlayerActivity : AppCompatActivity() {
 
     override fun onDestroy() {
         super.onDestroy()
-        mediaPlayer.release()
+        playerInteractor.destroy()
     }
 
     private fun getYear(date: Date): String {
@@ -88,32 +116,18 @@ class PlayerActivity : AppCompatActivity() {
         return cal[Calendar.YEAR].toString()
     }
 
+
     private fun preparePlayer() {
-        mediaPlayer.setDataSource(track.previewUrl)
-        mediaPlayer.prepareAsync()
-        mediaPlayer.setOnPreparedListener {
-            playerState = STATE_PREPARED
-            binding.playButton.isEnabled = true
-            binding.timelineTextView.text = getString(R.string.timeline_mock)
-        }
-        mediaPlayer.setOnCompletionListener {
-            playerState = STATE_PREPARED
-            binding.playButton.setImageResource(R.drawable.play_button_100_100)
-            binding.timelineTextView.text = getString(R.string.timeline_mock)
-        }
+
+        playerInteractor.init(track.previewUrl)
     }
 
     private fun startPlayer() {
-        mediaPlayer.start()
-        binding.playButton.setImageResource(R.drawable.pause_button_100_100)
-        playerState = STATE_PLAYING
-        startTimer()
+        playerInteractor.play()
     }
 
     private fun pausePlayer() {
-        mediaPlayer.pause()
-        binding.playButton.setImageResource(R.drawable.play_button_100_100)
-        playerState = STATE_PAUSED
+        playerInteractor.pause()
     }
 
     private fun playbackControl() {
@@ -121,7 +135,6 @@ class PlayerActivity : AppCompatActivity() {
             STATE_PLAYING -> {
                 pausePlayer()
             }
-
             STATE_PREPARED, STATE_PAUSED -> {
                 startPlayer()
             }
@@ -139,10 +152,11 @@ class PlayerActivity : AppCompatActivity() {
             override fun run() {
                 if (playerState == STATE_PLAYING) {
                     binding.timelineTextView.text =
-                        dateFormat.format(mediaPlayer.currentPosition + TIME_OFFSET)
+                        playerInteractor.getElapsedTime()
                     mainThreadHandler?.postDelayed(this, DELAY)
                 }
             }
         }
     }
 }
+

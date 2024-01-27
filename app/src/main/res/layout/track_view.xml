@@ -24,7 +24,7 @@
 
         <TextView
             android:id="@+id/trackNameTextView"
-            style="@style/TextViewListSettings"
+            style="@style/termsOfUseTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:ellipsize="end"

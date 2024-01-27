@@ -1,4 +1,4 @@
-package com.practicum.playlistmaker
+package com.practicum.playlistmaker.presentation
 
 import android.content.Context
 import android.content.Intent
@@ -12,14 +12,12 @@ import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AppCompatActivity
-import com.google.gson.GsonBuilder
+import com.practicum.playlistmaker.R
+import com.practicum.playlistmaker.creator.Creator
 import com.practicum.playlistmaker.databinding.ActivitySearchBinding
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
-import java.util.Date
+import com.practicum.playlistmaker.domain.api.TracksInteractor
+import com.practicum.playlistmaker.domain.models.SearchResult
+import com.practicum.playlistmaker.domain.models.Track
 
 const val SEARCH_HISTORY_PREFERENCES = "search_history_preferences"
 
@@ -27,18 +25,6 @@ class SearchActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivitySearchBinding
 
-    private val iTunesBaseUrl = "https://itunes.apple.com"
-    private val retrofit = Retrofit.Builder()
-        .baseUrl(iTunesBaseUrl)
-        .addConverterFactory(
-            GsonConverterFactory.create(
-                GsonBuilder()
-                    .registerTypeAdapter(Date::class.java, CustomDateTypeAdapter())
-                    .create()
-            )
-        )
-        .build()
-    private val iTunesService = retrofit.create(ITunesApi::class.java)
     val tracks = ArrayList<Track>()
 
     companion object {
@@ -50,8 +36,11 @@ class SearchActivity : AppCompatActivity() {
     private var textToSave: String = ""
 
     private var isClickAllowed = true
-    private val searchRunnable = Runnable { search() }
+
     private val handler = Handler(Looper.getMainLooper())
+    private val searchRunnable = Runnable { search() }
+
+    private val trackListByNameUseCase : TracksInteractor = Creator.getTrackListByNameUseCase()
 
     lateinit var searchHistory: SearchHistory
     lateinit var searchHistoryAdapter: TracksAdapter
@@ -224,40 +213,29 @@ class SearchActivity : AppCompatActivity() {
         hideSearchError()
         if (binding.searchEditText.text.isNotEmpty()) {
             binding.progressBar.visibility = View.VISIBLE
-            hideSearchError()
             tracks.clear()
-            iTunesService.search(binding.searchEditText.text.toString())
-                .enqueue(object : Callback<ITunesResponse> {
-                    override fun onResponse(
-                        call: Call<ITunesResponse>,
-                        response: Response<ITunesResponse>
-                    ) {
+            val consumer = object : TracksInteractor.SearchResultConsumer {
+                override fun consume(searchResult: SearchResult) {
+                    handler.post {
                         binding.progressBar.visibility = View.GONE
-                        when (response.code()) {
-                            200 -> {
-                                if (response.body()?.results?.isNotEmpty() == true) {
-                                    tracks.clear()
-                                    tracks.addAll(response.body()?.results!!)
-                                    tracksAdapter.notifyDataSetChanged()
-                                } else {
-                                    showSearchError()
-                                }
-                            }
-
-                            else -> {
-                                showInternetError()
-                            }
+                        if (searchResult.hasErrors) {
+                            showInternetError()
+                        } else if (searchResult.tracks.isNotEmpty() == true) {
+                            tracks.addAll(searchResult.tracks)
+                            tracksAdapter.notifyDataSetChanged()
+                        } else {
+                            showSearchError()
                         }
-                    }
-
-                    override fun onFailure(call: Call<ITunesResponse>, t: Throwable) {
-                        binding.progressBar.visibility = View.GONE
-                        showInternetError()
-                    }
-
-                })
+                   }
+                }
+            }
+            trackListByNameUseCase.getTrackListByName(
+                binding.searchEditText.text.toString(),
+                consumer
+            )
         }
     }
+
 
     private fun showSearchHistory() {
         binding.searchHistoryRecyclerView.adapter = searchHistoryAdapter
