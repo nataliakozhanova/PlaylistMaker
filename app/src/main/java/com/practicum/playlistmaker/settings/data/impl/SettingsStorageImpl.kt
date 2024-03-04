@@ -8,15 +8,13 @@ const val THEME_KEY = "key_for_app_theme"
 
 class SettingsStorageImpl(private val sharedPreferences: SharedPreferences) : SettingsStorageApi {
     override fun readSettings(): ThemeSettings {
-        val settings = ThemeSettings(false,false)
         if (!sharedPreferences.contains(THEME_KEY)) {
-            settings.isEmpty = true
+            return ThemeSettings(false, true)
 
         } else {
-            settings.isEmpty = false
-            settings.darkTheme = sharedPreferences.getBoolean(THEME_KEY, false)
+            return ThemeSettings(sharedPreferences.getBoolean(THEME_KEY, false), false)
         }
-        return settings
+
     }
 
     override fun writeSettings(settings: ThemeSettings) {

@@ -17,7 +17,7 @@ import com.practicum.playlistmaker.util.Creator
 
 class PlayerViewModel(application: Application) : AndroidViewModel(application) {
     companion object {
-        private const val DELAY = 300L
+        private const val DELAY_MILLIS = 300L
 
         fun getViewModelFactory(): ViewModelProvider.Factory = viewModelFactory {
             initializer {
@@ -29,6 +29,8 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application) 
     private lateinit var playerStateListener: PlayerListener
 
     private val handler = Handler(Looper.getMainLooper())
+
+    private var isAutoPaused : Boolean = false
 
     private val stateLiveData = MutableLiveData<PlayerVMState>(PlayerVMState.Default)
     fun observeState(): LiveData<PlayerVMState> = stateLiveData
@@ -64,11 +66,12 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application) 
     }
 
 
-    private fun startPlayer() {
+     private fun startPlayer() {
         playerInteractor.play()
     }
 
     private fun pausePlayer() {
+        isAutoPaused = false
         handler?.removeCallbacksAndMessages(null)
         playerInteractor.pause()
     }
@@ -95,7 +98,7 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application) 
                 when (stateLiveData.value) {
                     is PlayerVMState.Playing -> {
                         stateLiveData.postValue(PlayerVMState.Playing(playerInteractor.getElapsedTime()))
-                        handler?.postDelayed(this, DELAY)
+                        handler?.postDelayed(this, DELAY_MILLIS)
                     }
 
                     else -> {}
@@ -109,7 +112,16 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application) 
     }
 
     fun pausePlayback() {
+        val isPlaying : Boolean = (stateLiveData.value is PlayerVMState.Playing)
         pausePlayer()
+        if(isPlaying)  isAutoPaused = true
+
+    }
+
+    fun resumePlayback() {
+        if(isAutoPaused) {
+            startPlayer()
+        }
     }
 
 }

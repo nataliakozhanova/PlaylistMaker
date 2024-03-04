@@ -20,7 +20,7 @@ import com.practicum.playlistmaker.util.Creator
 
 class SearchViewModel(application: Application) : AndroidViewModel(application) {
     companion object {
-        private const val SEARCH_DEBOUNCE_DELAY = 2000L
+        private const val SEARCH_DEBOUNCE_DELAY_MILLIS = 2000L
         private val SEARCH_REQUEST_TOKEN = Any()
 
         fun getViewModelFactory(): ViewModelProvider.Factory = viewModelFactory {
@@ -53,7 +53,7 @@ class SearchViewModel(application: Application) : AndroidViewModel(application) 
 
         val searchRunnable = Runnable { searchTracks(changedText) }
 
-        val postTime = SystemClock.uptimeMillis() + SEARCH_DEBOUNCE_DELAY
+        val postTime = SystemClock.uptimeMillis() + SEARCH_DEBOUNCE_DELAY_MILLIS
         handler.postAtTime(
             searchRunnable,
             SEARCH_REQUEST_TOKEN,

@@ -53,18 +53,25 @@ class PlayerActivity : AppCompatActivity() {
             .transform(RoundedCorners(trackCornerRadius))
             .into(binding.trackCoverImageView)
 
-        binding.playerTrackNameTextView.text = track.trackName
-        binding.playerArtistNameTextView.text = track.artistName
-        binding.valueCollectionTextView.text = track.collectionName
-        binding.valueReleaseYearTextView.text = trackYear
-        binding.valueGenreTextView.text = track.primaryGenreName
-        binding.valueCountryTextView.text = track.country
+        with(binding) {
+            playerTrackNameTextView.text = track.trackName
+            playerArtistNameTextView.text = track.artistName
+            valueCollectionTextView.text = track.collectionName
+            valueReleaseYearTextView.text = trackYear
+            valueGenreTextView.text = track.primaryGenreName
+            valueCountryTextView.text = track.country
+        }
 
     }
 
     override fun onPause() {
         super.onPause()
         viewModel.pausePlayback()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        viewModel.resumePlayback()
     }
 
 

@@ -25,7 +25,7 @@ class SearchActivity : AppCompatActivity() {
     private lateinit var binding: ActivitySearchBinding
 
     companion object {
-        private const val CLICK_DEBOUNCE_DELAY = 1000L
+        private const val CLICK_DEBOUNCE_DELAY_MILLIS = 1000L
     }
 
     private val historyAdapter = TracksAdapter(
@@ -175,13 +175,15 @@ class SearchActivity : AppCompatActivity() {
     }
 
     private fun hideError() {
-        binding.searchErrorContainer.visibility = ViewGroup.GONE
-        binding.errorInternetImage.visibility = View.GONE
-        binding.errorSearchImage.visibility = View.GONE
-        binding.updateButton.visibility = View.GONE
-        binding.searchErrorTextView.visibility = View.GONE
-        binding.errorUnionBigImage.visibility = View.GONE
-        binding.errorUnionSmallImage.visibility = View.GONE
+        with(binding) {
+            searchErrorContainer.visibility = ViewGroup.GONE
+            errorInternetImage.visibility = View.GONE
+            errorSearchImage.visibility = View.GONE
+            updateButton.visibility = View.GONE
+            searchErrorTextView.visibility = View.GONE
+            errorUnionBigImage.visibility = View.GONE
+            errorUnionSmallImage.visibility = View.GONE
+        }
     }
 
     private fun showLoading() {
@@ -191,33 +193,37 @@ class SearchActivity : AppCompatActivity() {
     }
 
     private fun showEmpty(emptyMessage: String) {
-        binding.tracksRecyclerView.visibility = View.GONE
-        binding.progressBar.visibility = View.GONE
+        with(binding) {
+            tracksRecyclerView.visibility = View.GONE
+            progressBar.visibility = View.GONE
 
-        binding.searchErrorContainer.visibility = ViewGroup.VISIBLE
-        binding.errorSearchImage.visibility = View.VISIBLE
-        binding.errorUnionBigImage.visibility = View.VISIBLE
-        binding.errorUnionSmallImage.visibility = View.VISIBLE
-        binding.errorInternetImage.visibility = View.GONE
-        binding.updateButton.visibility = View.GONE
+            searchErrorContainer.visibility = ViewGroup.VISIBLE
+            errorSearchImage.visibility = View.VISIBLE
+            errorUnionBigImage.visibility = View.VISIBLE
+            errorUnionSmallImage.visibility = View.VISIBLE
+            errorInternetImage.visibility = View.GONE
+            updateButton.visibility = View.GONE
 
-        binding.searchErrorTextView.visibility = View.VISIBLE
-        binding.searchErrorTextView.text = emptyMessage
+            searchErrorTextView.visibility = View.VISIBLE
+            searchErrorTextView.text = emptyMessage
+        }
     }
 
     private fun showError(errorMessage: String) {
-        binding.tracksRecyclerView.visibility = View.GONE
-        binding.progressBar.visibility = View.GONE
+        with(binding) {
+            tracksRecyclerView.visibility = View.GONE
+            progressBar.visibility = View.GONE
 
-        binding.searchErrorContainer.visibility = ViewGroup.VISIBLE
-        binding.errorInternetImage.visibility = View.VISIBLE
-        binding.updateButton.visibility = View.VISIBLE
-        binding.errorSearchImage.visibility = View.GONE
-        binding.errorUnionBigImage.visibility = View.VISIBLE
-        binding.errorUnionSmallImage.visibility = View.VISIBLE
+            searchErrorContainer.visibility = ViewGroup.VISIBLE
+            errorInternetImage.visibility = View.VISIBLE
+            updateButton.visibility = View.VISIBLE
+            errorSearchImage.visibility = View.GONE
+            errorUnionBigImage.visibility = View.VISIBLE
+            errorUnionSmallImage.visibility = View.VISIBLE
 
-        binding.searchErrorTextView.visibility = View.VISIBLE
-        binding.searchErrorTextView.text = errorMessage
+            searchErrorTextView.visibility = View.VISIBLE
+            searchErrorTextView.text = errorMessage
+        }
     }
 
     private fun showContent(tracks: List<Track>) {
@@ -255,7 +261,7 @@ class SearchActivity : AppCompatActivity() {
         val current = isClickAllowed
         if (isClickAllowed) {
             isClickAllowed = false
-            handler.postDelayed({ isClickAllowed = true }, CLICK_DEBOUNCE_DELAY)
+            handler.postDelayed({ isClickAllowed = true }, CLICK_DEBOUNCE_DELAY_MILLIS)
         }
         return current
     }

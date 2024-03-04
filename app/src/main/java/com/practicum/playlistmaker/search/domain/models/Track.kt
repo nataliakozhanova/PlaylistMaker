@@ -18,6 +18,7 @@ class Track(
     val country: String,
     val previewUrl: String
 ) : Serializable {
+    constructor() : this(-1, "", "", 0, "", "", Date(Long.MIN_VALUE), "", "", "")
     companion object {
         const val INTENT_KEY = "track"
     }
