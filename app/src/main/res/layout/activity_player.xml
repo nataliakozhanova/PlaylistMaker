@@ -137,7 +137,6 @@
         app:layout_constraintStart_toStartOf="@+id/leftBorder"
         app:layout_constraintEnd_toEndOf="@+id/rightBorder"
         app:layout_constraintTop_toBottomOf="@+id/playButton"
-        android:text="@string/timeline_mock"
         tools:text="@string/timeline_mock"/>
 
 <TextView
