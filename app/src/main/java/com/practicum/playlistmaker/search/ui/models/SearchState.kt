@@ -1,13 +1,11 @@
 package com.practicum.playlistmaker.search.ui.models
 
-import com.practicum.playlistmaker.search.domain.models.Track
-
 sealed interface SearchState {
 
     object Loading : SearchState
 
     data class Content(
-        val tracks: List<Track>
+        val tracks: List<TrackUI>
     ) : SearchState
 
     data class Error(

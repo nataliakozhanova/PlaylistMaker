@@ -30,6 +30,7 @@
     <string name="release_year_mock">1991</string>
     <string name="genre_mock">Rock</string>
     <string name="country_mock">USA</string>
+    <string name="empty_url">Ошибка воспроизведения</string>
 
 
 </resources>

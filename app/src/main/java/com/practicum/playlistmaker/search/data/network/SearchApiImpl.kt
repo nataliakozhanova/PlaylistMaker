@@ -1,34 +1,39 @@
 package com.practicum.playlistmaker.search.data.network
 
-import com.google.gson.GsonBuilder
-import com.practicum.playlistmaker.util.CustomDateTypeAdapter
+import android.content.Context
+import android.net.ConnectivityManager
+import android.net.NetworkCapabilities
 import com.practicum.playlistmaker.search.data.api.SearchApi
 import com.practicum.playlistmaker.search.data.dto.TracksSearchResponse
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
-import java.util.Date
 
-class SearchApiImpl() : SearchApi {
-    private val iTunesBaseUrl = "https://itunes.apple.com"
-    private val retrofit = Retrofit.Builder()
-        .baseUrl(iTunesBaseUrl)
-        .addConverterFactory(
-            GsonConverterFactory.create(
-                GsonBuilder()
-                    .registerTypeAdapter(Date::class.java, CustomDateTypeAdapter())
-                    .create()
-            )
-        )
-        .build()
-    private val iTunesService = retrofit.create(ITunesApi::class.java)
+class SearchApiImpl(
+    private val iTunesService: ITunesApi,
+    private val context: Context) : SearchApi {
 
     override fun searchTracks(searchQuery: String): TracksSearchResponse {
+
+        if(!isConnected()) {
+            throw Exception("server error")
+        }
 
         val response = iTunesService.search(searchQuery).execute()
         when (response.code()) {
             200 -> return response.body() ?: TracksSearchResponse(emptyList())
             else -> throw Exception("server error")
         }
+    }
+    private fun isConnected(): Boolean {
+        val connectivityManager = context.getSystemService(
+            Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        val capabilities = connectivityManager.getNetworkCapabilities(connectivityManager.activeNetwork)
+        if (capabilities != null) {
+            when {
+                capabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) -> return true
+                capabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) -> return true
+                capabilities.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET) -> return true
+            }
+        }
+        return false
     }
 }
 

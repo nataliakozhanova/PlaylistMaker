@@ -2,34 +2,31 @@ package com.practicum.playlistmaker.settings.ui.view
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.ViewModelProvider
 import com.practicum.playlistmaker.R
 import com.practicum.playlistmaker.databinding.ActivitySettingsBinding
 import com.practicum.playlistmaker.settings.ui.models.SettingsState
 import com.practicum.playlistmaker.settings.ui.view_model.SettingsViewModel
-import com.practicum.playlistmaker.util.Creator
+import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.koin.core.parameter.parametersOf
 
 class SettingsActivity : AppCompatActivity() {
+
     private lateinit var binding: ActivitySettingsBinding
-    private lateinit var viewModel: SettingsViewModel
+
+    private val viewModel by viewModel<SettingsViewModel> {
+        parametersOf(
+            getString(R.string.link_share_app),
+            getString(R.string.link_terms_of_usage),
+                getString(R.string.to),
+                getString(R.string.subject),
+                getString(R.string.message)
+        )
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivitySettingsBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
-        viewModel = ViewModelProvider(
-            this, SettingsViewModel.getViewModelFactory(
-                Creator.getSharingInteractor(
-                    getString(R.string.link_share_app),
-                    getString(R.string.link_terms_of_usage),
-                    getString(R.string.to),
-                    getString(R.string.subject),
-                    getString(R.string.message)
-                ),
-                Creator.getSettingsInteractor(getApplication())
-            )
-        )[SettingsViewModel::class.java]
 
         binding.settingsToolbar.setNavigationOnClickListener {
             finish()

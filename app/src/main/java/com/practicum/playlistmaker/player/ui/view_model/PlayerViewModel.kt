@@ -6,36 +6,26 @@ import android.os.Looper
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.viewmodel.initializer
-import androidx.lifecycle.viewmodel.viewModelFactory
 import com.practicum.playlistmaker.player.domain.api.PlayerInteractor
 import com.practicum.playlistmaker.player.domain.api.PlayerListener
 import com.practicum.playlistmaker.player.domain.models.PlayerState
 import com.practicum.playlistmaker.player.ui.models.PlayerVMState
-import com.practicum.playlistmaker.util.Creator
 
-class PlayerViewModel(application: Application) : AndroidViewModel(application) {
+class PlayerViewModel(application: Application, private val playerInteractor: PlayerInteractor) :
+    AndroidViewModel(application) {
+
     companion object {
         private const val DELAY_MILLIS = 300L
-
-        fun getViewModelFactory(): ViewModelProvider.Factory = viewModelFactory {
-            initializer {
-                PlayerViewModel(this[ViewModelProvider.AndroidViewModelFactory.APPLICATION_KEY] as Application)
-            }
-        }
     }
 
     private lateinit var playerStateListener: PlayerListener
 
     private val handler = Handler(Looper.getMainLooper())
 
-    private var isAutoPaused : Boolean = false
+    private var isAutoPaused: Boolean = false
 
     private val stateLiveData = MutableLiveData<PlayerVMState>(PlayerVMState.Default)
     fun observeState(): LiveData<PlayerVMState> = stateLiveData
-
-    private val playerInteractor: PlayerInteractor = Creator.getPlayerInteractor()
 
     fun preparePlayer(url: String) {
         if (stateLiveData.value != PlayerVMState.Default) {
@@ -66,7 +56,7 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application) 
     }
 
 
-     private fun startPlayer() {
+    private fun startPlayer() {
         playerInteractor.play()
     }
 
@@ -112,14 +102,14 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application) 
     }
 
     fun pausePlayback() {
-        val isPlaying : Boolean = (stateLiveData.value is PlayerVMState.Playing)
+        val isPlaying: Boolean = (stateLiveData.value is PlayerVMState.Playing)
         pausePlayer()
-        if(isPlaying)  isAutoPaused = true
+        if (isPlaying) isAutoPaused = true
 
     }
 
     fun resumePlayback() {
-        if(isAutoPaused) {
+        if (isAutoPaused) {
             startPlayer()
         }
     }

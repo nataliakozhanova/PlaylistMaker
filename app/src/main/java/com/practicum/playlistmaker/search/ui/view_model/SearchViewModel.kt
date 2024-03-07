@@ -7,38 +7,30 @@ import android.os.SystemClock
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.viewmodel.initializer
-import androidx.lifecycle.viewmodel.viewModelFactory
 import com.practicum.playlistmaker.R
+import com.practicum.playlistmaker.history.domain.api.HistoryInteractor
 import com.practicum.playlistmaker.search.domain.api.SearchInteractor
 import com.practicum.playlistmaker.search.domain.models.SearchResult
-import com.practicum.playlistmaker.search.domain.models.Track
 import com.practicum.playlistmaker.history.ui.models.HistoryState
 import com.practicum.playlistmaker.search.ui.models.SearchState
-import com.practicum.playlistmaker.util.Creator
+import com.practicum.playlistmaker.search.ui.models.TrackUI
 
-class SearchViewModel(application: Application) : AndroidViewModel(application) {
+class SearchViewModel(
+    application: Application,
+    private val historyInteractor : HistoryInteractor,
+    private val searchInteractor: SearchInteractor) : AndroidViewModel(application) {
     companion object {
         private const val SEARCH_DEBOUNCE_DELAY_MILLIS = 2000L
         private val SEARCH_REQUEST_TOKEN = Any()
-
-        fun getViewModelFactory(): ViewModelProvider.Factory = viewModelFactory {
-            initializer {
-                SearchViewModel(this[ViewModelProvider.AndroidViewModelFactory.APPLICATION_KEY] as Application)
-            }
-        }
     }
 
-    private val historyInteractor = Creator.getHistoryInteractor(getApplication())
-
-    private val searchInteractor = Creator.getSearchInteractor()
     private val handler = Handler(Looper.getMainLooper())
 
     private val stateLiveData = MutableLiveData<SearchState>()
     fun observeState(): LiveData<SearchState> = stateLiveData
 
     private var latestSearchText: String? = null
+    private var wasErrors : Boolean = false
 
     override fun onCleared() {
         handler.removeCallbacksAndMessages(SEARCH_REQUEST_TOKEN)
@@ -62,7 +54,7 @@ class SearchViewModel(application: Application) : AndroidViewModel(application) 
     }
 
     fun searchByClick(searchText: String) {
-        if (latestSearchText == searchText) {
+        if (latestSearchText == searchText && !wasErrors) {
             return
         }
         this.latestSearchText = searchText
@@ -81,13 +73,16 @@ class SearchViewModel(application: Application) : AndroidViewModel(application) 
                 newSearchText,
                 object : SearchInteractor.SearchResultConsumer {
                     override fun consume(searchResult: SearchResult) {
-                        val tracks = mutableListOf<Track>()
+                        val tracks = mutableListOf<TrackUI>()
                         if (searchResult.tracks != null) {
-                            tracks.addAll(searchResult.tracks)
+                            tracks.addAll(searchResult.tracks.map {
+                                TrackUI(it)
+                            })
                         }
 
                         when {
                             searchResult.hasErrors -> {
+                                wasErrors = true
                                 renderState(
                                     SearchState.Error(
                                         getApplication<Application>().getString(R.string.connection_problems),
@@ -96,6 +91,7 @@ class SearchViewModel(application: Application) : AndroidViewModel(application) 
                             }
 
                             tracks.isEmpty() -> {
+                                wasErrors = false
                                 renderState(
                                     SearchState.Empty(
                                         getApplication<Application>().getString(R.string.nothing_found),
@@ -104,6 +100,7 @@ class SearchViewModel(application: Application) : AndroidViewModel(application) 
                             }
 
                             else -> {
+                                wasErrors = false
                                 renderState(
                                     SearchState.Content(
                                         tracks = tracks,
@@ -131,12 +128,14 @@ class SearchViewModel(application: Application) : AndroidViewModel(application) 
         return if (historyTracks.isEmpty()) {
             HistoryState.Empty
         } else {
-            HistoryState.Content(historyTracks)
+            HistoryState.Content(historyTracks.map {
+                TrackUI(it)
+            })
         }
     }
 
-    fun addToHistory(track: Track) {
-        return historyInteractor.addToSearchHistory(track)
+    fun addToHistory(track: TrackUI) {
+        return historyInteractor.addToSearchHistory(track.convertToTrack())
     }
 
     fun deleteHistory() {
