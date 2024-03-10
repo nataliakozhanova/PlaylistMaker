@@ -6,7 +6,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.practicum.playlistmaker.R
 import com.practicum.playlistmaker.databinding.ActivityPlayerBinding
-import com.practicum.playlistmaker.extensions.safeGetSerializableExtra
+import com.practicum.playlistmaker.extensions.safeGetParcelableExtra
 import com.practicum.playlistmaker.player.ui.models.PlayerVMState
 import com.practicum.playlistmaker.player.ui.view_model.PlayerViewModel
 import com.practicum.playlistmaker.search.ui.models.TrackUI
@@ -25,7 +25,7 @@ class PlayerActivity : AppCompatActivity() {
         binding = ActivityPlayerBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val track = intent.safeGetSerializableExtra(TrackUI.INTENT_KEY)
+        val track = intent.safeGetParcelableExtra(name = TrackUI.INTENT_KEY)
 
         binding.playerToolbar.setNavigationOnClickListener {
             finish()

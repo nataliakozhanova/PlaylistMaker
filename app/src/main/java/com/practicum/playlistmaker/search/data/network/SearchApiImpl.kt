@@ -5,6 +5,8 @@ import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import com.practicum.playlistmaker.search.data.api.SearchApi
 import com.practicum.playlistmaker.search.data.dto.TracksSearchResponse
+import com.practicum.playlistmaker.search.domain.models.NetworkException
+import com.practicum.playlistmaker.search.domain.models.ServerErrorException
 
 class SearchApiImpl(
     private val iTunesService: ITunesApi,
@@ -13,13 +15,13 @@ class SearchApiImpl(
     override fun searchTracks(searchQuery: String): TracksSearchResponse {
 
         if(!isConnected()) {
-            throw Exception("server error")
+            throw NetworkException()
         }
 
         val response = iTunesService.search(searchQuery).execute()
         when (response.code()) {
             200 -> return response.body() ?: TracksSearchResponse(emptyList())
-            else -> throw Exception("server error")
+            else -> throw ServerErrorException()
         }
     }
     private fun isConnected(): Boolean {

@@ -14,11 +14,11 @@ import com.practicum.playlistmaker.sharing.domain.models.EmailData
 import org.koin.dsl.module
 
 val interactorModule = module {
-    single<SettingsInteractor> {
+    factory<SettingsInteractor> {
         SettingsInteractorImpl(get())
     }
 
-    single<SharingInteractor> { (linkApp: String, linkTerms: String, emailData: EmailData) ->
+    factory<SharingInteractor> { (linkApp: String, linkTerms: String, emailData: EmailData) ->
         SharingInteractorImpl(get(), linkApp, linkTerms, emailData)
     }
 
@@ -26,11 +26,11 @@ val interactorModule = module {
         PlayerInteractorImpl(get())
     }
 
-    single<HistoryInteractor> {
+    factory<HistoryInteractor> {
         HistoryInteractorImpl(get())
     }
 
-    single<SearchInteractor> {
+    factory<SearchInteractor> {
         SearchInteractorImpl(get())
     }
 }

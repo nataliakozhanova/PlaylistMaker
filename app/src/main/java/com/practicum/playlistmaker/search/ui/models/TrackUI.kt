@@ -1,9 +1,12 @@
 package com.practicum.playlistmaker.search.ui.models
 
+import android.os.Parcelable
 import com.practicum.playlistmaker.search.domain.models.Track
-import java.io.Serializable
+import kotlinx.parcelize.Parcelize
+
 import java.util.Date
 
+@Parcelize
 class TrackUI(
     val trackId: Int,
     val trackName: String,
@@ -15,7 +18,7 @@ class TrackUI(
     val primaryGenreName: String,
     val country: String,
     val previewUrl: String
-) : Serializable {
+) : Parcelable {
     constructor(track: Track) : this(
         trackId = track.trackId,
         trackName = track.trackName?: "",
@@ -74,3 +77,4 @@ class TrackUI(
         return (minutes * 60 + seconds)*1000
     }
 }
+

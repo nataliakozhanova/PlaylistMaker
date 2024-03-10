@@ -20,7 +20,7 @@ class Track(
 ) : Serializable {
 
     fun getTrackTime(): String {
-        if(trackTime == null) return ""
+        if (trackTime == null) return ""
         val dateFormat = SimpleDateFormat("mm:ss", Locale.getDefault())
         return dateFormat.format(trackTime)
     }

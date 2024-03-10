@@ -30,7 +30,6 @@ class SearchViewModel(
     fun observeState(): LiveData<SearchState> = stateLiveData
 
     private var latestSearchText: String? = null
-    private var wasErrors : Boolean = false
 
     override fun onCleared() {
         handler.removeCallbacksAndMessages(SEARCH_REQUEST_TOKEN)
@@ -54,7 +53,7 @@ class SearchViewModel(
     }
 
     fun searchByClick(searchText: String) {
-        if (latestSearchText == searchText && !wasErrors) {
+        if (latestSearchText == searchText && stateLiveData.value !is SearchState.Error) {
             return
         }
         this.latestSearchText = searchText
@@ -82,7 +81,6 @@ class SearchViewModel(
 
                         when {
                             searchResult.hasErrors -> {
-                                wasErrors = true
                                 renderState(
                                     SearchState.Error(
                                         getApplication<Application>().getString(R.string.connection_problems),
@@ -91,7 +89,6 @@ class SearchViewModel(
                             }
 
                             tracks.isEmpty() -> {
-                                wasErrors = false
                                 renderState(
                                     SearchState.Empty(
                                         getApplication<Application>().getString(R.string.nothing_found),
@@ -100,7 +97,6 @@ class SearchViewModel(
                             }
 
                             else -> {
-                                wasErrors = false
                                 renderState(
                                     SearchState.Content(
                                         tracks = tracks,
