@@ -1,16 +1,16 @@
 package com.practicum.playlistmaker.player.ui.view
 
 import android.os.Bundle
-import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.practicum.playlistmaker.R
 import com.practicum.playlistmaker.databinding.ActivityPlayerBinding
-import com.practicum.playlistmaker.extensions.safeGetSerializableExtra
+import com.practicum.playlistmaker.extensions.safeGetParcelableExtra
 import com.practicum.playlistmaker.player.ui.models.PlayerVMState
 import com.practicum.playlistmaker.player.ui.view_model.PlayerViewModel
-import com.practicum.playlistmaker.search.domain.models.Track
+import com.practicum.playlistmaker.search.ui.models.TrackUI
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.util.Calendar
 import java.util.Date
 
@@ -18,16 +18,14 @@ class PlayerActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityPlayerBinding
 
-    private val viewModel by viewModels<PlayerViewModel> {
-        PlayerViewModel.getViewModelFactory()
-    }
+    private val viewModel by viewModel<PlayerViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityPlayerBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val track = intent.safeGetSerializableExtra(Track.INTENT_KEY)
+        val track = intent.safeGetParcelableExtra(name = TrackUI.INTENT_KEY)
 
         binding.playerToolbar.setNavigationOnClickListener {
             finish()
@@ -36,6 +34,7 @@ class PlayerActivity : AppCompatActivity() {
         viewModel.observeState().observe(this) {
             renderPlayer(it)
         }
+
         viewModel.preparePlayer(track.previewUrl)
 
         binding.playButton.setOnClickListener {

@@ -5,8 +5,8 @@ import com.practicum.playlistmaker.player.domain.api.PlayerListener
 import com.practicum.playlistmaker.player.domain.api.PlayerApi
 import com.practicum.playlistmaker.player.domain.models.PlayerState
 
-class PlayerApiImpl() : PlayerApi {
-    private val mediaPlayer = MediaPlayer()
+class PlayerApiImpl(private val mediaPlayer: MediaPlayer) : PlayerApi {
+
     private lateinit var playerListener : PlayerListener
 
     override fun init(previewUrl: String) {

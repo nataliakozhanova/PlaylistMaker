@@ -3,17 +3,18 @@ package com.practicum.playlistmaker.extensions
 import android.content.Intent
 import android.os.Build
 import android.os.Build.VERSION.SDK_INT
-import com.practicum.playlistmaker.search.domain.models.Track
+import com.practicum.playlistmaker.search.ui.models.TrackUI
 
 @Suppress("Deprecation")
-inline fun Intent.safeGetSerializableExtra(name: String): Track {
-    val track : Track
+fun Intent.safeGetParcelableExtra(name: String): TrackUI {
+    val track: TrackUI?
     when {
         SDK_INT >= Build.VERSION_CODES.TIRAMISU -> {
-            track = getSerializableExtra(name, Track::class.java) as Track
+            track = getParcelableExtra(name, TrackUI::class.java)
         }
-        else -> track = getSerializableExtra(name) as Track
+
+        else -> track = getParcelableExtra(name)
     }
     if (track != null) return track
-    return Track()
+    return TrackUI()
 }

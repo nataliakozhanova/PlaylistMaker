@@ -3,9 +3,6 @@ package com.practicum.playlistmaker.settings.ui.view_model
 import android.app.Application
 import android.content.Intent
 import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.viewmodel.initializer
-import androidx.lifecycle.viewmodel.viewModelFactory
 import com.practicum.playlistmaker.settings.domain.api.SettingsInteractor
 import com.practicum.playlistmaker.settings.domain.models.ThemeSettings
 import com.practicum.playlistmaker.settings.ui.models.SettingsState
@@ -18,13 +15,6 @@ class SettingsViewModel(
     private val settingsInteractor: SettingsInteractor,
 ) : AndroidViewModel(application) {
 
-    companion object {
-        fun getViewModelFactory(sharingInteractor: SharingInteractor, settingsInteractor: SettingsInteractor): ViewModelProvider.Factory = viewModelFactory {
-            initializer {
-                SettingsViewModel(this[ViewModelProvider.AndroidViewModelFactory.APPLICATION_KEY] as Application, sharingInteractor, settingsInteractor)
-            }
-        }
-    }
     private val settingsState : SettingsState
 
     init {

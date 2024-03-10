@@ -11,18 +11,22 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.ViewModelProvider
+import com.practicum.playlistmaker.R
 import com.practicum.playlistmaker.databinding.ActivitySearchBinding
-import com.practicum.playlistmaker.player.ui.view.PlayerActivity
-import com.practicum.playlistmaker.search.domain.models.Track
 import com.practicum.playlistmaker.history.ui.models.HistoryState
+import com.practicum.playlistmaker.player.ui.view.PlayerActivity
 import com.practicum.playlistmaker.search.ui.models.SearchState
+import com.practicum.playlistmaker.search.ui.models.TrackUI
 import com.practicum.playlistmaker.search.ui.view_model.SearchViewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class SearchActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivitySearchBinding
+
+    private val viewModel by viewModel<SearchViewModel>()
 
     companion object {
         private const val CLICK_DEBOUNCE_DELAY_MILLIS = 1000L
@@ -30,7 +34,7 @@ class SearchActivity : AppCompatActivity() {
 
     private val historyAdapter = TracksAdapter(
         object : TracksAdapter.SearchClickListener {
-            override fun onTrackClick(track: Track) {
+            override fun onTrackClick(track: TrackUI) {
                 if (clickDebounce()) {
                     openPlayer(track)
                 }
@@ -40,7 +44,7 @@ class SearchActivity : AppCompatActivity() {
 
     private val searchAdapter = TracksAdapter(
         object : TracksAdapter.SearchClickListener {
-            override fun onTrackClick(track: Track) {
+            override fun onTrackClick(track: TrackUI) {
                 viewModel.addToHistory(track)
                 if (clickDebounce()) {
                     openPlayer(track)
@@ -55,17 +59,11 @@ class SearchActivity : AppCompatActivity() {
 
     private val handler = Handler(Looper.getMainLooper())
 
-    private lateinit var viewModel: SearchViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivitySearchBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
-        viewModel = ViewModelProvider(
-            this,
-            SearchViewModel.getViewModelFactory()
-        )[SearchViewModel::class.java]
 
         binding.tracksRecyclerView.adapter = searchAdapter
         binding.searchHistoryRecyclerView.adapter = historyAdapter
@@ -95,7 +93,7 @@ class SearchActivity : AppCompatActivity() {
             }
         }
 
-        textWatcher?.let { binding.searchEditText.addTextChangedListener(it) }
+        textWatcher.let { binding.searchEditText.addTextChangedListener(it) }
 
         viewModel.observeState().observe(this) {
             renderSearch(it)
@@ -148,13 +146,19 @@ class SearchActivity : AppCompatActivity() {
 
     override fun onDestroy() {
         super.onDestroy()
-        textWatcher?.let { binding.searchEditText.removeTextChangedListener(it) }
+        textWatcher.let { binding.searchEditText.removeTextChangedListener(it) }
     }
 
-    private fun openPlayer(track: Track) {
-        val intent = Intent(this@SearchActivity, PlayerActivity::class.java)
-        intent.putExtra(Track.INTENT_KEY, track)
-        startActivity(intent)
+    private fun openPlayer(track: TrackUI) {
+
+        if (track.previewUrl.isEmpty()) {
+            Toast.makeText(this, getString(R.string.empty_url), Toast.LENGTH_LONG)
+                .show()
+        } else {
+            val intent = Intent(this@SearchActivity, PlayerActivity::class.java)
+            intent.putExtra(TrackUI.INTENT_KEY, track)
+            startActivity(intent)
+        }
     }
 
     private fun clearButtonVisibility(editable: Editable?): Int {
@@ -226,7 +230,7 @@ class SearchActivity : AppCompatActivity() {
         }
     }
 
-    private fun showContent(tracks: List<Track>) {
+    private fun showContent(tracks: List<TrackUI>) {
         binding.progressBar.visibility = View.GONE
         hideError()
         binding.tracksRecyclerView.visibility = View.VISIBLE
@@ -244,7 +248,7 @@ class SearchActivity : AppCompatActivity() {
         }
     }
 
-    private fun showHistory(tracks: List<Track>) {
+    private fun showHistory(tracks: List<TrackUI>) {
         hideError()
         binding.searchHistoryContainer.visibility = ViewGroup.VISIBLE
         historyAdapter.tracks.clear()
