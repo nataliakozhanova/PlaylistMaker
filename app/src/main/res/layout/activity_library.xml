@@ -1,8 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".library.ui.LibraryActivity">
+    android:background="?attr/colorPrimary"
+    android:orientation="vertical"
+    android:padding="@dimen/padding_main"
+    tools:context=".library.ui.view.LibraryActivity">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/libraryToolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/ToolbarTheme"
+        app:navigationIcon="@drawable/arrow_back_light_mode"
+        app:title="@string/library"
+        app:titleTextAppearance="@style/TextHeader" />
+
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/libraryTabLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/dp12"
+        android:background="?attr/colorPrimary"
+        app:tabIndicatorColor="?attr/colorOnPrimary"
+        app:tabIndicatorHeight="2dp"
+        app:tabRippleColor="@color/gray_text"
+        app:tabTextColor="?attr/colorOnPrimary"
+        app:tabTextAppearance="@style/TabLayoutLibrary"
+        tools:ignore="SpeakableTextPresentCheck" />
+
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/libraryViewPager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+</LinearLayout>
