@@ -109,4 +109,11 @@
         <item name="android:textColor">?attr/colorOnPrimary</item>
     </style>
 
+    <style name="TabLayoutLibrary">
+        <item name="android:textSize">@dimen/additional_buttons_text_size</item>
+        <item name="android:textFontWeight">500</item>
+        <item name="android:letterSpacing">0</item>
+        <item name="android:fontFamily">@font/ys_display_medium</item>
+    </style>
+
 </resources>

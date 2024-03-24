@@ -62,4 +62,6 @@
     <dimen name="dp32">32dp</dimen>
     <dimen name="dp44">44dp</dimen>
     <dimen name="dp140">140dp</dimen>
+    <dimen name="dp106">106dp</dimen>
+    <dimen name="dp46">46dp</dimen>
 </resources>
