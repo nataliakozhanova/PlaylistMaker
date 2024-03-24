@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import com.practicum.playlistmaker.databinding.FragmentLibraryFavoritesBinding
 import com.practicum.playlistmaker.library.ui.models.FavoritesState
@@ -31,9 +32,11 @@ class LibraryFavoritesFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        libraryFavoritesViewModel.observeState().observe(viewLifecycleOwner) {
-            renderState(it)
-        }
+//        libraryFavoritesViewModel.observeState().observe(viewLifecycleOwner) {
+//            renderState(it)
+//        }
+
+        libraryFavoritesViewModel.observeState().observe(viewLifecycleOwner, ::renderState)
     }
 
     private fun renderState(state: FavoritesState) {
@@ -41,9 +44,9 @@ class LibraryFavoritesFragment : Fragment() {
             is FavoritesState.Empty -> showEmpty()
         }
     }
-    private fun showEmpty() {
-        binding.emptyFavoritesIconContainer.visibility = ViewGroup.VISIBLE
-        binding.favoriteEmptyTextView.visibility = View.VISIBLE
+    private fun showEmpty(): Unit = with(binding) {
+        emptyImageView.isVisible = true
+        favoriteEmptyTextView.isVisible = true
     }
 
 }

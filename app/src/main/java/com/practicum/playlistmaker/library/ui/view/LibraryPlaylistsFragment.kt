@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import com.practicum.playlistmaker.databinding.FragmentLibraryPlaylistsBinding
 import com.practicum.playlistmaker.library.ui.models.PlaylistsState
@@ -31,9 +32,11 @@ class LibraryPlaylistsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        libraryPlaylistsViewModel.observeState().observe(viewLifecycleOwner) {
-            renderState(it)
-        }
+//        libraryPlaylistsViewModel.observeState().observe(viewLifecycleOwner) {
+//            renderState(it)
+//        }
+
+        libraryPlaylistsViewModel.observeState().observe(viewLifecycleOwner, ::renderState)
     }
 
     private fun renderState(state: PlaylistsState) {
@@ -41,10 +44,10 @@ class LibraryPlaylistsFragment : Fragment() {
             is PlaylistsState.Empty -> showEmpty()
         }
     }
-    private fun showEmpty() {
-        binding.newPlaylistButton.visibility = View.VISIBLE
-        binding.emptyPlaylistsIconContainer.visibility = ViewGroup.VISIBLE
-        binding.playlistsEmptyTextView.visibility = View.VISIBLE
+    private fun showEmpty(): Unit = with(binding) {
+        newPlaylistButton.isVisible = true
+        emptyImageView.isVisible = true
+        playlistsEmptyTextView.isVisible = true
     }
 
 }

@@ -1,59 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     android:background="?attr/colorPrimary"
     android:orientation="vertical">
 
-    <FrameLayout
-        android:id="@+id/emptyFavoritesIconContainer"
+    <ImageView
+        android:id="@+id/emptyImageView"
+        android:layout_width="@dimen/error_image_view_WH"
+        android:layout_height="@dimen/error_image_view_WH"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="@dimen/dp106"
-        android:layout_width="@dimen/error_image_view_WH"
-        android:layout_height="@dimen/error_image_view_WH">
-
-        <ImageView
-            android:id="@+id/errorUnionBigImage"
-            android:layout_width="@dimen/error_icon_big_width"
-            android:layout_height="@dimen/error_icon_big_height"
-            android:layout_marginStart="@dimen/margin"
-            android:layout_marginTop="@dimen/error_icon_margin"
-            android:src="@drawable/error_union_102_x_94"
-            app:tint="?attr/colorOnPrimary"
-            tools:visibility="visible" />
-
-        <ImageView
-            android:id="@+id/errorSearchImage"
-            android:layout_width="@dimen/error_icon_size"
-            android:layout_height="@dimen/error_icon_size"
-            android:layout_marginStart="@dimen/error_icon_margin_start"
-            android:layout_marginTop="@dimen/error_icon_margin_top"
-            android:src="@drawable/error_search_174" />
-
-        <ImageView
-            android:id="@+id/errorUnionSmallImage"
-            android:layout_width="@dimen/error_icon_small_width"
-            android:layout_height="@dimen/error_icon_small_height"
-            android:layout_gravity="end"
-            android:layout_marginVertical="@dimen/error_icon_margin"
-            android:layout_marginEnd="@dimen/error_icon_margin_end"
-            android:src="@drawable/error_union_31_x_110"
-            app:tint="?attr/colorOnPrimary"
-            tools:visibility="visible" />
-    </FrameLayout>
+        android:src="@drawable/empty_icon"
+        tools:visibility="visible"
+        tools:ignore="ContentDescription" />
 
     <TextView
         android:id="@+id/favoriteEmptyTextView"
         style="@style/ErrorTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
         android:layout_marginTop="@dimen/error_text_view_top"
         android:paddingHorizontal="@dimen/error_padding_horizontal"
-        android:layout_gravity="center_horizontal"
-        android:textAlignment="center"
         android:text="@string/favorites_empty"
+        android:textAlignment="center"
         tools:visibility="visible" />
 
 </LinearLayout>
