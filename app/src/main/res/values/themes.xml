@@ -21,10 +21,10 @@
     <style name="ToolbarTheme" parent="@style/ThemeOverlay.AppCompat.DayNight">
         <item name="toolbarNavigationButtonStyle">@style/Toolbar.Button.Navigation.Tinted</item>
     </style>
+
     <style name="Toolbar.Button.Navigation.Tinted" parent="Widget.AppCompat.Toolbar.Button.Navigation">
         <item name="tint">@color/black</item>
         <item name="android:tint">@color/black</item>
     </style>
-
 
 </resources>
