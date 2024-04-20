@@ -56,6 +56,7 @@
     <dimen name="dp12">12dp</dimen>
     <dimen name="dp52">52dp</dimen>
     <dimen name="dp54">54dp</dimen>
+    <dimen name="dp50">50dp</dimen>
     <dimen name="dp100">100dp</dimen>
     <dimen name="dp30">30dp</dimen>
     <dimen name="dp4">4dp</dimen>
@@ -67,4 +68,7 @@
     <dimen name="dp106">106dp</dimen>
     <dimen name="dp46">46dp</dimen>
     <dimen name="dp1">1dp</dimen>
+    <dimen name="dp114">114dp</dimen>
+    <dimen name="dp118">118dp</dimen>
+    <dimen name="dp56">56dp</dimen>
 </resources>

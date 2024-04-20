@@ -11,6 +11,7 @@ class TracksViewHolder(
     private val clickListener: TracksAdapter.SearchClickListener,
     private val binding: TrackViewBinding
 ) : RecyclerView.ViewHolder(binding.root) {
+
     private val trackCornerRadius: Int =
         itemView.context.resources.getDimensionPixelSize(R.dimen.track_corner_radius)
 

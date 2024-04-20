@@ -9,6 +9,7 @@ import com.practicum.playlistmaker.R
 import com.practicum.playlistmaker.databinding.ActivityRootBinding
 
 class RootActivity : AppCompatActivity() {
+
     private lateinit var binding: ActivityRootBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -25,7 +26,7 @@ class RootActivity : AppCompatActivity() {
 
         navController.addOnDestinationChangedListener { _, destination, _ ->
             when (destination.id) {
-                R.id.playerActivity -> {
+                R.id.playerFragment, R.id.newPlaylistFragment -> {
                     binding.bottomNavigationView.isVisible = false
                 }
 

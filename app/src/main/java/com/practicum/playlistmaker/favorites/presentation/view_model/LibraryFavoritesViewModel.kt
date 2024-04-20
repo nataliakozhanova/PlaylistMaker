@@ -20,15 +20,15 @@ class LibraryFavoritesViewModel(private val favoritesInteractor: FavoritesIntera
                 .getAllFavorites()
                 .collect { favoriteTracks ->
                     if (favoriteTracks.isEmpty()) {
-                        renderHistoryState(FavoritesState.Empty)
+                        renderFavoritesState(FavoritesState.Empty)
                     } else {
-                        renderHistoryState(FavoritesState.Content(favoriteTracks))
+                        renderFavoritesState(FavoritesState.Content(favoriteTracks))
                     }
                 }
         }
     }
 
-    private fun renderHistoryState(favoritesState: FavoritesState) {
+    private fun renderFavoritesState(favoritesState: FavoritesState) {
         stateLiveData.postValue(favoritesState)
     }
 

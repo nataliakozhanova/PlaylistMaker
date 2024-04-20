@@ -1,7 +1,6 @@
 package com.practicum.playlistmaker.search.ui.view
 
 import android.content.Context
-import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -11,13 +10,15 @@ import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
+import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.NavHostFragment
 import com.practicum.playlistmaker.R
 import com.practicum.playlistmaker.databinding.FragmentSearchBinding
 import com.practicum.playlistmaker.history.ui.models.HistoryState
-import com.practicum.playlistmaker.player.ui.view.PlayerActivity
+import com.practicum.playlistmaker.player.ui.view.PlayerFragment
 import com.practicum.playlistmaker.search.domain.models.Track
 import com.practicum.playlistmaker.search.ui.models.SearchState
 import com.practicum.playlistmaker.search.ui.view_model.SearchViewModel
@@ -157,9 +158,10 @@ class SearchFragment : Fragment() {
                 .show()
         } else {
             viewModel.checkFavorites(track)
-            val intent = Intent(requireContext(), PlayerActivity::class.java)
-            intent.putExtra(Track.INTENT_KEY, track)
-            startActivity(intent)
+            val bundle = bundleOf(PlayerFragment.TRACK_KEY to track)
+            val navHostFragment = requireActivity().supportFragmentManager.findFragmentById(R.id.rootFragmentContainerView) as NavHostFragment
+            val navController = navHostFragment.navController
+            navController.navigate(R.id.playerFragment, bundle)
         }
     }
 

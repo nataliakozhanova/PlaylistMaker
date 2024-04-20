@@ -5,11 +5,14 @@ import android.media.MediaPlayer
 import androidx.room.Room
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
-import com.practicum.playlistmaker.favorites.data.db.AppDatabase
+import com.practicum.playlistmaker.favorites.data.db.AppTrackDatabase
 import com.practicum.playlistmaker.history.data.api.HistoryStorageApi
 import com.practicum.playlistmaker.history.data.storage.HistoryStorageImpl
 import com.practicum.playlistmaker.player.data.PlayerApiImpl
 import com.practicum.playlistmaker.player.domain.api.PlayerApi
+import com.practicum.playlistmaker.playlist.data.db.AppPlaylistsDatabase
+import com.practicum.playlistmaker.playlist.data.storage.FilesStorageApi
+import com.practicum.playlistmaker.playlist.data.storage.FilesStorageImpl
 import com.practicum.playlistmaker.search.data.api.SearchApi
 import com.practicum.playlistmaker.search.data.network.ITunesApi
 import com.practicum.playlistmaker.search.data.network.SearchApiImpl
@@ -65,8 +68,17 @@ val dataModule = module {
         SearchApiImpl(get(), androidContext())
     }
 
+    single<FilesStorageApi>{
+        FilesStorageImpl()
+    }
+
     single {
-        Room.databaseBuilder(androidContext(), AppDatabase::class.java, "database.db")
+        Room.databaseBuilder(androidContext(), AppTrackDatabase::class.java, "database.db")
+            .build()
+    }
+
+    single {
+        Room.databaseBuilder(androidContext(), AppPlaylistsDatabase::class.java, "playlistsDatabase.db")
             .build()
     }
 

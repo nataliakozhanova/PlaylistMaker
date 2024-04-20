@@ -11,15 +11,20 @@ import com.practicum.playlistmaker.player.domain.api.PlayerListener
 import com.practicum.playlistmaker.player.domain.models.PlayerState
 import com.practicum.playlistmaker.player.ui.models.FavoriteState
 import com.practicum.playlistmaker.player.ui.models.PlayerVMState
+import com.practicum.playlistmaker.playlist.domain.api.PlaylistInteractor
+import com.practicum.playlistmaker.playlist.domain.models.Playlist
+import com.practicum.playlistmaker.playlist.presentation.models.PlaylistsState
 import com.practicum.playlistmaker.search.domain.models.Track
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 
 class PlayerViewModel(
     application: Application,
     private val playerInteractor: PlayerInteractor,
-    private val favoritesInteractor: FavoritesInteractor
+    private val favoritesInteractor: FavoritesInteractor,
+    private val playlistInteractor: PlaylistInteractor,
 ) :
     AndroidViewModel(application) {
 
@@ -40,6 +45,9 @@ class PlayerViewModel(
 
     private val stateFavoriteLiveData = MutableLiveData<FavoriteState>(FavoriteState.Default)
     fun observeFavoriteState(): LiveData<FavoriteState> = stateFavoriteLiveData
+
+    private val statePlaylistsLiveData = MutableLiveData<PlaylistsState>()
+    fun observePlaylistState(): LiveData<PlaylistsState> = statePlaylistsLiveData
 
     fun preparePlayer(url: String) {
         if (stateLiveData.value != PlayerVMState.Default) {
@@ -139,4 +147,25 @@ class PlayerViewModel(
 
     }
 
+    fun getPlaylists() {
+        viewModelScope.launch {
+            playlistInteractor
+                .getAllPlaylists()
+                .collect { playlists ->
+                    if (playlists.isEmpty()) {
+                        renderPlaylistsState(PlaylistsState.Empty)
+                    } else {
+                        renderPlaylistsState(PlaylistsState.Content(playlists))
+                    }
+                }
+        }
+    }
+
+    private fun renderPlaylistsState(playlistsState: PlaylistsState) {
+        statePlaylistsLiveData.postValue(playlistsState)
+    }
+
+    fun addTrackToPlaylist(track: Track, playlist: Playlist) : Boolean = runBlocking {
+        return@runBlocking playlistInteractor.addTrackToPlaylist(track, playlist)
+    }
 }
