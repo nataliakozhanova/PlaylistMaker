@@ -30,7 +30,8 @@ class SearchFragment : Fragment() {
         private const val CLICK_DEBOUNCE_DELAY_MILLIS = 1000L
     }
 
-    private lateinit var binding: FragmentSearchBinding
+    private var _binding: FragmentSearchBinding? = null
+    private val binding get() = _binding!!
 
     private val viewModel by viewModel<SearchViewModel>()
 
@@ -58,7 +59,7 @@ class SearchFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = FragmentSearchBinding.inflate(inflater, container, false)
+        _binding = FragmentSearchBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -118,7 +119,7 @@ class SearchFragment : Fragment() {
             )
             binding.searchEditText.setText("")
             viewModel.removeSearchedText()
-            binding.searchClearButton.visibility = View.GONE
+            binding.searchClearButton.isVisible = false
         }
 
         binding.searchEditText.setOnEditorActionListener { _, actionId, _ ->
@@ -143,6 +144,7 @@ class SearchFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         textWatcher.let { binding.searchEditText.removeTextChangedListener(it) }
+        _binding = null
     }
 
     private fun openPlayer(track: TrackUI) {
@@ -184,9 +186,9 @@ class SearchFragment : Fragment() {
     }
 
     private fun showLoading() {
-        binding.tracksRecyclerView.visibility = View.GONE
+        binding.tracksRecyclerView.isVisible = false
         hideError()
-        binding.progressBar.visibility = View.VISIBLE
+        binding.progressBar.isVisible = true
     }
 
     private fun showEmpty(emptyMessage: String) {
@@ -220,9 +222,9 @@ class SearchFragment : Fragment() {
     }
 
     private fun showContent(tracks: List<TrackUI>) {
-        binding.progressBar.visibility = View.GONE
+        binding.progressBar.isVisible = false
         hideError()
-        binding.tracksRecyclerView.visibility = View.VISIBLE
+        binding.tracksRecyclerView.isVisible = true
         searchAdapter.tracks.clear()
         searchAdapter.tracks.addAll(tracks)
         searchAdapter.notifyDataSetChanged()
@@ -239,7 +241,7 @@ class SearchFragment : Fragment() {
 
     private fun showHistory(tracks: List<TrackUI>) {
         hideError()
-        binding.searchHistoryContainer.visibility = ViewGroup.VISIBLE
+        binding.searchHistoryContainer.isVisible = true
         historyAdapter.tracks.clear()
         historyAdapter.tracks.addAll(tracks)
         historyAdapter.notifyDataSetChanged()
@@ -247,7 +249,7 @@ class SearchFragment : Fragment() {
 
     private fun showEmptyHistory() {
         hideError()
-        binding.searchHistoryContainer.visibility = ViewGroup.GONE
+        binding.searchHistoryContainer.isVisible = false
     }
 
     private fun clickDebounce(): Boolean {

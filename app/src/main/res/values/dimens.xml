@@ -66,4 +66,5 @@
     <dimen name="dp140">140dp</dimen>
     <dimen name="dp106">106dp</dimen>
     <dimen name="dp46">46dp</dimen>
+    <dimen name="dp1">1dp</dimen>
 </resources>
