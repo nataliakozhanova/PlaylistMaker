@@ -7,6 +7,8 @@
     <dimen name="additional_buttons_text_size">14sp</dimen>
     <dimen name="artist_name_text_size">14sp</dimen>
     <dimen name="player_title_text_size">13sp</dimen>
+    <dimen name="bottom_navigation_view_text_size">12sp</dimen>
+
     <dimen name="big_button_corner_radius">16dp</dimen>
     <dimen name="update_button_corner_radius">54dp</dimen>
     <dimen name="icon_padding">8dp</dimen>
@@ -64,4 +66,5 @@
     <dimen name="dp140">140dp</dimen>
     <dimen name="dp106">106dp</dimen>
     <dimen name="dp46">46dp</dimen>
+    <dimen name="dp1">1dp</dimen>
 </resources>

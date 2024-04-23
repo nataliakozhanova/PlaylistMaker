@@ -19,24 +19,27 @@ class LibraryFavoritesFragment : Fragment() {
 
     private val libraryFavoritesViewModel: LibraryFavoritesViewModel by viewModel()
 
-    private lateinit var binding: FragmentLibraryFavoritesBinding
+    private var _binding: FragmentLibraryFavoritesBinding? = null
+    private val binding get() = _binding!!
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = FragmentLibraryFavoritesBinding.inflate(inflater, container, false)
+        _binding = FragmentLibraryFavoritesBinding.inflate(inflater, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-//        libraryFavoritesViewModel.observeState().observe(viewLifecycleOwner) {
-//            renderState(it)
-//        }
 
         libraryFavoritesViewModel.observeState().observe(viewLifecycleOwner, ::renderState)
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
     private fun renderState(state: FavoritesState) {

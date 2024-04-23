@@ -4,7 +4,7 @@
         <!-- Customize your dark theme here. -->
         <!-- <item name="colorPrimary">@color/my_dark_primary</item> -->
         <item name="colorPrimary">@color/black</item>
-        <item name="colorPrimaryVariant">@color/black</item>
+        <item name="colorPrimaryVariant">@color/blue</item>
         <item name="colorOnPrimary">@color/white</item>
         <item name="colorSecondary">@color/white</item>
         <item name="colorSecondaryVariant">@color/black</item>
@@ -16,6 +16,7 @@
     <style name="ToolbarTheme" parent="@style/ThemeOverlay.AppCompat.DayNight">
         <item name="toolbarNavigationButtonStyle">@style/Toolbar.Button.Navigation.Tinted</item>
     </style>
+
     <style name="Toolbar.Button.Navigation.Tinted" parent="Widget.AppCompat.Toolbar.Button.Navigation">
         <item name="tint">@color/white</item>
         <item name="android:tint">@color/white</item>

@@ -14,7 +14,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:theme="@style/ToolbarTheme"
-        app:navigationIcon="@drawable/arrow_back_light_mode"
         app:title="@string/search"
         app:titleTextAppearance="@style/TextHeader" />
 
@@ -63,7 +62,7 @@
         android:gravity="center"
         android:orientation="vertical"
         android:visibility="gone"
-        tools:visibility="visible">
+        tools:visibility="gone">
 
         <TextView
             style="@style/searchHistoryTextView"
@@ -108,50 +107,15 @@
         android:gravity="center"
         android:orientation="vertical"
         android:visibility="gone"
-        tools:visibility="gone">
+        tools:visibility="visible">
 
-        <FrameLayout
+        <ImageView
+            android:id="@+id/searchErrorImageView"
             android:layout_width="@dimen/error_image_view_WH"
-            android:layout_height="@dimen/error_image_view_WH">
-
-            <ImageView
-                android:id="@+id/errorUnionBigImage"
-                android:layout_width="@dimen/error_icon_big_width"
-                android:layout_height="@dimen/error_icon_big_height"
-                android:layout_marginStart="@dimen/margin"
-                android:layout_marginTop="@dimen/error_icon_margin"
-                android:src="@drawable/error_union_102_x_94"
-                app:tint="?attr/colorOnPrimary"
-                tools:visibility="visible" />
-
-            <ImageView
-                android:id="@+id/errorSearchImage"
-                android:layout_width="@dimen/error_icon_size"
-                android:layout_height="@dimen/error_icon_size"
-                android:layout_marginStart="@dimen/error_icon_margin_start"
-                android:layout_marginTop="@dimen/error_icon_margin_top"
-                android:src="@drawable/error_search_174" />
-
-            <ImageView
-                android:id="@+id/errorInternetImage"
-                android:layout_width="@dimen/error_icon_size"
-                android:layout_height="@dimen/error_icon_size"
-                android:layout_marginStart="@dimen/error_icon_margin_start"
-                android:layout_marginTop="@dimen/error_icon_margin_top"
-                android:src="@drawable/error_internet_175"
-                tools:visibility="visible" />
-
-            <ImageView
-                android:id="@+id/errorUnionSmallImage"
-                android:layout_width="@dimen/error_icon_small_width"
-                android:layout_height="@dimen/error_icon_small_height"
-                android:layout_gravity="end"
-                android:layout_marginVertical="@dimen/error_icon_margin"
-                android:layout_marginEnd="@dimen/error_icon_margin_end"
-                android:src="@drawable/error_union_31_x_110"
-                app:tint="?attr/colorOnPrimary"
-                tools:visibility="visible" />
-        </FrameLayout>
+            android:layout_height="@dimen/error_image_view_WH"
+            tools:src="@drawable/empty_icon"
+            tools:visibility="visible"
+            tools:ignore="ContentDescription" />
 
         <TextView
             android:id="@+id/searchErrorTextView"
@@ -191,5 +155,6 @@
         android:layout_marginTop="@dimen/tracks_margin_top"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         tools:itemCount="1"
-        tools:listitem="@layout/track_view" />
+        tools:listitem="@layout/track_view"
+        tools:visibility="gone"/>
 </LinearLayout>

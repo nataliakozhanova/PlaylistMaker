@@ -19,24 +19,27 @@ class LibraryPlaylistsFragment : Fragment() {
 
     private val libraryPlaylistsViewModel: LibraryPlaylistsViewModel by viewModel()
 
-    private lateinit var binding: FragmentLibraryPlaylistsBinding
+    private var _binding: FragmentLibraryPlaylistsBinding? = null
+    private val binding get() = _binding!!
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = FragmentLibraryPlaylistsBinding.inflate(inflater, container, false)
+        _binding = FragmentLibraryPlaylistsBinding.inflate(inflater, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-//        libraryPlaylistsViewModel.observeState().observe(viewLifecycleOwner) {
-//            renderState(it)
-//        }
 
         libraryPlaylistsViewModel.observeState().observe(viewLifecycleOwner, ::renderState)
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
     private fun renderState(state: PlaylistsState) {
