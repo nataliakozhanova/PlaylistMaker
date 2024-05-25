@@ -1,15 +1,17 @@
 package com.practicum.playlistmaker.player.ui.view_model
 
 import android.app.Application
-import android.os.Handler
-import android.os.Looper
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.viewModelScope
 import com.practicum.playlistmaker.player.domain.api.PlayerInteractor
 import com.practicum.playlistmaker.player.domain.api.PlayerListener
 import com.practicum.playlistmaker.player.domain.models.PlayerState
 import com.practicum.playlistmaker.player.ui.models.PlayerVMState
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 class PlayerViewModel(application: Application, private val playerInteractor: PlayerInteractor) :
     AndroidViewModel(application) {
@@ -20,9 +22,11 @@ class PlayerViewModel(application: Application, private val playerInteractor: Pl
 
     private lateinit var playerStateListener: PlayerListener
 
-    private val handler = Handler(Looper.getMainLooper())
+    private var timerJob: Job? = null
 
     private var isAutoPaused: Boolean = false
+
+    private var playerState: PlayerState = PlayerState.INIT
 
     private val stateLiveData = MutableLiveData<PlayerVMState>(PlayerVMState.Default)
     fun observeState(): LiveData<PlayerVMState> = stateLiveData
@@ -35,6 +39,7 @@ class PlayerViewModel(application: Application, private val playerInteractor: Pl
 
         playerStateListener = object : PlayerListener {
             override fun onPlayerChange(state: PlayerState) {
+                playerState = state
                 when (state) {
                     PlayerState.INIT -> {
                         stateLiveData.postValue(PlayerVMState.Prepared)
@@ -47,6 +52,11 @@ class PlayerViewModel(application: Application, private val playerInteractor: Pl
 
                     PlayerState.PAUSED -> {
                         stateLiveData.postValue(PlayerVMState.Pause(playerInteractor.getElapsedTime()))
+                    }
+
+                    PlayerState.FINISH -> {
+                        stateLiveData.postValue(PlayerVMState.Prepared)
+                        timerJob?.cancel()
                     }
                 }
             }
@@ -62,7 +72,7 @@ class PlayerViewModel(application: Application, private val playerInteractor: Pl
 
     private fun pausePlayer() {
         isAutoPaused = false
-        handler?.removeCallbacksAndMessages(null)
+        timerJob?.cancel()
         playerInteractor.pause()
     }
 
@@ -77,24 +87,13 @@ class PlayerViewModel(application: Application, private val playerInteractor: Pl
     }
 
     private fun startTimer() {
-        handler?.post(
-            createUpdateTimerTask()
-        )
-    }
-
-    private fun createUpdateTimerTask(): Runnable {
-        return object : Runnable {
-            override fun run() {
-                when (stateLiveData.value) {
-                    is PlayerVMState.Playing -> {
-                        stateLiveData.postValue(PlayerVMState.Playing(playerInteractor.getElapsedTime()))
-                        handler?.postDelayed(this, DELAY_MILLIS)
-                    }
-
-                    else -> {}
-                }
+        timerJob = viewModelScope.launch {
+            while (playerState == PlayerState.PLAYING) {
+                delay(DELAY_MILLIS)
+                stateLiveData.postValue(PlayerVMState.Playing(playerInteractor.getElapsedTime()))
             }
         }
+
     }
 
     override fun onCleared() {
@@ -102,7 +101,7 @@ class PlayerViewModel(application: Application, private val playerInteractor: Pl
     }
 
     fun pausePlayback() {
-        val isPlaying: Boolean = (stateLiveData.value is PlayerVMState.Playing)
+        val isPlaying: Boolean = (playerState == PlayerState.PLAYING)
         pausePlayer()
         if (isPlaying) isAutoPaused = true
 

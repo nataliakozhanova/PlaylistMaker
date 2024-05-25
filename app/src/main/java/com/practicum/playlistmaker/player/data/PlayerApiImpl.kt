@@ -16,7 +16,7 @@ class PlayerApiImpl(private val mediaPlayer: MediaPlayer) : PlayerApi {
             playerListener.onPlayerChange(PlayerState.INIT)
         }
         mediaPlayer.setOnCompletionListener {
-            playerListener.onPlayerChange(PlayerState.INIT)
+            playerListener.onPlayerChange(PlayerState.FINISH)
         }
     }
 

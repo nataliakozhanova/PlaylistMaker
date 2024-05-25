@@ -3,8 +3,6 @@ package com.practicum.playlistmaker.search.ui.view
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.LayoutInflater
@@ -15,13 +13,16 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import com.practicum.playlistmaker.R
 import com.practicum.playlistmaker.databinding.FragmentSearchBinding
 import com.practicum.playlistmaker.history.ui.models.HistoryState
+import com.practicum.playlistmaker.main.ui.RootActivity
 import com.practicum.playlistmaker.player.ui.view.PlayerActivity
 import com.practicum.playlistmaker.search.ui.models.SearchState
 import com.practicum.playlistmaker.search.ui.models.TrackUI
 import com.practicum.playlistmaker.search.ui.view_model.SearchViewModel
+import com.practicum.playlistmaker.util.debounce
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class SearchFragment : Fragment() {
@@ -30,29 +31,18 @@ class SearchFragment : Fragment() {
         private const val CLICK_DEBOUNCE_DELAY_MILLIS = 1000L
     }
 
+    private lateinit var onTrackClickDebounce: (TrackUI) -> Unit
+
+    private var historyAdapter: TracksAdapter? = null
+    private var searchAdapter: TracksAdapter? = null
+
+
     private var _binding: FragmentSearchBinding? = null
     private val binding get() = _binding!!
 
     private val viewModel by viewModel<SearchViewModel>()
 
-    private val historyAdapter = TracksAdapter { track ->
-        if (clickDebounce()) {
-            openPlayer(track)
-        }
-    }
-
-    private val searchAdapter = TracksAdapter { track ->
-        viewModel.addToHistory(track)
-        if (clickDebounce()) {
-            openPlayer(track)
-        }
-    }
-
     private lateinit var textWatcher: TextWatcher
-
-    private var isClickAllowed = true
-
-    private val handler = Handler(Looper.getMainLooper())
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -65,6 +55,27 @@ class SearchFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        onTrackClickDebounce = debounce<TrackUI>(
+            CLICK_DEBOUNCE_DELAY_MILLIS,
+            viewLifecycleOwner.lifecycleScope,
+            false
+        ) { track ->
+            openPlayer(track)
+        }
+
+        historyAdapter = TracksAdapter { track ->
+            (activity as RootActivity).hideBottomNavigationView()
+            onTrackClickDebounce(track)
+
+        }
+
+        searchAdapter = TracksAdapter { track ->
+            viewModel.addToHistory(track)
+            (activity as RootActivity).hideBottomNavigationView()
+            onTrackClickDebounce(track)
+
+        }
 
         binding.tracksRecyclerView.adapter = searchAdapter
         binding.searchHistoryRecyclerView.adapter = historyAdapter
@@ -136,6 +147,11 @@ class SearchFragment : Fragment() {
 
     }
 
+    override fun onResume() {
+        super.onResume()
+        (activity as RootActivity).showBottomNavigationView()
+    }
+
     override fun onStop() {
         super.onStop()
         viewModel.saveHistory()
@@ -143,6 +159,10 @@ class SearchFragment : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
+        historyAdapter = null
+        searchAdapter = null
+        binding.tracksRecyclerView.adapter = null
+        binding.searchHistoryRecyclerView.adapter = null
         textWatcher.let { binding.searchEditText.removeTextChangedListener(it) }
         _binding = null
     }
@@ -225,14 +245,14 @@ class SearchFragment : Fragment() {
         binding.progressBar.isVisible = false
         hideError()
         binding.tracksRecyclerView.isVisible = true
-        searchAdapter.tracks.clear()
-        searchAdapter.tracks.addAll(tracks)
-        searchAdapter.notifyDataSetChanged()
+        searchAdapter?.tracks?.clear()
+        searchAdapter?.tracks?.addAll(tracks)
+        searchAdapter?.notifyDataSetChanged()
     }
 
     private fun renderHistory(state: HistoryState) {
-        searchAdapter.tracks.clear()
-        searchAdapter.notifyDataSetChanged()
+        searchAdapter?.tracks?.clear()
+        searchAdapter?.notifyDataSetChanged()
         when (state) {
             is HistoryState.Content -> showHistory(state.tracks)
             is HistoryState.Empty -> showEmptyHistory()
@@ -242,25 +262,14 @@ class SearchFragment : Fragment() {
     private fun showHistory(tracks: List<TrackUI>) {
         hideError()
         binding.searchHistoryContainer.isVisible = true
-        historyAdapter.tracks.clear()
-        historyAdapter.tracks.addAll(tracks)
-        historyAdapter.notifyDataSetChanged()
+        historyAdapter?.tracks?.clear()
+        historyAdapter?.tracks?.addAll(tracks)
+        historyAdapter?.notifyDataSetChanged()
     }
 
     private fun showEmptyHistory() {
         hideError()
         binding.searchHistoryContainer.isVisible = false
-    }
-
-    private fun clickDebounce(): Boolean {
-        val current = isClickAllowed
-        if (isClickAllowed) {
-            isClickAllowed = false
-            handler.postDelayed(
-                { isClickAllowed = true }, CLICK_DEBOUNCE_DELAY_MILLIS
-            )
-        }
-        return current
     }
 
 }
