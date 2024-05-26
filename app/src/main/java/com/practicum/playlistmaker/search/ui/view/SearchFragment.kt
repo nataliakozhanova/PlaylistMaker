@@ -245,14 +245,20 @@ class SearchFragment : Fragment() {
         binding.progressBar.isVisible = false
         hideError()
         binding.tracksRecyclerView.isVisible = true
-        searchAdapter?.tracks?.clear()
-        searchAdapter?.tracks?.addAll(tracks)
-        searchAdapter?.notifyDataSetChanged()
+        if (searchAdapter == null) {
+            return
+        }
+        searchAdapter!!.tracks.clear()
+        searchAdapter!!.tracks.addAll(tracks)
+        searchAdapter!!.notifyDataSetChanged()
     }
 
     private fun renderHistory(state: HistoryState) {
-        searchAdapter?.tracks?.clear()
-        searchAdapter?.notifyDataSetChanged()
+        if (searchAdapter == null) {
+            return
+        }
+        searchAdapter!!.tracks.clear()
+        searchAdapter!!.notifyDataSetChanged()
         when (state) {
             is HistoryState.Content -> showHistory(state.tracks)
             is HistoryState.Empty -> showEmptyHistory()
@@ -262,9 +268,12 @@ class SearchFragment : Fragment() {
     private fun showHistory(tracks: List<TrackUI>) {
         hideError()
         binding.searchHistoryContainer.isVisible = true
-        historyAdapter?.tracks?.clear()
-        historyAdapter?.tracks?.addAll(tracks)
-        historyAdapter?.notifyDataSetChanged()
+        if (historyAdapter == null) {
+            return
+        }
+        historyAdapter!!.tracks.clear()
+        historyAdapter!!.tracks.addAll(tracks)
+        historyAdapter!!.notifyDataSetChanged()
     }
 
     private fun showEmptyHistory() {
