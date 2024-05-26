@@ -54,6 +54,7 @@ class PlayerActivity : AppCompatActivity() {
 
         with(binding) {
             playerTrackNameTextView.text = track.trackName
+            valueTrackTimeTextView.text = track.trackTime
             playerArtistNameTextView.text = track.artistName
             valueCollectionTextView.text = track.collectionName
             valueReleaseYearTextView.text = trackYear
