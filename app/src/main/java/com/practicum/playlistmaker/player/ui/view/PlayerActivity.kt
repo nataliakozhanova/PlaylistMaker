@@ -7,12 +7,11 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.practicum.playlistmaker.R
 import com.practicum.playlistmaker.databinding.ActivityPlayerBinding
 import com.practicum.playlistmaker.extensions.safeGetParcelableExtra
+import com.practicum.playlistmaker.player.ui.models.FavoriteState
 import com.practicum.playlistmaker.player.ui.models.PlayerVMState
 import com.practicum.playlistmaker.player.ui.view_model.PlayerViewModel
-import com.practicum.playlistmaker.search.ui.models.TrackUI
+import com.practicum.playlistmaker.search.domain.models.Track
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import java.util.Calendar
-import java.util.Date
 
 class PlayerActivity : AppCompatActivity() {
 
@@ -25,7 +24,7 @@ class PlayerActivity : AppCompatActivity() {
         binding = ActivityPlayerBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val track = intent.safeGetParcelableExtra(name = TrackUI.INTENT_KEY)
+        val track = intent.safeGetParcelableExtra(name = Track.INTENT_KEY)
 
         binding.playerToolbar.setNavigationOnClickListener {
             finish()
@@ -35,15 +34,22 @@ class PlayerActivity : AppCompatActivity() {
             renderPlayer(it)
         }
 
+        viewModel.observeFavoriteState().observe(this) {
+            renderFavorite(it)
+        }
+
         viewModel.preparePlayer(track.previewUrl)
 
         binding.playButton.setOnClickListener {
             viewModel.playbackControl()
         }
 
+        binding.playerFavoriteButton.setOnClickListener {
+            viewModel.onFavoriteClicked(track)
+        }
+
         val trackCoverUrl = track.getArtworkUrl512()
         val trackCornerRadius: Int = applicationContext.resources.getDimensionPixelSize(R.dimen.dp8)
-        val trackYear = getYear(track.releaseDate)
 
         Glide.with(applicationContext)
             .load(trackCoverUrl)
@@ -57,9 +63,15 @@ class PlayerActivity : AppCompatActivity() {
             valueTrackTimeTextView.text = track.trackTime
             playerArtistNameTextView.text = track.artistName
             valueCollectionTextView.text = track.collectionName
-            valueReleaseYearTextView.text = trackYear
+            valueReleaseYearTextView.text = track.releaseDate
             valueGenreTextView.text = track.primaryGenreName
             valueCountryTextView.text = track.country
+        }
+
+        if (track.isFavorite) {
+            binding.playerFavoriteButton.setImageResource(R.drawable.favorite_button_on)
+        } else {
+            binding.playerFavoriteButton.setImageResource(R.drawable.favorite_button)
         }
 
     }
@@ -72,13 +84,6 @@ class PlayerActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         viewModel.resumePlayback()
-    }
-
-
-    private fun getYear(date: Date): String {
-        val cal = Calendar.getInstance()
-        cal.time = date
-        return cal[Calendar.YEAR].toString()
     }
 
     private fun renderPlayer(state: PlayerVMState) {
@@ -97,6 +102,20 @@ class PlayerActivity : AppCompatActivity() {
             is PlayerVMState.Pause -> {
                 binding.playButton.setImageResource(R.drawable.play_button_100_100)
                 binding.timelineTextView.text = state.elapsedTime
+            }
+
+            else -> {}
+        }
+    }
+
+    private fun renderFavorite(state: FavoriteState) {
+        when (state) {
+            is FavoriteState.IsFavorite -> {
+                if (state.isFavorite) {
+                    binding.playerFavoriteButton.setImageResource(R.drawable.favorite_button_on)
+                } else {
+                    binding.playerFavoriteButton.setImageResource(R.drawable.favorite_button)
+                }
             }
 
             else -> {}

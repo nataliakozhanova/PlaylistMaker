@@ -37,12 +37,4 @@ class RootActivity : AppCompatActivity() {
 
     }
 
-    fun hideBottomNavigationView() {
-        binding.bottomNavigationView.isVisible = false
-    }
-
-    fun showBottomNavigationView() {
-        binding.bottomNavigationView.isVisible = true
-    }
-
 }

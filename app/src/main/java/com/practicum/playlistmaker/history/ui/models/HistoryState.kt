@@ -1,11 +1,12 @@
 package com.practicum.playlistmaker.history.ui.models
 
-import com.practicum.playlistmaker.search.ui.models.TrackUI
+import com.practicum.playlistmaker.search.domain.models.Track
+
 
 sealed interface HistoryState  {
 
     data class Content(
-        val tracks: List<TrackUI>
+        val tracks: List<Track>
     ) : HistoryState
 
     object Empty : HistoryState

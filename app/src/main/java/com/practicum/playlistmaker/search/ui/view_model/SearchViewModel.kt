@@ -10,15 +10,17 @@ import com.practicum.playlistmaker.history.domain.api.HistoryInteractor
 import com.practicum.playlistmaker.history.ui.models.HistoryState
 import com.practicum.playlistmaker.search.domain.api.SearchInteractor
 import com.practicum.playlistmaker.search.domain.models.SearchResult
+import com.practicum.playlistmaker.search.domain.models.Track
 import com.practicum.playlistmaker.search.ui.models.SearchState
-import com.practicum.playlistmaker.search.ui.models.TrackUI
+
 import com.practicum.playlistmaker.util.debounce
 import kotlinx.coroutines.launch
 
 class SearchViewModel(
     application: Application,
-    private val historyInteractor : HistoryInteractor,
-    private val searchInteractor: SearchInteractor) : AndroidViewModel(application) {
+    private val historyInteractor: HistoryInteractor,
+    private val searchInteractor: SearchInteractor
+) : AndroidViewModel(application) {
     companion object {
         private const val SEARCH_DEBOUNCE_DELAY_MILLIS = 2000L
     }
@@ -27,11 +29,15 @@ class SearchViewModel(
     private val stateLiveData = MutableLiveData<SearchState>()
     fun observeState(): LiveData<SearchState> = stateLiveData
 
+    private val stateHistoryLiveData = MutableLiveData<HistoryState>()
+    fun observeHistoryState(): LiveData<HistoryState> = stateHistoryLiveData
+
     private var latestSearchText: String? = null
 
-    private val trackSearchDebounce = debounce<String>(SEARCH_DEBOUNCE_DELAY_MILLIS, viewModelScope, true) { changedText ->
-        searchTracks(changedText)
-    }
+    private val trackSearchDebounce =
+        debounce<String>(SEARCH_DEBOUNCE_DELAY_MILLIS, viewModelScope, true) { changedText ->
+            searchTracks(changedText)
+        }
 
     fun searchDebounce(changedText: String) {
         if (latestSearchText != changedText) {
@@ -56,19 +62,17 @@ class SearchViewModel(
             viewModelScope.launch {
                 searchInteractor
                     .getTrackListByName(newSearchText)
-                    .collect {
-                        tracks -> processResult(tracks)
+                    .collect { tracks ->
+                        processResult(tracks)
                     }
             }
         }
     }
 
-    fun processResult(searchResult: SearchResult) {
-        val tracks = mutableListOf<TrackUI>()
+    private fun processResult(searchResult: SearchResult) {
+        val tracks = mutableListOf<Track>()
         if (searchResult.tracks != null) {
-            tracks.addAll(searchResult.tracks.map {
-                TrackUI(it)
-            })
+            tracks.addAll(searchResult.tracks)
         }
 
         when {
@@ -103,23 +107,32 @@ class SearchViewModel(
         renderState(SearchState.Content(tracks = mutableListOf()))
     }
 
-    fun renderState(state: SearchState) {
+    private fun renderState(state: SearchState) {
         stateLiveData.postValue(state)
     }
 
-    fun getHistoryState(): HistoryState {
-        val historyTracks = historyInteractor.getSearchHistory()
-        return if (historyTracks.isEmpty()) {
-            HistoryState.Empty
-        } else {
-            HistoryState.Content(historyTracks.map {
-                TrackUI(it)
-            })
+    fun getHistory() {
+
+        viewModelScope.launch {
+            historyInteractor
+                .getSearchHistory()
+                .collect { historyTracks ->
+                    if (historyTracks.isEmpty()) {
+                        renderHistoryState(HistoryState.Empty)
+                    } else {
+                        renderHistoryState(HistoryState.Content(historyTracks))
+                    }
+                }
         }
+
     }
 
-    fun addToHistory(track: TrackUI) {
-        return historyInteractor.addToSearchHistory(track.convertToTrack())
+    private fun renderHistoryState(historyState: HistoryState) {
+        stateHistoryLiveData.postValue(historyState)
+    }
+
+    fun addToHistory(track: Track) {
+        return historyInteractor.addToSearchHistory(track)
     }
 
     fun deleteHistory() {
