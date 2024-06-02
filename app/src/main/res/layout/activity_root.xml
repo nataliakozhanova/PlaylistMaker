@@ -4,8 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".main.ui.RootActivity.ui.RootActivity"
-    android:animateLayoutChanges="true">
+    tools:context=".main.ui.RootActivity.ui.RootActivity">
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/rootFragmentContainerView"

@@ -1,4 +1,4 @@
-package com.practicum.playlistmaker.history.data.storage
+package com.practicum.playlistmaker.history.data.repo
 
 import com.practicum.playlistmaker.history.data.api.HistoryStorageApi
 import com.practicum.playlistmaker.history.domain.api.HistoryRepository
@@ -15,7 +15,6 @@ class HistoryRepositoryImpl(private val storageApi : HistoryStorageApi) :
         }
         return tracksSearchHistory
     }
-
     override fun saveSearchHistory(tracks: MutableList<Track>) {
         storageApi.write(tracks)
     }

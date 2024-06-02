@@ -2,8 +2,10 @@ package com.practicum.playlistmaker.di
 
 import android.content.Context
 import android.media.MediaPlayer
+import androidx.room.Room
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
+import com.practicum.playlistmaker.favorites.data.db.AppDatabase
 import com.practicum.playlistmaker.history.data.api.HistoryStorageApi
 import com.practicum.playlistmaker.history.data.storage.HistoryStorageImpl
 import com.practicum.playlistmaker.player.data.PlayerApiImpl
@@ -61,6 +63,11 @@ val dataModule = module {
 
     single<SearchApi> {
         SearchApiImpl(get(), androidContext())
+    }
+
+    single {
+        Room.databaseBuilder(androidContext(), AppDatabase::class.java, "database.db")
+            .build()
     }
 
 }

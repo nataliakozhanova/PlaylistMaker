@@ -5,4 +5,5 @@ import kotlinx.coroutines.flow.Flow
 
 interface SearchRepository {
     fun getTrackListByName(expression: String) : Flow<List<Track>>
+    fun getTrackIDs() : Flow<List<Int>>
 }

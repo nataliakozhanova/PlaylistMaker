@@ -5,7 +5,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.practicum.playlistmaker.R
 import com.practicum.playlistmaker.databinding.TrackViewBinding
-import com.practicum.playlistmaker.search.ui.models.TrackUI
+import com.practicum.playlistmaker.search.domain.models.Track
 
 class TracksViewHolder(
     private val clickListener: TracksAdapter.SearchClickListener,
@@ -14,7 +14,7 @@ class TracksViewHolder(
     private val trackCornerRadius: Int =
         itemView.context.resources.getDimensionPixelSize(R.dimen.track_corner_radius)
 
-    fun bind(item: TrackUI) {
+    fun bind(item: Track) {
         binding.trackNameTextView.text = item.trackName
         binding.trackArtistNameTextView.text = item.artistName
         binding.trackTimeTextView.text = item.trackTime

@@ -5,15 +5,22 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import com.practicum.playlistmaker.favorites.domain.db.FavoritesInteractor
 import com.practicum.playlistmaker.player.domain.api.PlayerInteractor
 import com.practicum.playlistmaker.player.domain.api.PlayerListener
 import com.practicum.playlistmaker.player.domain.models.PlayerState
+import com.practicum.playlistmaker.player.ui.models.FavoriteState
 import com.practicum.playlistmaker.player.ui.models.PlayerVMState
+import com.practicum.playlistmaker.search.domain.models.Track
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
-class PlayerViewModel(application: Application, private val playerInteractor: PlayerInteractor) :
+class PlayerViewModel(
+    application: Application,
+    private val playerInteractor: PlayerInteractor,
+    private val favoritesInteractor: FavoritesInteractor
+) :
     AndroidViewModel(application) {
 
     companion object {
@@ -30,6 +37,9 @@ class PlayerViewModel(application: Application, private val playerInteractor: Pl
 
     private val stateLiveData = MutableLiveData<PlayerVMState>(PlayerVMState.Default)
     fun observeState(): LiveData<PlayerVMState> = stateLiveData
+
+    private val stateFavoriteLiveData = MutableLiveData<FavoriteState>(FavoriteState.Default)
+    fun observeFavoriteState(): LiveData<FavoriteState> = stateFavoriteLiveData
 
     fun preparePlayer(url: String) {
         if (stateLiveData.value != PlayerVMState.Default) {
@@ -112,6 +122,21 @@ class PlayerViewModel(application: Application, private val playerInteractor: Pl
         if (isAutoPaused) {
             startPlayer()
         }
+    }
+
+    fun onFavoriteClicked(track: Track) {
+
+        viewModelScope.launch {
+            if (track.isFavorite) {
+                favoritesInteractor.deleteTrackFromFavorites(track)
+                track.isFavorite = false
+            } else {
+                track.isFavorite = true
+                favoritesInteractor.addTrackToFavorites(track)
+            }
+            stateFavoriteLiveData.postValue(FavoriteState.IsFavorite(track.isFavorite))
+        }
+
     }
 
 }

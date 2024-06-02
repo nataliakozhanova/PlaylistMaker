@@ -17,10 +17,9 @@ import androidx.lifecycle.lifecycleScope
 import com.practicum.playlistmaker.R
 import com.practicum.playlistmaker.databinding.FragmentSearchBinding
 import com.practicum.playlistmaker.history.ui.models.HistoryState
-import com.practicum.playlistmaker.main.ui.RootActivity
 import com.practicum.playlistmaker.player.ui.view.PlayerActivity
+import com.practicum.playlistmaker.search.domain.models.Track
 import com.practicum.playlistmaker.search.ui.models.SearchState
-import com.practicum.playlistmaker.search.ui.models.TrackUI
 import com.practicum.playlistmaker.search.ui.view_model.SearchViewModel
 import com.practicum.playlistmaker.util.debounce
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -31,11 +30,16 @@ class SearchFragment : Fragment() {
         private const val CLICK_DEBOUNCE_DELAY_MILLIS = 1000L
     }
 
-    private lateinit var onTrackClickDebounce: (TrackUI) -> Unit
+    private lateinit var onTrackClickDebounce: (Track) -> Unit
 
-    private var historyAdapter: TracksAdapter? = null
-    private var searchAdapter: TracksAdapter? = null
+    private val historyAdapter = TracksAdapter { track ->
+        onTrackClickDebounce(track)
+    }
 
+    private val searchAdapter = TracksAdapter { track ->
+        viewModel.addToHistory(track)
+        onTrackClickDebounce(track)
+    }
 
     private var _binding: FragmentSearchBinding? = null
     private val binding get() = _binding!!
@@ -56,29 +60,16 @@ class SearchFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        onTrackClickDebounce = debounce<TrackUI>(
+        binding.tracksRecyclerView.adapter = searchAdapter
+        binding.searchHistoryRecyclerView.adapter = historyAdapter
+
+        onTrackClickDebounce = debounce<Track>(
             CLICK_DEBOUNCE_DELAY_MILLIS,
             viewLifecycleOwner.lifecycleScope,
             false
         ) { track ->
             openPlayer(track)
         }
-
-        historyAdapter = TracksAdapter { track ->
-            (activity as RootActivity).hideBottomNavigationView()
-            onTrackClickDebounce(track)
-
-        }
-
-        searchAdapter = TracksAdapter { track ->
-            viewModel.addToHistory(track)
-            (activity as RootActivity).hideBottomNavigationView()
-            onTrackClickDebounce(track)
-
-        }
-
-        binding.tracksRecyclerView.adapter = searchAdapter
-        binding.searchHistoryRecyclerView.adapter = historyAdapter
 
         textWatcher = object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
@@ -100,6 +91,7 @@ class SearchFragment : Fragment() {
             override fun afterTextChanged(s: Editable?) {
             }
         }
+
         textWatcher.let { binding.searchEditText.addTextChangedListener(it) }
 
         viewModel.observeState().observe(viewLifecycleOwner) {
@@ -147,11 +139,6 @@ class SearchFragment : Fragment() {
 
     }
 
-    override fun onResume() {
-        super.onResume()
-        (activity as RootActivity).showBottomNavigationView()
-    }
-
     override fun onStop() {
         super.onStop()
         viewModel.saveHistory()
@@ -159,22 +146,19 @@ class SearchFragment : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
-        historyAdapter = null
-        searchAdapter = null
-        binding.tracksRecyclerView.adapter = null
-        binding.searchHistoryRecyclerView.adapter = null
+
         textWatcher.let { binding.searchEditText.removeTextChangedListener(it) }
         _binding = null
     }
 
-    private fun openPlayer(track: TrackUI) {
-
+    private fun openPlayer(track: Track) {
         if (track.previewUrl.isEmpty()) {
             Toast.makeText(requireContext(), getString(R.string.empty_url), Toast.LENGTH_LONG)
                 .show()
         } else {
+            viewModel.checkFavorites(track)
             val intent = Intent(requireContext(), PlayerActivity::class.java)
-            intent.putExtra(TrackUI.INTENT_KEY, track)
+            intent.putExtra(Track.INTENT_KEY, track)
             startActivity(intent)
         }
     }
@@ -241,39 +225,30 @@ class SearchFragment : Fragment() {
         }
     }
 
-    private fun showContent(tracks: List<TrackUI>) {
+    private fun showContent(tracks: List<Track>) {
         binding.progressBar.isVisible = false
         hideError()
         binding.tracksRecyclerView.isVisible = true
-        if (searchAdapter == null) {
-            return
-        }
-        searchAdapter!!.tracks.clear()
-        searchAdapter!!.tracks.addAll(tracks)
-        searchAdapter!!.notifyDataSetChanged()
+        searchAdapter.tracks.clear()
+        searchAdapter.tracks.addAll(tracks)
+        searchAdapter.notifyDataSetChanged()
     }
 
     private fun renderHistory(state: HistoryState) {
-        if (searchAdapter == null) {
-            return
-        }
-        searchAdapter!!.tracks.clear()
-        searchAdapter!!.notifyDataSetChanged()
+        searchAdapter.tracks.clear()
+        searchAdapter.notifyDataSetChanged()
         when (state) {
             is HistoryState.Content -> showHistory(state.tracks)
             is HistoryState.Empty -> showEmptyHistory()
         }
     }
 
-    private fun showHistory(tracks: List<TrackUI>) {
+    private fun showHistory(tracks: List<Track>) {
         hideError()
         binding.searchHistoryContainer.isVisible = true
-        if (historyAdapter == null) {
-            return
-        }
-        historyAdapter!!.tracks.clear()
-        historyAdapter!!.tracks.addAll(tracks)
-        historyAdapter!!.notifyDataSetChanged()
+        historyAdapter.tracks.clear()
+        historyAdapter.tracks.addAll(tracks)
+        historyAdapter.notifyDataSetChanged()
     }
 
     private fun showEmptyHistory() {

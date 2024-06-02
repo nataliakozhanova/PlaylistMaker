@@ -10,15 +10,18 @@ import com.practicum.playlistmaker.history.domain.api.HistoryInteractor
 import com.practicum.playlistmaker.history.ui.models.HistoryState
 import com.practicum.playlistmaker.search.domain.api.SearchInteractor
 import com.practicum.playlistmaker.search.domain.models.SearchResult
+import com.practicum.playlistmaker.search.domain.models.Track
 import com.practicum.playlistmaker.search.ui.models.SearchState
-import com.practicum.playlistmaker.search.ui.models.TrackUI
 import com.practicum.playlistmaker.util.debounce
+import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 
 class SearchViewModel(
     application: Application,
-    private val historyInteractor : HistoryInteractor,
-    private val searchInteractor: SearchInteractor) : AndroidViewModel(application) {
+    private val historyInteractor: HistoryInteractor,
+    private val searchInteractor: SearchInteractor
+) : AndroidViewModel(application) {
     companion object {
         private const val SEARCH_DEBOUNCE_DELAY_MILLIS = 2000L
     }
@@ -29,9 +32,10 @@ class SearchViewModel(
 
     private var latestSearchText: String? = null
 
-    private val trackSearchDebounce = debounce<String>(SEARCH_DEBOUNCE_DELAY_MILLIS, viewModelScope, true) { changedText ->
-        searchTracks(changedText)
-    }
+    private val trackSearchDebounce =
+        debounce<String>(SEARCH_DEBOUNCE_DELAY_MILLIS, viewModelScope, true) { changedText ->
+            searchTracks(changedText)
+        }
 
     fun searchDebounce(changedText: String) {
         if (latestSearchText != changedText) {
@@ -56,19 +60,17 @@ class SearchViewModel(
             viewModelScope.launch {
                 searchInteractor
                     .getTrackListByName(newSearchText)
-                    .collect {
-                        tracks -> processResult(tracks)
+                    .collect { tracks ->
+                        processResult(tracks)
                     }
             }
         }
     }
 
-    fun processResult(searchResult: SearchResult) {
-        val tracks = mutableListOf<TrackUI>()
+    private fun processResult(searchResult: SearchResult) {
+        val tracks = mutableListOf<Track>()
         if (searchResult.tracks != null) {
-            tracks.addAll(searchResult.tracks.map {
-                TrackUI(it)
-            })
+            tracks.addAll(searchResult.tracks)
         }
 
         when {
@@ -103,7 +105,7 @@ class SearchViewModel(
         renderState(SearchState.Content(tracks = mutableListOf()))
     }
 
-    fun renderState(state: SearchState) {
+    private fun renderState(state: SearchState) {
         stateLiveData.postValue(state)
     }
 
@@ -112,14 +114,12 @@ class SearchViewModel(
         return if (historyTracks.isEmpty()) {
             HistoryState.Empty
         } else {
-            HistoryState.Content(historyTracks.map {
-                TrackUI(it)
-            })
+            HistoryState.Content(historyTracks)
         }
     }
 
-    fun addToHistory(track: TrackUI) {
-        return historyInteractor.addToSearchHistory(track.convertToTrack())
+    fun addToHistory(track: Track) {
+        return historyInteractor.addToSearchHistory(track)
     }
 
     fun deleteHistory() {
@@ -128,5 +128,20 @@ class SearchViewModel(
 
     fun saveHistory() {
         return historyInteractor.saveSearchHistory()
+    }
+
+    fun checkFavorites(track: Track) = runBlocking {
+        val idsReceived = searchInteractor.getTracksIDs().toList()
+        if (idsReceived.isEmpty()) {
+            return@runBlocking
+        }
+
+        for (trackId in idsReceived.first()) {
+            if (track.trackId == trackId) {
+                track.isFavorite = true
+                return@runBlocking
+            }
+        }
+        track.isFavorite = false
     }
 }
