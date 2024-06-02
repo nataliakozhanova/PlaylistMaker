@@ -82,7 +82,7 @@ class SearchFragment : Fragment() {
                 binding.searchClearButton.visibility =
                     clearButtonVisibility(binding.searchEditText.editableText)
                 if (binding.searchEditText.hasFocus() && s.isNullOrEmpty()) {
-                    viewModel.getHistory()
+                    renderHistory(viewModel.getHistoryState())
                 } else {
                     showEmptyHistory()
                 }
@@ -98,14 +98,10 @@ class SearchFragment : Fragment() {
             renderSearch(it)
         }
 
-        viewModel.observeHistoryState().observe(viewLifecycleOwner) {
-            renderHistory(it)
-        }
-
         binding.searchEditText.setOnFocusChangeListener { view, hasFocus ->
 
             if (hasFocus && binding.searchEditText.text.isEmpty()) {
-                viewModel.getHistory()
+                renderHistory(viewModel.getHistoryState())
             } else {
                 showEmptyHistory()
             }
@@ -156,11 +152,11 @@ class SearchFragment : Fragment() {
     }
 
     private fun openPlayer(track: Track) {
-
         if (track.previewUrl.isEmpty()) {
             Toast.makeText(requireContext(), getString(R.string.empty_url), Toast.LENGTH_LONG)
                 .show()
         } else {
+            viewModel.checkFavorites(track)
             val intent = Intent(requireContext(), PlayerActivity::class.java)
             intent.putExtra(Track.INTENT_KEY, track)
             startActivity(intent)
@@ -242,14 +238,7 @@ class SearchFragment : Fragment() {
         searchAdapter.tracks.clear()
         searchAdapter.notifyDataSetChanged()
         when (state) {
-            is HistoryState.Content -> {
-                if (state.tracks.isNotEmpty()) {
-                    showHistory(state.tracks)
-                } else {
-                    showEmptyHistory()
-                }
-            }
-
+            is HistoryState.Content -> showHistory(state.tracks)
             is HistoryState.Empty -> showEmptyHistory()
         }
     }

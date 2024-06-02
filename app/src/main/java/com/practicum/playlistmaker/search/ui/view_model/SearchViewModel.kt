@@ -12,9 +12,10 @@ import com.practicum.playlistmaker.search.domain.api.SearchInteractor
 import com.practicum.playlistmaker.search.domain.models.SearchResult
 import com.practicum.playlistmaker.search.domain.models.Track
 import com.practicum.playlistmaker.search.ui.models.SearchState
-
 import com.practicum.playlistmaker.util.debounce
+import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 
 class SearchViewModel(
     application: Application,
@@ -28,9 +29,6 @@ class SearchViewModel(
 
     private val stateLiveData = MutableLiveData<SearchState>()
     fun observeState(): LiveData<SearchState> = stateLiveData
-
-    private val stateHistoryLiveData = MutableLiveData<HistoryState>()
-    fun observeHistoryState(): LiveData<HistoryState> = stateHistoryLiveData
 
     private var latestSearchText: String? = null
 
@@ -111,24 +109,13 @@ class SearchViewModel(
         stateLiveData.postValue(state)
     }
 
-    fun getHistory() {
-
-        viewModelScope.launch {
-            historyInteractor
-                .getSearchHistory()
-                .collect { historyTracks ->
-                    if (historyTracks.isEmpty()) {
-                        renderHistoryState(HistoryState.Empty)
-                    } else {
-                        renderHistoryState(HistoryState.Content(historyTracks))
-                    }
-                }
+    fun getHistoryState(): HistoryState {
+        val historyTracks = historyInteractor.getSearchHistory()
+        return if (historyTracks.isEmpty()) {
+            HistoryState.Empty
+        } else {
+            HistoryState.Content(historyTracks)
         }
-
-    }
-
-    private fun renderHistoryState(historyState: HistoryState) {
-        stateHistoryLiveData.postValue(historyState)
     }
 
     fun addToHistory(track: Track) {
@@ -141,5 +128,20 @@ class SearchViewModel(
 
     fun saveHistory() {
         return historyInteractor.saveSearchHistory()
+    }
+
+    fun checkFavorites(track: Track) = runBlocking {
+        val idsReceived = searchInteractor.getTracksIDs().toList()
+        if (idsReceived.isEmpty()) {
+            return@runBlocking
+        }
+
+        for (trackId in idsReceived.first()) {
+            if (track.trackId == trackId) {
+                track.isFavorite = true
+                return@runBlocking
+            }
+        }
+        track.isFavorite = false
     }
 }

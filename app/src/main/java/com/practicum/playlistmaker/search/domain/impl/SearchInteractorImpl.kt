@@ -16,4 +16,8 @@ class SearchInteractorImpl(private val repository : SearchRepository) : SearchIn
             .catch { e -> emit(SearchResult(emptyList(), true)) }
     }
 
+    override fun getTracksIDs(): Flow<List<Int>> {
+        return repository.getTrackIDs()
+    }
+
 }

@@ -27,15 +27,10 @@ class SearchRepositoryImpl(
                 it.previewUrl
             )
         }
-        val favoritesIDs = checkFavorites()
-        tracks.forEach{track ->
-            track.isFavorite = favoritesIDs.contains(track.trackId)
-        }
         emit(tracks)
     }
 
-    private suspend fun checkFavorites(): List<Int> {
-        return appDatabase.trackDao().getFavoriteTrackIDs()
+    override fun getTrackIDs(): Flow<List<Int>> = flow{
+        emit(appDatabase.trackDao().getFavoriteTrackIDs())
     }
-
 }

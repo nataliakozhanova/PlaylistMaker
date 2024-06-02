@@ -22,7 +22,7 @@ val repositoryModule = module {
     }
 
     single<HistoryRepository> {
-        HistoryRepositoryImpl(get(), get())
+        HistoryRepositoryImpl(get())
     }
 
     single<SearchRepository> {
