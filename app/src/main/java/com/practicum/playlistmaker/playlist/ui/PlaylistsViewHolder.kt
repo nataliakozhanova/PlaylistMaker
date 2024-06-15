@@ -18,7 +18,6 @@ class PlaylistsViewHolder(private val binding: PlaylistCardviewBinding) :
         Glide.with(itemView)
             .load(item.coverUri)
             .placeholder(R.drawable.placeholder)
-            //.centerCrop()
             .transform(CenterCrop(), RoundedCorners(playlistCornerRadius))
             .into(binding.playlistCoverImageView)
 
