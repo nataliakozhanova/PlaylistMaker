@@ -1,6 +1,6 @@
 package com.practicum.playlistmaker.search.data.repo
 
-import com.practicum.playlistmaker.favorites.data.db.AppDatabase
+import com.practicum.playlistmaker.favorites.data.db.AppTrackDatabase
 import com.practicum.playlistmaker.search.data.api.SearchApi
 import com.practicum.playlistmaker.search.domain.api.SearchRepository
 import com.practicum.playlistmaker.search.domain.models.Track
@@ -9,7 +9,7 @@ import kotlinx.coroutines.flow.flow
 
 class SearchRepositoryImpl(
     private val searchApi: SearchApi,
-    private val appDatabase: AppDatabase
+    private val appTrackDatabase: AppTrackDatabase
 ) : SearchRepository {
     override fun getTrackListByName(expression: String): Flow<List<Track>> = flow {
         val response = searchApi.searchTracks(expression)
@@ -31,6 +31,6 @@ class SearchRepositoryImpl(
     }
 
     override fun getTrackIDs(): Flow<List<Int>> = flow{
-        emit(appDatabase.trackDao().getFavoriteTrackIDs())
+        emit(appTrackDatabase.trackDao().getFavoriteTrackIDs())
     }
 }

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="?attr/colorPrimary"
+    android:foreground="?attr/selectableItemBackground"
+    android:orientation="horizontal">
+
+    <ImageView
+        android:id="@+id/playlistBottomSheetImageView"
+        android:layout_width="@dimen/track_icon_size"
+        android:layout_height="@dimen/track_icon_size"
+        android:layout_margin="@dimen/margin"
+        android:src="@drawable/placeholder" />
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_marginVertical="@dimen/dp12"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/playlistNameTextView"
+            style="@style/termsOfUseTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:maxLines="1"
+            tools:text="@string/track_name" />
+
+        <TextView
+            android:id="@+id/numberOfTracksTextView"
+            style="@style/TextViewListArtistName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:maxLines="1"
+            tools:text="@string/track_name" />
+
+    </LinearLayout>
+
+</LinearLayout>

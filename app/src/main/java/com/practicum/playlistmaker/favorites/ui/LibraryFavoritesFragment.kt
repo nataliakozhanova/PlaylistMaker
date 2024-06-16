@@ -1,19 +1,20 @@
-package com.practicum.playlistmaker.library.ui.view
+package com.practicum.playlistmaker.favorites.ui
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.NavHostFragment
 import com.practicum.playlistmaker.R
 import com.practicum.playlistmaker.databinding.FragmentLibraryFavoritesBinding
 import com.practicum.playlistmaker.favorites.presentation.models.FavoritesState
 import com.practicum.playlistmaker.favorites.presentation.view_model.LibraryFavoritesViewModel
-import com.practicum.playlistmaker.player.ui.view.PlayerActivity
+import com.practicum.playlistmaker.player.ui.view.PlayerFragment
 import com.practicum.playlistmaker.search.domain.models.Track
 import com.practicum.playlistmaker.search.ui.view.TracksAdapter
 import com.practicum.playlistmaker.util.debounce
@@ -106,9 +107,10 @@ class LibraryFavoritesFragment : Fragment() {
             Toast.makeText(requireContext(), getString(R.string.empty_url), Toast.LENGTH_LONG)
                 .show()
         } else {
-            val intent = Intent(requireContext(), PlayerActivity::class.java)
-            intent.putExtra(Track.INTENT_KEY, track)
-            startActivity(intent)
+            val bundle = bundleOf(PlayerFragment.TRACK_KEY to track)
+            val navHostFragment = requireActivity().supportFragmentManager.findFragmentById(R.id.rootFragmentContainerView) as NavHostFragment
+            val navController = navHostFragment.navController
+            navController.navigate(R.id.playerFragment, bundle)
         }
     }
 

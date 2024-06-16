@@ -3,6 +3,8 @@ package com.practicum.playlistmaker.library.ui.view
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Lifecycle
 import androidx.viewpager2.adapter.FragmentStateAdapter
+import com.practicum.playlistmaker.favorites.ui.LibraryFavoritesFragment
+import com.practicum.playlistmaker.playlist.ui.LibraryPlaylistsFragment
 
 
 class LibraryViewPagerAdapter (fragmentManager: FragmentManager, lifecycle: Lifecycle)

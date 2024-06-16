@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -12,8 +13,8 @@
         style="@style/AdditionalButtonStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/big_button_margin_top_bottom"
         android:layout_gravity="center_horizontal"
+        android:layout_marginTop="@dimen/big_button_margin_top_bottom"
         android:text="@string/new_playlist"
         app:cornerRadius="@dimen/update_button_corner_radius"
         tools:ignore="TouchTargetSizeCheck"
@@ -26,19 +27,27 @@
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="@dimen/dp46"
         android:src="@drawable/empty_icon"
-        tools:visibility="visible"
-        tools:ignore="ContentDescription" />
+        tools:ignore="ContentDescription"
+        tools:visibility="gone" />
 
     <TextView
         android:id="@+id/playlistsEmptyTextView"
         style="@style/ErrorTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/error_text_view_top"
         android:layout_gravity="center_horizontal"
-        android:textAlignment="center"
+        android:layout_marginTop="@dimen/error_text_view_top"
         android:paddingHorizontal="@dimen/error_padding_horizontal"
         android:text="@string/playlists_empty"
-        tools:visibility="visible" />
+        android:textAlignment="center"
+        tools:visibility="gone" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/playlistsRecyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="@dimen/dp12"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        tools:listitem="@layout/playlist_cardview" />
 
 </LinearLayout>
