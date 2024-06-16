@@ -7,6 +7,7 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.practicum.playlistmaker.R
 import com.practicum.playlistmaker.databinding.PlaylistViewBinding
 import com.practicum.playlistmaker.playlist.domain.models.Playlist
+import com.practicum.playlistmaker.util.getCountable
 
 class PlaylistsBottomSheetViewHolder(
     private val clickListener: PlaylistsBottomSheetAdapter.PlaylistsClickListener,
@@ -24,21 +25,9 @@ class PlaylistsBottomSheetViewHolder(
             .into(binding.playlistBottomSheetImageView)
 
         binding.playlistNameTextView.text = item.playlistName
-        binding.numberOfTracksTextView.text = displayNumber(item.numberOfTracks)
+        binding.numberOfTracksTextView.text = getCountable(item.numberOfTracks, itemView.context.resources)
 
         itemView.setOnClickListener { clickListener.onPlaylistClick(item) }
-    }
-
-    private fun displayNumber(number: Int): String {
-        val template: String =
-            if ((number == 1) || ((number % 10 == 1) && ((number != 11) && (number % 100 != 11)))) {
-                itemView.context.resources.getString(R.string.tracks_sg, number.toString())
-            } else if ((number in 2..4) || (number > 21 && ((number % 10 == 2 || number % 10 == 3 || number % 10 == 4) && (number % 100 != 12 && number % 100 != 13 && number % 100 != 14)))) {
-                itemView.context.resources.getString(R.string.tracks_db, number.toString())
-            } else {
-                itemView.context.resources.getString(R.string.tracks_pl, number.toString())
-            }
-        return template
     }
 
 }

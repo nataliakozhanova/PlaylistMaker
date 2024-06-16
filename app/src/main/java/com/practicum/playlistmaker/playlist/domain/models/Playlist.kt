@@ -17,7 +17,7 @@ class Playlist(
         playlistName = playlistName,
         playlistDescription = playlistDescription,
         coverUri = coverUri,
-        trackIDList = emptyList<String>().toMutableList(),
+        trackIDList = mutableListOf(),
         numberOfTracks = 0
     )
 }

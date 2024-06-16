@@ -126,9 +126,7 @@ class NewPlaylistFragment : Fragment() {
         val description = binding.playlistDescriptionInputEditText.text?.toString() ?: ""
         var inputStream: InputStream? = null
         val externalDir = requireActivity().getExternalFilesDir(Environment.DIRECTORY_PICTURES)
-        if (coverUri != null) {
-            inputStream = requireActivity().contentResolver.openInputStream(coverUri!!)
-        }
+        coverUri?.let {inputStream = requireActivity().contentResolver.openInputStream(coverUri!!)  }
         newPlaylistViewModel.addNewPlaylist(name, description, inputStream, externalDir!!)
     }
 

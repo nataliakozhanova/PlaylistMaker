@@ -7,9 +7,8 @@ import com.practicum.playlistmaker.playlist.data.db.PlaylistEntity
 import com.practicum.playlistmaker.playlist.domain.models.Playlist
 import com.practicum.playlistmaker.search.domain.models.Track
 
-class PlaylistDbConverter {
+class PlaylistDbConverter(private val gson: Gson) {
     fun map(playlist: Playlist) : PlaylistEntity {
-        val gson = Gson()
         val json = gson.toJson(playlist.trackIDList)
         return PlaylistEntity(
             playlist.playlistID,
@@ -22,7 +21,6 @@ class PlaylistDbConverter {
     }
 
     fun map(playlistEntity: PlaylistEntity) : Playlist {
-        val gson = Gson()
         val listType = object : TypeToken<List<String>>() {}.type
         val stringList: List<String> = gson.fromJson(playlistEntity.trackIDList, listType)
         return Playlist(
