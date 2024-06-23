@@ -58,5 +58,27 @@
         <item quantity="many">%1$d треков</item>
         <item quantity="other">%1$d треков</item>
     </plurals>
+    <plurals name="plurals_mitutes">
+        <item quantity="zero">0 минут</item>
+        <item quantity="one">%1$d минута</item>
+        <item quantity="two">%1$d минуты</item>
+        <item quantity="few">%1$d минуты</item>
+        <item quantity="many">%1$d минут</item>
+        <item quantity="other">%1$d минут</item>
+    </plurals>
+    <string name="playlist_name_mock">Очень новый и интересный плейлист с самыми замечательными песнями</string>
+    <string name="playlist_description_mock">2024</string>
+    <string name="playlist_duration_mock">300 минут</string>
+    <string name="playlist_tracks_number_mock">98 треков</string>
+    <string name="deleting_dialog_negative">НЕТ</string>
+    <string name="deleting_dialog_positive">ДА</string>
+    <string name="deleting_dialog_title">Хотите удалить трек?</string>
+    <string name="playlist_menu_share">Поделиться</string>
+    <string name="playlist_menu_edit">Редактировать информацию</string>
+    <string name="playlist_menu_delete">Удалить плейлист</string>
+    <string name="dialog_title_playlist_menu_delete">Хотите удалить плейлист \"%1$s\"?</string>
+    <string name="editing_playlist_toolbar">Редактировать</string>
+    <string name="editing_playlist_save_button">Сохранить</string>
+    <string name="toast_no_tracks_to_share">В этом плейлисте нет списка треков,\nкоторым можно поделиться</string>
 
 </resources>

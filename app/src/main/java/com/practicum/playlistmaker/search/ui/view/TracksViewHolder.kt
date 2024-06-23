@@ -9,6 +9,7 @@ import com.practicum.playlistmaker.search.domain.models.Track
 
 class TracksViewHolder(
     private val clickListener: TracksAdapter.SearchClickListener,
+    private val onLongClickListener: TracksAdapter.TrackLongClickListener,
     private val binding: TrackViewBinding
 ) : RecyclerView.ViewHolder(binding.root) {
 
@@ -30,6 +31,11 @@ class TracksViewHolder(
         binding.trackArtistNameTextView.requestLayout()
 
         itemView.setOnClickListener { clickListener.onTrackClick(item) }
+
+        itemView.setOnLongClickListener {
+            onLongClickListener.onTrackLongClick(item)
+            true
+        }
     }
 }
 

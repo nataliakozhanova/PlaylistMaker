@@ -6,14 +6,18 @@ import androidx.recyclerview.widget.RecyclerView
 import com.practicum.playlistmaker.databinding.PlaylistCardviewBinding
 import com.practicum.playlistmaker.playlist.domain.models.Playlist
 
-class PlaylistAdapter() : RecyclerView.Adapter<PlaylistsViewHolder>() {
+class PlaylistsAdapter(private val playlistClickListener: PlaylistClickListener) :
+    RecyclerView.Adapter<PlaylistsViewHolder>() {
 
     var playlists: ArrayList<Playlist> = ArrayList()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PlaylistsViewHolder {
 
         val layoutInspector = LayoutInflater.from(parent.context)
-        return PlaylistsViewHolder(PlaylistCardviewBinding.inflate(layoutInspector, parent, false) )
+        return PlaylistsViewHolder(
+            playlistClickListener,
+            PlaylistCardviewBinding.inflate(layoutInspector, parent, false)
+        )
     }
 
     override fun getItemCount(): Int {
@@ -22,6 +26,10 @@ class PlaylistAdapter() : RecyclerView.Adapter<PlaylistsViewHolder>() {
 
     override fun onBindViewHolder(holder: PlaylistsViewHolder, position: Int) {
         holder.bind(playlists[position])
+    }
+
+    fun interface PlaylistClickListener {
+        fun onPlaylistClick(playlist: Playlist)
     }
 
 }

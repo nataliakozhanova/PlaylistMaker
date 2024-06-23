@@ -3,7 +3,9 @@ package com.practicum.playlistmaker.di
 import com.practicum.playlistmaker.favorites.presentation.view_model.LibraryFavoritesViewModel
 import com.practicum.playlistmaker.playlist.presentation.view_model.LibraryPlaylistsViewModel
 import com.practicum.playlistmaker.player.ui.view_model.PlayerViewModel
+import com.practicum.playlistmaker.playlist.presentation.view_model.EditingPlaylistViewModel
 import com.practicum.playlistmaker.playlist.presentation.view_model.NewPlaylistViewModel
+import com.practicum.playlistmaker.playlist.presentation.view_model.PlaylistViewModel
 import com.practicum.playlistmaker.search.ui.view_model.SearchViewModel
 import com.practicum.playlistmaker.settings.ui.view_model.SettingsViewModel
 import com.practicum.playlistmaker.sharing.domain.api.SharingInteractor
@@ -38,5 +40,13 @@ val viewModelModule = module {
 
     viewModel {
         NewPlaylistViewModel(get())
+    }
+    viewModel {(playlistId: Int) ->
+        val sharingInteractor : SharingInteractor by inject { parametersOf("", "", EmailData("", "", ""))  }
+        PlaylistViewModel(playlistId, get(), sharingInteractor)
+    }
+
+    viewModel{(playlistId: Int) ->
+        EditingPlaylistViewModel(get(), playlistId)
     }
 }
