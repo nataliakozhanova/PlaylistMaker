@@ -7,7 +7,8 @@ import com.practicum.playlistmaker.databinding.TrackViewBinding
 import com.practicum.playlistmaker.search.domain.models.Track
 
 class TracksAdapter(
-    private val searchClickListener: SearchClickListener
+    private val searchClickListener: SearchClickListener,
+    private val trackLongClickListener: TrackLongClickListener,
 ) : RecyclerView.Adapter<TracksViewHolder>() {
 
     var tracks: ArrayList<Track> = ArrayList()
@@ -15,7 +16,7 @@ class TracksAdapter(
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TracksViewHolder {
 
         val layoutInspector = LayoutInflater.from(parent.context)
-        return TracksViewHolder(searchClickListener, TrackViewBinding.inflate(layoutInspector, parent, false))
+        return TracksViewHolder(searchClickListener, trackLongClickListener, TrackViewBinding.inflate(layoutInspector, parent, false))
     }
 
     override fun onBindViewHolder(holder: TracksViewHolder, position: Int) {
@@ -28,6 +29,10 @@ class TracksAdapter(
 
     fun interface SearchClickListener {
         fun onTrackClick(track: Track)
+    }
+
+    fun interface TrackLongClickListener {
+        fun onTrackLongClick(track: Track)
     }
 
 }

@@ -7,9 +7,12 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.practicum.playlistmaker.R
 import com.practicum.playlistmaker.databinding.PlaylistCardviewBinding
 import com.practicum.playlistmaker.playlist.domain.models.Playlist
-import com.practicum.playlistmaker.util.getCountable
+import com.practicum.playlistmaker.util.getCountableTracks
 
-class PlaylistsViewHolder(private val binding: PlaylistCardviewBinding) :
+class PlaylistsViewHolder(
+    private val clickListener: PlaylistsAdapter.PlaylistClickListener,
+    private val binding: PlaylistCardviewBinding,
+) :
     RecyclerView.ViewHolder(binding.root) {
 
     private val playlistCornerRadius: Int =
@@ -25,7 +28,10 @@ class PlaylistsViewHolder(private val binding: PlaylistCardviewBinding) :
 
         binding.playlistNameTextView.text = item.playlistName
 
-        binding.numberOfTracksTextView.text = getCountable(item.numberOfTracks, itemView.context.resources)
+        binding.numberOfTracksTextView.text =
+            getCountableTracks(item.numberOfTracks, itemView.context.resources)
+
+        itemView.setOnClickListener { clickListener.onPlaylistClick(item) }
     }
 
 }

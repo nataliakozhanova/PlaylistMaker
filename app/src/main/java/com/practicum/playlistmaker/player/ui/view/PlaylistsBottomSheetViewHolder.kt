@@ -7,7 +7,7 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.practicum.playlistmaker.R
 import com.practicum.playlistmaker.databinding.PlaylistViewBinding
 import com.practicum.playlistmaker.playlist.domain.models.Playlist
-import com.practicum.playlistmaker.util.getCountable
+import com.practicum.playlistmaker.util.getCountableTracks
 
 class PlaylistsBottomSheetViewHolder(
     private val clickListener: PlaylistsBottomSheetAdapter.PlaylistsClickListener,
@@ -25,7 +25,7 @@ class PlaylistsBottomSheetViewHolder(
             .into(binding.playlistBottomSheetImageView)
 
         binding.playlistNameTextView.text = item.playlistName
-        binding.numberOfTracksTextView.text = getCountable(item.numberOfTracks, itemView.context.resources)
+        binding.numberOfTracksTextView.text = getCountableTracks(item.numberOfTracks, itemView.context.resources)
 
         itemView.setOnClickListener { clickListener.onPlaylistClick(item) }
     }

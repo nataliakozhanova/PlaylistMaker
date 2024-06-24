@@ -3,8 +3,6 @@ package com.practicum.playlistmaker.playlist.ui
 import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
-import android.text.Editable
-import android.text.TextWatcher
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -17,6 +15,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
+import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
@@ -28,16 +27,14 @@ import com.practicum.playlistmaker.playlist.presentation.view_model.NewPlaylistV
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.io.InputStream
 
-class NewPlaylistFragment : Fragment() {
+open class NewPlaylistFragment : Fragment() {
 
-    private val newPlaylistViewModel: NewPlaylistViewModel by viewModel()
+    protected lateinit var managedPlaylistViewModel: NewPlaylistViewModel
 
     private var _binding: FragmentNewPlaylistBinding? = null
-    private val binding get() = _binding!!
+    protected val binding get() = _binding!!
 
-    private lateinit var nameTextWatcher: TextWatcher
-
-    private var coverUri: Uri? = null
+    protected var coverUri: Uri? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -51,17 +48,19 @@ class NewPlaylistFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        onCreateViewModel()
+
         binding.createPlaylistButton.isEnabled = false
 
         (activity as? AppCompatActivity)?.setSupportActionBar(binding.newPlaylistToolbar)
         binding.newPlaylistToolbar.setNavigationOnClickListener {
-            showDialog()
+            onBackPressedNavigation()
         }
 
         val dispatcher = requireActivity().onBackPressedDispatcher
         dispatcher.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
-                showDialog()
+                onBackPressedNavigation()
             }
         })
 
@@ -71,12 +70,7 @@ class NewPlaylistFragment : Fragment() {
                 if (uri != null) {
                     binding.addPhotoImageView.isVisible = false
                     binding.playListCoverImageView.isVisible = true
-                    val trackCornerRadius: Int =
-                        requireActivity().applicationContext.resources.getDimensionPixelSize(R.dimen.dp8)
-                    Glide.with(requireActivity().applicationContext)
-                        .load(uri)
-                        .transform(CenterCrop(), RoundedCorners(trackCornerRadius))
-                        .into(binding.playListCoverImageView)
+                    renderCover(uri.toString())
                 } else {
                     Log.d("PhotoPicker", "No media selected")
                 }
@@ -93,31 +87,17 @@ class NewPlaylistFragment : Fragment() {
 
 
         binding.createPlaylistButton.setOnClickListener {
-            createPlaylist()
-            val playlistName = binding.playlistNameInputEditText.text.toString()
-            showToast(playlistName)
-            findNavController().navigateUp()
-
+            onSavePlaylistClick()
         }
 
-        nameTextWatcher = object : TextWatcher {
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-            }
-
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                binding.createPlaylistButton.isEnabled = !s.isNullOrEmpty()
-            }
-
-            override fun afterTextChanged(s: Editable?) {
-            }
+        binding.playlistNameInputEditText.doOnTextChanged { text, _, _, _ ->
+            binding.createPlaylistButton.isEnabled = !text.isNullOrEmpty()
         }
-        binding.playlistNameInputEditText.addTextChangedListener(nameTextWatcher)
 
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
-        nameTextWatcher.let { binding.playlistNameInputEditText.removeTextChangedListener(it) }
         _binding = null
     }
 
@@ -127,7 +107,7 @@ class NewPlaylistFragment : Fragment() {
         var inputStream: InputStream? = null
         val externalDir = requireActivity().getExternalFilesDir(Environment.DIRECTORY_PICTURES)
         coverUri?.let {inputStream = requireActivity().contentResolver.openInputStream(coverUri!!)  }
-        newPlaylistViewModel.addNewPlaylist(name, description, inputStream, externalDir!!)
+        managedPlaylistViewModel.savePlaylistInfo(name, description, inputStream, externalDir!!)
     }
 
     private fun showToast(playlistName: String) {
@@ -159,5 +139,29 @@ class NewPlaylistFragment : Fragment() {
                 ?.setTextColor(ContextCompat.getColor(requireContext(), R.color.blue))
         }
 
+    }
+
+    protected open fun onCreateViewModel(){
+        managedPlaylistViewModel = viewModel<NewPlaylistViewModel>().value
+    }
+
+    protected open fun onBackPressedNavigation() {
+        showDialog()
+    }
+
+    protected open fun onSavePlaylistClick(){
+        createPlaylist()
+        val playlistName = binding.playlistNameInputEditText.text.toString()
+        showToast(playlistName)
+        findNavController().navigateUp()
+    }
+
+    protected fun renderCover(uri: String){
+        val trackCornerRadius: Int =
+            requireActivity().applicationContext.resources.getDimensionPixelSize(R.dimen.dp8)
+        Glide.with(requireActivity().applicationContext)
+            .load(uri)
+            .transform(CenterCrop(), RoundedCorners(trackCornerRadius))
+            .into(binding.playListCoverImageView)
     }
 }

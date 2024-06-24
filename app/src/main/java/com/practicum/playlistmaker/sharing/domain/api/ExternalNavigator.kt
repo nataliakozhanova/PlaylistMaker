@@ -7,4 +7,5 @@ interface ExternalNavigator {
     fun shareLink(link :String): Intent
     fun openLink(link: String): Intent
     fun openEmail(emailData : EmailData): Intent
+    fun sharePlaylist(playlistToShare: String): Intent
 }

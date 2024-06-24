@@ -6,7 +6,7 @@ import android.os.Bundle
 import com.practicum.playlistmaker.search.domain.models.Track
 
 @Suppress("Deprecation")
-fun Bundle.safeGetParcelableExtra(name: String): Track {
+fun Bundle.safeGetParcelableTrack(name: String): Track {
     val track: Track? = when {
         SDK_INT >= Build.VERSION_CODES.TIRAMISU -> {
             getParcelable(name, Track::class.java)
@@ -17,4 +17,3 @@ fun Bundle.safeGetParcelableExtra(name: String): Track {
     if (track != null) return track
     return Track()
 }
-

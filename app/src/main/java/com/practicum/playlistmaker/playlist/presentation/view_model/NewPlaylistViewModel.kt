@@ -8,11 +8,11 @@ import kotlinx.coroutines.launch
 import java.io.File
 import java.io.InputStream
 
-class NewPlaylistViewModel(private val playlistInteractor: PlaylistInteractor) : ViewModel() {
+open class NewPlaylistViewModel(protected val playlistInteractor: PlaylistInteractor) : ViewModel() {
 
-    private var coverUri: String = ""
+    protected var coverUri: String = ""
 
-    fun addNewPlaylist(playlistName: String, playlistDescription: String, inputStream: InputStream?, externalDir: File) {
+    open fun savePlaylistInfo(playlistName: String, playlistDescription: String, inputStream: InputStream?, externalDir: File) {
 
         coverUri = if(inputStream != null){
             playlistInteractor.saveCoverFile(inputStream, externalDir)

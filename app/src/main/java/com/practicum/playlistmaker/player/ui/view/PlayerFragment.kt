@@ -14,7 +14,7 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.practicum.playlistmaker.R
 import com.practicum.playlistmaker.databinding.FragmentPlayerBinding
-import com.practicum.playlistmaker.extensions.safeGetParcelableExtra
+import com.practicum.playlistmaker.extensions.safeGetParcelableTrack
 import com.practicum.playlistmaker.player.ui.models.FavoriteState
 import com.practicum.playlistmaker.player.ui.models.PlayerVMState
 import com.practicum.playlistmaker.player.ui.view_model.PlayerViewModel
@@ -70,7 +70,7 @@ class PlayerFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        track = requireArguments().safeGetParcelableExtra(TRACK_KEY)
+        track = requireArguments().safeGetParcelableTrack(TRACK_KEY)
 
         binding.playlistsBottomSheetRecyclerView.adapter = playlistsBottomSheetAdapter
 
@@ -124,6 +124,7 @@ class PlayerFragment : Fragment() {
         } else {
             binding.playerFavoriteButton.setImageResource(R.drawable.favorite_button)
         }
+
         binding.overlay.isVisible = false
         val bottomSheetBehavior = BottomSheetBehavior.from(binding.addToPlaylistBottomSheet).apply {
             state = BottomSheetBehavior.STATE_HIDDEN

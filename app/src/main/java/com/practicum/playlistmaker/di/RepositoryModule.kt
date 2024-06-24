@@ -37,7 +37,7 @@ val repositoryModule = module {
     factory { PlaylistDbConverter(get()) }
 
     single<FavoritesRepository> {
-        FavoritesRepositoryImpl(get(), get())
+        FavoritesRepositoryImpl(get(), get(), get())
     }
 
     single<PlaylistRepository> {

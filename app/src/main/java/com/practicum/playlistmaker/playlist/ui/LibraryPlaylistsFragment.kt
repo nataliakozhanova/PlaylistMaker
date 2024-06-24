@@ -26,11 +26,11 @@ class LibraryPlaylistsFragment : Fragment() {
     private var _binding: FragmentLibraryPlaylistsBinding? = null
     private val binding get() = _binding!!
 
-    private var playlistsAdapter : PlaylistAdapter = PlaylistAdapter()
+    private var playlistsAdapter = PlaylistsAdapter { playlist -> openPlaylist(playlist) }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View? {
         _binding = FragmentLibraryPlaylistsBinding.inflate(inflater, container, false)
         return binding.root
@@ -71,6 +71,7 @@ class LibraryPlaylistsFragment : Fragment() {
             is PlaylistsState.Content -> showContent(state.playlists)
         }
     }
+
     private fun showEmpty(): Unit = with(binding) {
         newPlaylistButton.isVisible = true
         emptyImageView.isVisible = true
@@ -86,6 +87,13 @@ class LibraryPlaylistsFragment : Fragment() {
         playlistsAdapter.playlists.clear()
         playlistsAdapter.playlists.addAll(playlists)
         playlistsAdapter.notifyDataSetChanged()
+    }
+
+    private fun openPlaylist(playlist: Playlist) {
+        findNavController().navigate(
+            R.id.action_libraryFragment_to_playlistFragment,
+            PlaylistFragment.createArgs(playlist.playlistID)
+        )
     }
 
 }

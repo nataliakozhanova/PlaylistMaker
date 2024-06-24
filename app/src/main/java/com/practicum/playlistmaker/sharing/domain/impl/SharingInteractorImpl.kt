@@ -22,4 +22,8 @@ class SharingInteractorImpl(
     override fun openSupport() : Intent {
         return externalNavigator.openEmail(emailData)
     }
+
+    override fun sharePlaylist(playlist: String) : Intent {
+        return externalNavigator.sharePlaylist(playlist)
+    }
 }

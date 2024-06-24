@@ -29,9 +29,11 @@ class LibraryFavoritesFragment : Fragment() {
 
     private lateinit var onTrackClickDebounce: (Track) -> Unit
 
-    private val favoritesAdapter = TracksAdapter { track ->
-        onTrackClickDebounce(track)
-    }
+    private val favoritesAdapter = TracksAdapter(
+        { track ->
+            onTrackClickDebounce(track)
+        },
+        { _ -> return@TracksAdapter })
 
     private var _binding: FragmentLibraryFavoritesBinding? = null
     private val binding get() = _binding!!
@@ -40,7 +42,7 @@ class LibraryFavoritesFragment : Fragment() {
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View? {
         _binding = FragmentLibraryFavoritesBinding.inflate(inflater, container, false)
         return binding.root
@@ -108,7 +110,8 @@ class LibraryFavoritesFragment : Fragment() {
                 .show()
         } else {
             val bundle = bundleOf(PlayerFragment.TRACK_KEY to track)
-            val navHostFragment = requireActivity().supportFragmentManager.findFragmentById(R.id.rootFragmentContainerView) as NavHostFragment
+            val navHostFragment =
+                requireActivity().supportFragmentManager.findFragmentById(R.id.rootFragmentContainerView) as NavHostFragment
             val navController = navHostFragment.navController
             navController.navigate(R.id.playerFragment, bundle)
         }

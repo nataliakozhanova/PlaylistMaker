@@ -33,14 +33,18 @@ class SearchFragment : Fragment() {
 
     private lateinit var onTrackClickDebounce: (Track) -> Unit
 
-    private val historyAdapter = TracksAdapter { track ->
-        onTrackClickDebounce(track)
-    }
+    private val historyAdapter = TracksAdapter(
+        { track ->
+            onTrackClickDebounce(track)
+        },
+        { _ -> return@TracksAdapter })
 
-    private val searchAdapter = TracksAdapter { track ->
-        viewModel.addToHistory(track)
-        onTrackClickDebounce(track)
-    }
+    private val searchAdapter = TracksAdapter(
+        { track ->
+            viewModel.addToHistory(track)
+            onTrackClickDebounce(track)
+        },
+        { _ -> return@TracksAdapter })
 
     private var _binding: FragmentSearchBinding? = null
     private val binding get() = _binding!!
@@ -52,7 +56,7 @@ class SearchFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View? {
         _binding = FragmentSearchBinding.inflate(inflater, container, false)
         return binding.root
@@ -159,7 +163,8 @@ class SearchFragment : Fragment() {
         } else {
             viewModel.checkFavorites(track)
             val bundle = bundleOf(PlayerFragment.TRACK_KEY to track)
-            val navHostFragment = requireActivity().supportFragmentManager.findFragmentById(R.id.rootFragmentContainerView) as NavHostFragment
+            val navHostFragment =
+                requireActivity().supportFragmentManager.findFragmentById(R.id.rootFragmentContainerView) as NavHostFragment
             val navController = navHostFragment.navController
             navController.navigate(R.id.playerFragment, bundle)
         }

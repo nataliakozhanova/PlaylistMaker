@@ -26,4 +26,11 @@ class ExternalNavigatorImpl() : ExternalNavigator {
         writeIntent.putExtra(Intent.EXTRA_TEXT, emailData.text)
         return writeIntent
     }
+
+    override fun sharePlaylist(playlistToShare: String): Intent {
+        val shareIntent = Intent(Intent.ACTION_SEND)
+        shareIntent.setType("text/plain")
+        shareIntent.putExtra(Intent.EXTRA_TEXT, playlistToShare)
+        return (Intent.createChooser(shareIntent, ""))
+    }
 }
