@@ -90,16 +90,16 @@ class PlaylistFragment : Fragment() {
         }
 
         binding.overlay.isVisible = false
-        val bottomSheetBehavior = BottomSheetBehavior.from(binding.menuPlaylistBottomSheet).apply {
+        val menuBottomSheetBehavior = BottomSheetBehavior.from(binding.menuPlaylistBottomSheet).apply {
             state = BottomSheetBehavior.STATE_HIDDEN
         }
 
         binding.morePlaylistButton.setOnClickListener {
-            bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
+            menuBottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
             renderMenuBottomSheet()
         }
 
-        bottomSheetBehavior.addBottomSheetCallback(object :
+        menuBottomSheetBehavior.addBottomSheetCallback(object :
             BottomSheetBehavior.BottomSheetCallback() {
 
             override fun onStateChanged(bottomSheet: View, newState: Int) {
@@ -128,7 +128,7 @@ class PlaylistFragment : Fragment() {
         }
 
         binding.sharePlaylistTextView.setOnClickListener {
-            bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
+            menuBottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
             sharePlaylist()
         }
 
@@ -170,6 +170,7 @@ class PlaylistFragment : Fragment() {
             playlistOpenedTracksNumberTextView.text =
                 getCountableTracks(playlist.numberOfTracks, requireContext().resources)
             tracksInPlaylistBottomSheetRecyclerView.isVisible = true
+            tracksEmptyTextView.isVisible = playlist.trackIDList.isEmpty()
         }
 
         trackPlaylistsAdapter.tracks.clear()

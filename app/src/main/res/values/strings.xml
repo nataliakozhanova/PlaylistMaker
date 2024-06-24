@@ -80,5 +80,6 @@
     <string name="editing_playlist_toolbar">Редактировать</string>
     <string name="editing_playlist_save_button">Сохранить</string>
     <string name="toast_no_tracks_to_share">В этом плейлисте нет списка треков,\nкоторым можно поделиться</string>
+    <string name="message_no_tracks_in_playlist">В этом плейлисте еще нет треков</string>
 
 </resources>
