@@ -28,7 +28,7 @@
             android:layout_height="wrap_content"
             android:ellipsize="end"
             android:maxLines="1"
-            tools:text="@string/track_name" />
+            tools:text="@string/playlist_name_mock" />
 
         <TextView
             android:id="@+id/numberOfTracksTextView"
@@ -37,7 +37,7 @@
             android:layout_height="wrap_content"
             android:ellipsize="end"
             android:maxLines="1"
-            tools:text="@string/track_name" />
+            tools:text="@string/playlist_tracks_number_mock" />
 
     </LinearLayout>
 

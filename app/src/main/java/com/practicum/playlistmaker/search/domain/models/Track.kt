@@ -19,7 +19,7 @@ class Track(
     val primaryGenreName: String,
     val country: String,
     val previewUrl: String,
-    var isFavorite: Boolean = false
+    var isFavorite: Boolean = false,
 ) : Parcelable {
 
     constructor(
@@ -33,7 +33,7 @@ class Track(
         primaryGenreName: String?,
         country: String?,
         previewUrl: String?,
-        isFavorite: Boolean = false
+        isFavorite: Boolean = false,
     ) : this(
         trackId = trackId,
         trackName = trackName ?: "",
@@ -62,10 +62,6 @@ class Track(
         false
     )
 
-    companion object {
-        const val INTENT_KEY = "track"
-    }
-
     fun getArtworkUrl512(): String {
         return artworkUrl100.replaceAfterLast('/', "512x512bb.jpg")
     }
@@ -78,8 +74,16 @@ fun getTrackTime(trackTime: Long?): String {
     return dateFormat.format(trackTime)
 }
 
-    private fun getYear(date: Date): String {
-        val cal = Calendar.getInstance()
-        cal.time = date
-        return cal[Calendar.YEAR].toString()
-    }
+fun getTrackTimeInSeconds(trackTime: String): Int {
+
+    val parts = trackTime.split(":")
+    val minutes = parts[0].toIntOrNull() ?: 0
+    val seconds = parts[1].toIntOrNull() ?: 0
+    return minutes * 60 + seconds
+}
+
+private fun getYear(date: Date): String {
+    val cal = Calendar.getInstance()
+    cal.time = date
+    return cal[Calendar.YEAR].toString()
+}

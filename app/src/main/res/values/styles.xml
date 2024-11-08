@@ -151,4 +151,19 @@
 
     </style>
 
+    <style name="TextViewPlaylistName">
+        <item name="android:textSize">@dimen/playlist_name_text_size</item>
+        <item name="android:textFontWeight">700</item>
+        <item name="android:letterSpacing">0</item>
+        <item name="android:fontFamily">@font/ys_display_bold</item>
+        <item name="android:textColor">@color/black</item>
+    </style>
+    <style name="TextViewPlaylistDescription">
+        <item name="android:textSize">@dimen/playlist_description_text_size</item>
+        <item name="android:textFontWeight">400</item>
+        <item name="android:letterSpacing">0</item>
+        <item name="android:fontFamily">@font/ys_display_regular</item>
+        <item name="android:textColor">@color/black</item>
+    </style>
+
 </resources>

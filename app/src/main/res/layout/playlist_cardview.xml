@@ -8,7 +8,7 @@
     android:layout_marginHorizontal="@dimen/dp4"
     android:layout_marginBottom="@dimen/dp12"
     android:background="?attr/colorPrimary"
-    card_view:cardElevation="1dp"
+    card_view:cardElevation="0dp"
     android:foreground="?attr/selectableItemBackground">
 
     <LinearLayout
@@ -40,7 +40,7 @@
             android:layout_height="wrap_content"
             android:ellipsize="end"
             android:maxLines="1"
-            android:padding="2dp"
+            android:padding="@dimen/dp2"
             tools:text="Something" />
         <TextView
             android:id="@+id/numberOfTracksTextView"
@@ -49,7 +49,7 @@
             android:layout_height="wrap_content"
             android:ellipsize="end"
             android:maxLines="1"
-            android:padding="2dp"
+            android:padding="@dimen/dp2"
             tools:text="100500 tracks" />
     </LinearLayout>
 
