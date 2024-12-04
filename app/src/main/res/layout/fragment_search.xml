@@ -20,7 +20,6 @@
         app:title="@string/search"
         app:titleTextAppearance="@style/TextHeader" />
 
-    <!-- FrameLayout -->
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/searchTextInputLayout"
         android:layout_width="match_parent"
