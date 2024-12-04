@@ -84,7 +84,7 @@ class SearchFragment : Fragment() {
                 viewModel.searchDebounce(
                     changedText = s?.toString() ?: ""
                 )
-                binding.searchClearButton.visibility =
+                binding.searchTextInputLayout.isEndIconVisible =
                     clearButtonVisibility(binding.searchEditText.editableText)
                 if (binding.searchEditText.hasFocus() && s.isNullOrEmpty()) {
                     renderHistory(viewModel.getHistoryState())
@@ -105,7 +105,7 @@ class SearchFragment : Fragment() {
 
         binding.searchEditText.setOnFocusChangeListener { view, hasFocus ->
 
-            if (hasFocus && binding.searchEditText.text.isEmpty()) {
+            if (hasFocus && binding.searchEditText.text.isNullOrEmpty()) {
                 renderHistory(viewModel.getHistoryState())
             } else {
                 showEmptyHistory()
@@ -117,7 +117,7 @@ class SearchFragment : Fragment() {
             showEmptyHistory()
         }
 
-        binding.searchClearButton.setOnClickListener {
+        binding.searchTextInputLayout.setEndIconOnClickListener {
 
             val inputMethodManager =
                 requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
@@ -127,7 +127,7 @@ class SearchFragment : Fragment() {
             )
             binding.searchEditText.setText("")
             viewModel.removeSearchedText()
-            binding.searchClearButton.isVisible = false
+            binding.searchTextInputLayout.isEndIconVisible = false
         }
 
         binding.searchEditText.setOnEditorActionListener { _, actionId, _ ->
@@ -141,6 +141,7 @@ class SearchFragment : Fragment() {
         binding.updateButton.setOnClickListener {
             viewModel.searchByClick(binding.searchEditText.text.toString())
         }
+
 
     }
 
@@ -170,12 +171,8 @@ class SearchFragment : Fragment() {
         }
     }
 
-    private fun clearButtonVisibility(editable: Editable?): Int {
-        return if (editable.isNullOrEmpty()) {
-            View.GONE
-        } else {
-            View.VISIBLE
-        }
+    private fun clearButtonVisibility(editable: Editable?): Boolean {
+        return !editable.isNullOrEmpty()
     }
 
     private fun renderSearch(state: SearchState) {

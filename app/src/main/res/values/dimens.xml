@@ -78,4 +78,6 @@
     <dimen name="dp5">5dp</dimen>
     <dimen name="dp2">2dp</dimen>
     <dimen name="dp240">240dp</dimen>
+    <dimen name="dp48">48dp</dimen>
+
 </resources>

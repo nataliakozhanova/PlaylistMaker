@@ -9,7 +9,7 @@
         android:id="@+id/searchFragment"
         android:name="com.practicum.playlistmaker.search.ui.view.SearchFragment"
         android:label="fragment_search"
-        tools:layout="@layout/fragment_search">
+        tools:layout="@layout/fragment_search_old">
 
         <action
             android:id="@+id/action_searchFragment_to_playerFragment"

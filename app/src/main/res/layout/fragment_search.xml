@@ -1,67 +1,73 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="?attr/colorPrimary"
-    android:orientation="vertical"
     android:padding="@dimen/padding_main"
-    tools:context=".search.ui.view.SearchActivity">
+    tools:context=".search.ui.view.SearchFragment">
 
+    <!-- Toolbar -->
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/searchToolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:theme="@style/ToolbarTheme"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         app:title="@string/search"
         app:titleTextAppearance="@style/TextHeader" />
 
-    <FrameLayout
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/searchTextInputLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="@dimen/list_margin_start"
-        android:layout_marginVertical="@dimen/list_margin_end"
-        tools:context=".search.ui.view.SearchActivity">
+        android:layout_marginHorizontal="@dimen/dp12"
+        android:layout_marginVertical="@dimen/dp8"
+        android:background="@drawable/round_outline"
+        app:boxBackgroundMode="none"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/searchToolbar"
+        app:startIconDrawable="@drawable/search_icon"
+        app:endIconDrawable="@drawable/clear_dark"
+        app:startIconTint="?attr/colorSecondaryVariant"
+        app:hintEnabled="false"
+        app:endIconMode="clear_text"
+        app:endIconTint="?attr/colorSecondaryVariant">
 
-        <EditText
+        <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/searchEditText"
-            style="@style/EditTextSearch"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/edit_text_layout_height"
-            android:background="@drawable/round_outline"
-            android:drawableStart="@drawable/search_icon"
-            android:drawablePadding="@dimen/padding"
-            android:drawableTint="?attr/colorSecondaryVariant"
+            android:layout_height="match_parent"
             android:hint="@string/search"
-            android:imeOptions="actionDone"
+            android:textColorHint="?attr/colorSecondaryVariant"
             android:inputType="text"
-            android:letterSpacing="0"
             android:maxLength="30"
             android:maxLines="1"
-            android:paddingHorizontal="@dimen/edit_text_padding_horizontal"
-            android:singleLine="true"
-            tools:ignore="TouchTargetSizeCheck,VisualLintTextFieldSize" />
+            android:gravity="center_vertical"
+            android:paddingStart="@dimen/dp48"
+            android:paddingTop="0dp"
+            android:paddingBottom="0dp"
+            android:textAppearance="@style/EditTextSearch"
+            tools:ignore="RtlSymmetry" />
+    </com.google.android.material.textfield.TextInputLayout>
 
-        <ImageView
-            android:id="@+id/searchClearButton"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_gravity="end"
-            android:paddingHorizontal="@dimen/edit_text_padding_horizontal"
-            android:src="@drawable/clear_dark"
-            android:visibility="gone"
-            app:tint="?attr/colorSecondaryVariant" />
-    </FrameLayout>
-
+    <!-- История поиска -->
     <LinearLayout
         android:id="@+id/searchHistoryContainer"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:layout_marginTop="@dimen/frame_margin_top"
         android:gravity="center"
         android:orientation="vertical"
         android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/searchTextInputLayout"
         tools:visibility="gone">
 
         <TextView
@@ -71,9 +77,9 @@
             android:layout_marginHorizontal="@dimen/margin_horizontal"
             android:layout_marginTop="@dimen/list_margin_vertical"
             android:layout_marginBottom="@dimen/text_margin_bottom"
-            android:layout_weight="0"
             android:gravity="center"
-            android:text="@string/search_history" />
+            android:text="@string/search_history"
+            tools:visibility="gone" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/searchHistoryRecyclerView"
@@ -83,7 +89,8 @@
             android:layout_weight="1"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             tools:itemCount="10"
-            tools:listitem="@layout/track_view" />
+            tools:listitem="@layout/track_view"
+            tools:visibility="gone" />
 
         <Button
             android:id="@+id/deleteSearchHistoryButton"
@@ -92,41 +99,44 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/big_button_margin_top_bottom"
             android:layout_marginBottom="@dimen/additional_button_margin_bottom"
-            android:layout_weight="0"
             android:text="@string/delete_history"
-            app:cornerRadius="@dimen/update_button_corner_radius" />
-
+            app:cornerRadius="@dimen/update_button_corner_radius"
+            tools:visibility="gone" />
     </LinearLayout>
 
+    <!-- Ошибка -->
     <LinearLayout
         android:id="@+id/searchErrorContainer"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginTop="@dimen/error_image_view_margin_top"
         android:gravity="center"
         android:orientation="vertical"
         android:visibility="gone"
-        tools:visibility="visible">
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/searchTextInputLayout"
+        tools:visibility="gone">
 
         <ImageView
             android:id="@+id/searchErrorImageView"
             android:layout_width="@dimen/error_image_view_WH"
             android:layout_height="@dimen/error_image_view_WH"
+            tools:ignore="ContentDescription"
             tools:src="@drawable/empty_icon"
-            tools:visibility="visible"
-            tools:ignore="ContentDescription" />
+            tools:visibility="gone" />
 
         <TextView
             android:id="@+id/searchErrorTextView"
             style="@style/ErrorTextView"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/error_text_view_top"
             android:gravity="center"
             android:paddingHorizontal="@dimen/error_padding_horizontal"
             tools:text="@string/connection_problems"
-            tools:visibility="visible" />
+            tools:visibility="gone" />
 
         <Button
             android:id="@+id/updateButton"
@@ -137,24 +147,32 @@
             android:text="@string/update"
             app:cornerRadius="@dimen/update_button_corner_radius"
             tools:ignore="TouchTargetSizeCheck"
-            tools:visibility="visible" />
+            tools:visibility="gone" />
     </LinearLayout>
 
-    <ProgressBar android:id="@+id/progressBar"
+    <!-- Прогресс -->
+    <ProgressBar
+        android:id="@+id/progressBar"
         android:layout_width="@dimen/dp44"
         android:layout_height="@dimen/dp44"
         android:layout_marginTop="@dimen/dp140"
-        android:layout_gravity="center"
         android:indeterminateTint="@color/blue"
-        android:visibility="gone"/>
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/searchTextInputLayout" />
 
+    <!-- Список треков -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/tracksRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/tracks_margin_top"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        tools:itemCount="1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/progressBar"
+        tools:itemCount="4"
         tools:listitem="@layout/track_view"
-        tools:visibility="gone"/>
-</LinearLayout>
+        tools:visibility="visible" />
+</androidx.constraintlayout.widget.ConstraintLayout>

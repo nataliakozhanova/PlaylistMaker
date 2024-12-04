@@ -1,74 +1,89 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="?attr/colorPrimary"
-    android:orientation="horizontal"
     android:foreground="?attr/selectableItemBackground">
 
+    <!-- Иконка трека -->
     <ImageView
         android:id="@+id/trackImageView"
-        android:layout_width="@dimen/track_icon_size"
-        android:layout_height="@dimen/track_icon_size"
-        android:layout_margin="@dimen/margin"
-        android:src="@drawable/placeholder" />
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/dp8"
+        android:src="@drawable/placeholder"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent" />
 
-    <LinearLayout
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_marginVertical="@dimen/dp12"
-        android:layout_weight="1"
-        android:orientation="vertical">
-
-        <TextView
-            android:id="@+id/trackNameTextView"
-            style="@style/termsOfUseTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:ellipsize="end"
-            android:maxLines="1"
-            tools:text="@string/track_name" />
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:orientation="horizontal">
-
-            <TextView
-                android:id="@+id/trackArtistNameTextView"
-                style="@style/TextViewListArtistName"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:textAlignment="center"
-                android:layout_weight="1"
-                android:ellipsize="end"
-                android:maxLines="1"
-                tools:text="@string/artist_name" />
-
-            <ImageView
-                android:layout_width="@dimen/delimiter_size"
-                android:layout_height="@dimen/delimiter_size"
-                android:src="@drawable/delimiter"
-                app:tint="?attr/colorOnSecondary" />
-
-            <TextView
-                android:id="@+id/trackTimeTextView"
-                style="@style/TextViewListArtistName"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                tools:text="@string/track_time" />
-        </LinearLayout>
-    </LinearLayout>
-
+    <!-- Кнопка "Еще" -->
     <ImageView
         android:id="@+id/more_button"
         style="@style/ImageViewListSettings"
-        android:layout_width="@dimen/icon_size"
-        android:layout_height="@dimen/icon_size"
-        android:layout_gravity="center"
-        android:layout_marginHorizontal="@dimen/list_margin_end"
-        android:layout_marginVertical="@dimen/list_margin_vertical"
-        android:src="@drawable/arrow_forward_light_mode" />
-</LinearLayout>
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/dp8"
+        android:src="@drawable/arrow_forward_light_mode"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent" />
+
+    <!-- Название трека -->
+    <TextView
+        android:id="@+id/trackNameTextView"
+        style="@style/termsOfUseTextView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/dp8"
+        android:ellipsize="end"
+        android:maxLines="1"
+        tools:text="@string/track_name"
+        app:layout_constraintStart_toEndOf="@id/trackImageView"
+        app:layout_constraintEnd_toStartOf="@id/more_button"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintVertical_bias="0.3" />
+
+    <!-- Имя артиста -->
+    <TextView
+        android:id="@+id/trackArtistNameTextView"
+        style="@style/TextViewListArtistName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/dp8"
+        android:layout_marginTop="@dimen/dp2"
+        android:ellipsize="end"
+        android:maxLines="1"
+        tools:text="@string/artist_name"
+        app:layout_constraintStart_toEndOf="@id/trackImageView"
+        app:layout_constraintEnd_toStartOf="@id/delimiter"
+        app:layout_constraintTop_toBottomOf="@id/trackNameTextView"/>
+
+    <!-- Разделитель -->
+    <ImageView
+        android:id="@+id/delimiter"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/delimiter"
+        app:tint="?attr/colorOnSecondary"
+        app:layout_constraintStart_toEndOf="@id/trackArtistNameTextView"
+        app:layout_constraintBottom_toBottomOf="@id/trackArtistNameTextView"
+        app:layout_constraintTop_toTopOf="@+id/trackArtistNameTextView"
+        app:layout_constraintEnd_toStartOf="@id/trackTimeTextView" />
+
+    <!-- Время трека -->
+    <TextView
+        android:id="@+id/trackTimeTextView"
+        style="@style/TextViewListArtistName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/dp8"
+        tools:text="@string/track_time"
+        app:layout_constraintStart_toEndOf="@id/delimiter"
+        app:layout_constraintTop_toTopOf="@id/trackArtistNameTextView"
+        app:layout_constraintBottom_toBottomOf="@id/trackArtistNameTextView" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
